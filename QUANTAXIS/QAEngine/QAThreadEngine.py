@@ -80,7 +80,7 @@ class QA_Thread(threading.Thread):
                         _task = self.queue.get() # 接收消息
                                                  #print(_task.worker, self.name)
                         assert isinstance(_task, QA_Task)
-                        if _task.worker != None:
+                        if _task.worker is not None:
 
                             _task.do()
 

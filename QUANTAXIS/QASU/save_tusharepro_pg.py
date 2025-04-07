@@ -30,7 +30,7 @@ import datetime
 import pymongo
 import tushare as ts
 from sqlalchemy import create_engine
-import psycopg2  
+#import psycopg2  
 import warnings
 warnings.filterwarnings("ignore")
 import QUANTAXIS as QA

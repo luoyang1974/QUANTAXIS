@@ -106,7 +106,7 @@ class QA_SU_save_day_parallelism(Parallelism):
                 str += + self._loginfolist[i] + ' '
             str += code
             QA_util_log_info(
-                '##JOB02 Now Saved STOCK_DAY==== {}'.format(
+                '##JOB02 Now Saved STOCK_DAY==== {}'.format(str
                     ),
                 self.ui_log
             )
@@ -151,7 +151,7 @@ class QA_SU_save_day_parallelism_thread(Parallelism_Thread):
                 str += + self._loginfolist[i] + ' '
             str += code
             QA_util_log_info(
-                '##JOB02 Now Saved STOCK_DAY==== {}'.format(
+                '##JOB02 Now Saved STOCK_DAY==== {}'.format(str
                     ),
                 self.ui_log
             )
@@ -172,7 +172,7 @@ class QA_SU_save_stock_day_parallelism(QA_SU_save_day_parallelism):
 
     def __saving_work(self, df=pd.DataFrame()):
         try:
-            if not (df is None) and len(df) > 0:
+            if df is not None and len(df) > 0:
                 coll_stock_day = self.client.stock_day
                 coll_stock_day.create_index(
                     [("code",

@@ -521,13 +521,13 @@ def QA_util_select_hours(time=None, gt=None, lt=None, gte=None, lte=None):
         __realtime = time
 
     fun_list = []
-    if gt != None:
+    if gt is not None:
         fun_list.append('>')
-    if lt != None:
+    if lt is not None:
         fun_list.append('<')
-    if gte != None:
+    if gte is not None:
         fun_list.append('>=')
-    if lte != None:
+    if lte is not None:
         fun_list.append('<=')
 
     assert len(fun_list) > 0
@@ -599,13 +599,13 @@ def QA_util_select_min(time=None, gt=None, lt=None, gte=None, lte=None):
         __realtime = time
 
     fun_list = []
-    if gt != None:
+    if gt is not None:
         fun_list.append('>')
-    if lt != None:
+    if lt is not None:
         fun_list.append('<')
-    if gte != None:
+    if gte is not None:
         fun_list.append('>=')
-    if lte != None:
+    if lte is not None:
         fun_list.append('<=')
 
     assert len(fun_list) > 0

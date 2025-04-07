@@ -279,9 +279,9 @@ def ATR_RSI_Stops(data, period=10):
     PREDICT_JX = (CROSS(data.close, top_line) == 1)
     PREDICT_SX = (CROSS(bottom_line, data.close) == 1)
     PREDICT_JX = PREDICT_JX[PREDICT_JX.apply(
-        lambda x: x == True)]  # eqv.  Trim(x == False)
+        lambda x: x is True)]  # eqv.  Trim(x == False)
     PREDICT_SX = PREDICT_SX[PREDICT_SX.apply(
-        lambda x: x == True)]  # eqv.  Trim(x == False)
+        lambda x: x is True)]  # eqv.  Trim(x == False)
     PRICE_PREDICT.loc[PREDICT_JX.index, 'POSITION'] = 1
     PRICE_PREDICT.loc[PREDICT_SX.index, 'POSITION'] = -1
     PRICE_PREDICT['POSITION'] = PRICE_PREDICT['POSITION'].ffill()

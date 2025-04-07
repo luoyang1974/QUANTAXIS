@@ -18,7 +18,7 @@ if sys.version_info > (3,):
 
 def convert(value, type):
     """ Convert / Cast function """
-    if issubclass(type, str) and not (value.upper() in ['FALSE', 'TRUE']):
+    if issubclass(type, str) and value.upper() not in ['FALSE', 'TRUE']:
         return value.decode('utf-8')
     elif issubclass(type, unicode):
         return unicode(value)

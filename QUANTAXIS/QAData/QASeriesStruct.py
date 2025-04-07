@@ -55,7 +55,7 @@ class QA_DataStruct_Series():
     def datetime(self):
         if self.if_multiindex:
             return self.index.levels[0].tolist()
-        elif (self.index,pd.core.indexes.datetimes.DatetimeIndex):
+        elif isinstance(self.index,pd.core.indexes.datetimes.DatetimeIndex):
             return self.index
         else:
             return None
@@ -64,7 +64,7 @@ class QA_DataStruct_Series():
     def date(self):
         if self.if_multiindex:
             return np.unique(self.index.levels[0].date).tolist()
-        elif (self.index,pd.core.indexes.datetimes.DatetimeIndex):
+        elif isinstance(self.index,pd.core.indexes.datetimes.DatetimeIndex):
             return np.unique(self.index.date).tolist()
         else:
             return None

@@ -562,7 +562,7 @@ def QA_fetch_index_day(
     start = str(start)[0:10]
     end = str(end)[0:10]
     code = QA_util_code_tolist(code)
-    if QA_util_date_valid(end) == True:
+    if QA_util_date_valid(end) is True:
 
         cursor = collections.find(
             {
@@ -696,7 +696,7 @@ def QA_fetch_future_day(
     end = str(end)[0:10]
     code = QA_util_code_tolist(code, auto_fill=False)
 
-    if QA_util_date_valid(end) == True:
+    if QA_util_date_valid(end) is True:
 
         _data = []
         cursor = collections.find(
@@ -1707,7 +1707,7 @@ def QA_fetch_cryptocurrency_day(
     end = str(end)[0:10]
     code = QA_util_code_tolist(code, auto_fill=False)
 
-    if QA_util_date_valid(end) == True:
+    if QA_util_date_valid(end) is True:
 
         _data = []
         cursor = collections.find(

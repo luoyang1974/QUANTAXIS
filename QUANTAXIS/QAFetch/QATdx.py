@@ -127,7 +127,7 @@ def select_best_ip():
 
     ipdefault = eval(ipdefault) if isinstance(ipdefault, str) else ipdefault
     assert isinstance(ipdefault, dict)
-    if ipdefault['stock']['ip'] == None:
+    if ipdefault['stock']['ip'] is None:
 
         best_stock_ip = get_ip_list_by_ping(stock_ip_list)
     else:
@@ -138,7 +138,7 @@ def select_best_ip():
         else:
             print('DEFAULT STOCK IP is BAD, RETESTING')
             best_stock_ip = get_ip_list_by_ping(stock_ip_list)
-    if ipdefault['future']['ip'] == None:
+    if ipdefault['future']['ip'] is None:
         best_future_ip = get_ip_list_by_ping(future_ip_list, _type='future')
     else:
         if ping(ipdefault['future']['ip'], ipdefault['future']['port'],
@@ -1343,7 +1343,8 @@ def _parse_block_name_info(incon_content:str):
     incon_dict = []
     section = "Unknown"
     for i in incon_content:
-        if len(i) <= 0: continue
+        if len(i) <= 0:
+            continue
         if i[0] == '#' and i[1] != '#':
             section = i[1:].strip("\n ")
         elif i[1] != '#':

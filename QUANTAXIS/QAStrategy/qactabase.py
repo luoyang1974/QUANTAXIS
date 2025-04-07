@@ -185,6 +185,7 @@ class QAStrategyCtaBase():
         risk = QA_Risk(self.acc)
         risk.save()
 
+        '''
         try:
             """add rank flow if exist
 
@@ -194,6 +195,7 @@ class QAStrategyCtaBase():
             QA_Rank(self.acc).send()
         except:
             pass
+        '''
 
     def user_init(self):
         """
@@ -675,7 +677,7 @@ class QAStrategyCtaBase():
         buy - open
         sell - close
         """
-        if code == None:
+        if code is None:
             code = self.get_code()
 
         if self.market_type == QA.MARKET_TYPE.FUTURE_CN:
@@ -702,7 +704,7 @@ class QAStrategyCtaBase():
                         volume=trade_amount, price=trade_price, order_id=QA.QA_util_random_with_topic(self.strategy_id))
 
     def send_order(self,  direction='BUY', offset='OPEN', price=3925, volume=10, order_id='', code=None):
-        if code == None:
+        if code is None:
             code = self.get_code()
 
         towards = eval('ORDER_DIRECTION.{}_{}'.format(direction, offset))

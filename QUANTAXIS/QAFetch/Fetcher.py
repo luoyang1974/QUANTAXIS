@@ -168,7 +168,7 @@ def QA_quotation_adv(code, start, end=save_tdx.now_time(), frequence='1min',
                     res = QAQueryAdv.QA_fetch_stock_day_adv(code, start, end)
                 except:
                     res = None
-            if source == DATASOURCE.TDX or res == None:
+            if source == DATASOURCE.TDX or res is None:
                 res = QATdx.QA_fetch_get_stock_day(code, start, end, '00')
                 res = QA_DataStruct_Stock_day(res.set_index(['date', 'code']))
             elif source == DATASOURCE.TUSHARE:
@@ -209,7 +209,7 @@ def QA_quotation_adv(code, start, end=save_tdx.now_time(), frequence='1min',
                     )
                 except:
                     res = None
-            if source == DATASOURCE.TDX or res == None:
+            if source == DATASOURCE.TDX or res is None:
                 res = QATdx.QA_fetch_get_stock_min(
                     code,
                     start,
@@ -265,7 +265,7 @@ def QA_quotation_adv(code, start, end=save_tdx.now_time(), frequence='1min',
                     res = QAQueryAdv.QA_fetch_index_day_adv(code, start, end)
                 except:
                     return None
-            if source == DATASOURCE.TDX or res == None:
+            if source == DATASOURCE.TDX or res is None:
                 res = QATdx.QA_fetch_get_index_day(code, start, end)
                 res = QA_DataStruct_Index_day(res.set_index(['date', 'code']))
         elif frequence in [FREQUENCE.ONE_MIN,
@@ -283,7 +283,7 @@ def QA_quotation_adv(code, start, end=save_tdx.now_time(), frequence='1min',
                     )
                 except:
                     res = None
-            if source == DATASOURCE.TDX or res == None:
+            if source == DATASOURCE.TDX or res is None:
                 res = QATdx.QA_fetch_get_index_min(
                     code,
                     start,
@@ -334,7 +334,7 @@ def QA_quotation(code, start, end, frequence, market, source=DATASOURCE.TDX, out
                     res = QAQueryAdv.QA_fetch_stock_day_adv(code, start, end)
                 except:
                     res = None
-            if source == DATASOURCE.TDX or res == None:
+            if source == DATASOURCE.TDX or res is None:
                 res = QATdx.QA_fetch_get_stock_day(code, start, end, '00')
                 res = QA_DataStruct_Stock_day(res.set_index(['date', 'code']))
             elif source == DATASOURCE.TUSHARE:
@@ -346,7 +346,7 @@ def QA_quotation(code, start, end, frequence, market, source=DATASOURCE.TDX, out
                         code, start, end, frequence=frequence)
                 except:
                     res = None
-            if source == DATASOURCE.TDX or res == None:
+            if source == DATASOURCE.TDX or res is None:
                 res = QATdx.QA_fetch_get_stock_min(
                     code, start, end, frequence=frequence)
                 res = QA_DataStruct_Stock_min(
@@ -382,7 +382,7 @@ def QA_quotation(code, start, end, frequence, market, source=DATASOURCE.TDX, out
                     res = QAQueryAdv.QA_fetch_index_day_adv(code, start, end)
                 except:
                     return None
-            if source == DATASOURCE.TDX or res == None:
+            if source == DATASOURCE.TDX or res is None:
                 res = QATdx.QA_fetch_get_index_day(code, start, end)
                 res = QA_DataStruct_Index_day(res.set_index(['date', 'code']))
         elif frequence in [FREQUENCE.ONE_MIN, FREQUENCE.FIVE_MIN, FREQUENCE.FIFTEEN_MIN, FREQUENCE.THIRTY_MIN, FREQUENCE.SIXTY_MIN]:
@@ -392,7 +392,7 @@ def QA_quotation(code, start, end, frequence, market, source=DATASOURCE.TDX, out
                         code, start, end, frequence=frequence)
                 except:
                     res = None
-            if source == DATASOURCE.TDX or res == None:
+            if source == DATASOURCE.TDX or res is None:
                 res = QATdx.QA_fetch_get_index_min(
                     code, start, end, frequence=frequence)
                 res = QA_DataStruct_Index_min(

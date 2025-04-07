@@ -32,7 +32,7 @@
 
 import jieba
 import re
-import fuzzyfinder
+# Simport fuzzyfinder
 
 # 🛠TODO: stock_list中有股票的中文/stock_block中有版块的中文 需要将他们做一些模糊查询
 

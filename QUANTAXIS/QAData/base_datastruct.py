@@ -218,14 +218,14 @@ class _quotation_base():
         :return:
         '''
         data_to_init = self.data.__getitem__(key)
-        if isinstance(data_to_init, pd.DataFrame) == True:
+        if isinstance(data_to_init, pd.DataFrame) is True:
             # 重新构建一个 QA_DataStruct_XXXX，
             return self.new(
                 data=data_to_init,
                 dtype=self.type,
                 if_fq=self.if_fq
             )
-        elif isinstance(data_to_init, pd.Series) == True:
+        elif isinstance(data_to_init, pd.Series) is True:
             # 返回 QA_DataStruct_XXXX DataFrame 中的一个 序列Series
             return data_to_init
 

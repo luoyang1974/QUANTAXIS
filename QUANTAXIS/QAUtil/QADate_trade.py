@@ -8310,8 +8310,8 @@ def QA_util_if_tradetime(
         is_yesterday_open = QA_util_if_trade(date_yesterday)
 
         # 考虑周六日的期货夜盘情况
-        if is_today_open == False:  # 可能是周六或者周日
-            if is_yesterday_open == False or (
+        if is_today_open is False:  # 可能是周六或者周日
+            if is_yesterday_open is False or (
                 _time.hour > 2 or _time.hour == 2 and _time.minute > 30
             ):
                 return False
