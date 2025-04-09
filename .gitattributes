@@ -1,0 +1,27 @@
+# 声明所有文本文件使用 Git 的自动换行符转换
+* text=auto
+
+# 强制指定某些文件使用 LF
+*.sh text eol=lf
+*.py text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.txt text eol=lf
+
+# 强制指定某些文件使用 CRLF (通常不推荐，除非有特殊需求)
+# *.vcxproj text eol=crlf
+# *.sln text eol=crlf
+
+# 声明所有二进制文件不进行换行符转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.psd binary
+*.exe binary
+*.dll binary
+*.zip binary
+*.tar binary
