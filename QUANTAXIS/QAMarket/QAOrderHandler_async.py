@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -273,7 +272,7 @@ class QA_OrderHandlerAsync(QA_Worker):
         try:
             self.monitor.pop(account)
         except:
-            print('failled to unscribe {}'.format(account.account_cookie))
+            print(f'failled to unscribe {account.account_cookie}')
 
 
     async def _trade(self):

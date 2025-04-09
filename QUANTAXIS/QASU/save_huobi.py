@@ -1,4 +1,3 @@
-# coding: utf-8
 # Author: 阿财（Rgveda@github）（11652964@qq.com）
 # Created date: 2018-06-08
 #
@@ -101,7 +100,7 @@ def QA_SU_save_huobi_day(frequency='1day',
     end = datetime.datetime.now(tzutc())
 
     QA_util_log_info(
-        'Starting DOWNLOAD PROGRESS of day Klines from {:s}... '.format(huobi_EXCHANGE),
+        f'Starting DOWNLOAD PROGRESS of day Klines from {huobi_EXCHANGE:s}... ',
         ui_log=ui_log,
         ui_progress=ui_progress
     )
@@ -248,7 +247,7 @@ def QA_SU_save_huobi_day(frequency='1day',
             )
             continue
     QA_util_log_info(
-        'DOWNLOAD PROGRESS of day Klines from {:s} accomplished.'.format(huobi_EXCHANGE),
+        f'DOWNLOAD PROGRESS of day Klines from {huobi_EXCHANGE:s} accomplished.',
         ui_log=ui_log,
         ui_progress=ui_progress
     )
@@ -291,7 +290,7 @@ def QA_SU_save_huobi_min(
     end = datetime.datetime.now(tzutc())
 
     QA_util_log_info(
-        'Starting DOWNLOAD PROGRESS of min Klines from {:s}... '.format(huobi_EXCHANGE),
+        f'Starting DOWNLOAD PROGRESS of min Klines from {huobi_EXCHANGE:s}... ',
         ui_log=ui_log,
         ui_progress=ui_progress
     )
@@ -428,7 +427,7 @@ def QA_SU_save_huobi_min(
             )
             continue
     QA_util_log_info(
-        'DOWNLOAD PROGRESS of min Klines from {:s} accomplished.'.format(huobi_EXCHANGE),
+        f'DOWNLOAD PROGRESS of min Klines from {huobi_EXCHANGE:s} accomplished.',
         ui_log=ui_log,
         ui_progress=ui_progress
     )
@@ -478,7 +477,7 @@ def QA_SU_save_huobi_symbol(market=huobi_EXCHANGE, client=DATABASE,):
     保存火币交易对信息
     """
     market =  market.upper()
-    QA_util_log_info('Downloading {:s} symbol list...'.format(market))
+    QA_util_log_info(f'Downloading {market:s} symbol list...')
 
     # 保存Huobi API 原始 Symbol 数据备查阅，自动交易用得着
     raw_symbol_lists = QA_util_save_raw_symbols(QA_fetch_huobi_symbols, market)
@@ -572,7 +571,7 @@ def QA_SU_save_data_huobi_callback(data, freq):
     异步获取数据回调用的 MongoDB 存储函数
     """
     symbol_template = huobi_SYMBOL
-    if ((len(data) == 1)):
+    if (len(data) == 1):
         # 减少统计刷屏
         pass
     else:
@@ -666,7 +665,7 @@ def QA_SU_save_huobi_realtime():
     实时抓取 huobi.pro 主流公链的交易品种行情
     """
     market = huobi_EXCHANGE
-    QA_util_log_info('Starting {:s} realtime ...'.format(market))
+    QA_util_log_info(f'Starting {market:s} realtime ...')
     fetch_huobi_history = QA_Fetch_Huobi(
         callback_save_data_func=QA_SU_save_data_huobi_callback,
         find_missing_kline_func=QA_util_find_missing_kline

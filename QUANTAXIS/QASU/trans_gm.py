@@ -66,7 +66,7 @@ def QA_SU_trans_stock_min(client=DATABASE, ui_log=None, ui_progress=None,
         # 格式处理
         df_local["code"] = df_local["code"].map(str).str.slice(5, )
         df_local["datetime"] = pd.to_datetime(df_local["datetime"].map(str).str.slice(
-            0, 19))
+            0, 19), utc=False)
         df_local["date"] = df_local.datetime.map(str).str.slice(0, 10)
         df_local = df_local.set_index("datetime", drop=False)
         df_local["date_stamp"] = df_local["date"].apply(
@@ -96,7 +96,7 @@ def QA_SU_trans_stock_min(client=DATABASE, ui_log=None, ui_progress=None,
 
     def __saving_work(code, coll):
         QA_util_log_info(
-            "##JOB03 Now Saving STOCK_MIN ==== {}".format(code), ui_log=ui_log)
+            f"##JOB03 Now Saving STOCK_MIN ==== {code}", ui_log=ui_log)
         try:
             col_filter = {"code": code, "type": type_}
             ref_ = coll.find(col_filter)

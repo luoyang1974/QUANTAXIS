@@ -1,4 +1,3 @@
-# coding: utf-8
 # Author: Unknown
 # Contributor: 阿财（Rgveda@github）（11652964@qq.com）
 # Created date: 2018-06-08
@@ -95,7 +94,7 @@ def QA_SU_save_bitmex_day(
     end = datetime.datetime.now(tzutc())
 
     QA_util_log_info(
-        'Starting DOWNLOAD PROGRESS of day Klines from {:s}... '.format(bitmex_EXCHANGE),
+        f'Starting DOWNLOAD PROGRESS of day Klines from {bitmex_EXCHANGE:s}... ',
         ui_log=ui_log,
         ui_progress=ui_progress
     )
@@ -170,7 +169,7 @@ def QA_SU_save_bitmex_day(
             )
             continue
     QA_util_log_info(
-        'DOWNLOAD PROGRESS of day Klines from {:s} accomplished.'.format(bitmex_EXCHANGE),
+        f'DOWNLOAD PROGRESS of day Klines from {bitmex_EXCHANGE:s} accomplished.',
         ui_log=ui_log,
         ui_progress=ui_progress
     )
@@ -211,7 +210,7 @@ def QA_SU_save_bitmex_min(
     end = datetime.datetime.now(tzutc())
 
     QA_util_log_info(
-        'Starting DOWNLOAD PROGRESS of min Klines from {:s}... '.format(bitmex_EXCHANGE),
+        f'Starting DOWNLOAD PROGRESS of min Klines from {bitmex_EXCHANGE:s}... ',
         ui_log=ui_log,
         ui_progress=ui_progress
     )
@@ -344,7 +343,7 @@ def QA_SU_save_bitmex_min(
             )
             continue
     QA_util_log_info(
-        'DOWNLOAD PROGRESS of min Klines from {:s} accomplished.'.format(bitmex_EXCHANGE),
+        f'DOWNLOAD PROGRESS of min Klines from {bitmex_EXCHANGE:s} accomplished.',
         ui_log=ui_log,
         ui_progress=ui_progress
     )
@@ -370,7 +369,7 @@ def QA_SU_save_bitmex_symbol(
     保存 bitmex 交易对信息
     """
     market =  market.upper()
-    QA_util_log_info('Downloading {:s} symbol list...'.format(market))
+    QA_util_log_info(f'Downloading {market:s} symbol list...')
 
     # 保存 bitmex API 原始 Symbol 数据备查阅，自动交易用得着
     raw_symbol_lists = QA_util_save_raw_symbols(QA_fetch_bitmex_symbols, market)

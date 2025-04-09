@@ -1,4 +1,3 @@
-
 import unittest
 
 from  QUANTAXIS.QAFetch.QAQuery import (QA_fetch_stock_basic_info_tushare, QA_fetch_stock_to_market_date)

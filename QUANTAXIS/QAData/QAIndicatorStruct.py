@@ -2,7 +2,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,7 @@ class QA_DataStruct_Indicators():
         self.data = data
 
     def __repr__(self):
-        return '< QA_DATASTRUCT_INDICATOR FROM {} TO {} WITH {} CODES >'.format(self.data.index.levels[0][0], self.data.index.levels[0][-1], len(self.data.index.levels[1]))
+        return f'< QA_DATASTRUCT_INDICATOR FROM {self.data.index.levels[0][0]} TO {self.data.index.levels[0][-1]} WITH {len(self.data.index.levels[1])} CODES >'
 
     @property
     def index(self):

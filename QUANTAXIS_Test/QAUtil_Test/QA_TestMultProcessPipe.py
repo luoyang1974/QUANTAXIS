@@ -1,6 +1,7 @@
 from multiprocessing import Process,Pipe
 
-import time,os
+import time
+import os
 def consumer(p,name):
 
     left,right=p

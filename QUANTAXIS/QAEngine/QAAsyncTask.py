@@ -1,4 +1,3 @@
-
 import asyncio
 import sys
 import traceback
@@ -30,7 +29,7 @@ class QA_AsyncTask:
         info = ' '.join(info)
         if info:
             info += ' '
-        return '<Job {}coro=<{}>>'.format(info, self._coro)
+        return f'<Job {info}coro=<{self._coro}>>'
 
     @property
     def active(self):
@@ -87,7 +86,7 @@ class QA_AsyncTask:
                 await self._task
         except asyncio.CancelledError:
             pass
-        except asyncio.TimeoutError as exc:
+        except TimeoutError as exc:
             if self._explicit:
                 raise
             context = {'message': "Job closing timed out",

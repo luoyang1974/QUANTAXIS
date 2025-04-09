@@ -1,4 +1,3 @@
-# coding: utf-8
 # Author: 阿财（Rgveda@github）（11652964@qq.com）
 # Created date: 2018-06-08
 #
@@ -115,7 +114,7 @@ def QA_fetch_huobi_symbols():
             retries = retries + 1
             if (retries % 6 == 0):
                 print(ILOVECHINA)
-            print("Retry get_exchange_info #{}".format(retries - 1))
+            print(f"Retry get_exchange_info #{retries - 1}")
             time.sleep(0.5)
     if (retries == 0):
         msg_dict = json.loads(req.content)
@@ -163,12 +162,12 @@ def QA_fetch_huobi_kline(
             retries = retries + 1
             if (retries % 6 == 0):
                 print(ILOVECHINA)
-            print("Retry get_candlestick #{}".format(retries - 1))
+            print(f"Retry get_candlestick #{retries - 1}")
             time.sleep(0.5)
         except HuobiApiException as e:
             print(e.error_code)
             print(e.error_message)
-            print("Skipping '{}'".format(symbol))
+            print(f"Skipping '{symbol}'")
             time.sleep(0.5)
             break
 
@@ -218,8 +217,8 @@ def QA_fetch_huobi_kline_subscription(
     datas = list()
     retries = 1
     while (reqParams['to'] > start_time):
-        if ((reqParams['from'] > QA_util_datetime_to_Unix_timestamp())) or \
-            ((reqParams['from'] > reqParams['to'])):
+        if (reqParams['from'] > QA_util_datetime_to_Unix_timestamp()) or \
+            (reqParams['from'] > reqParams['to']):
             # 出现“未来”时间，一般是默认时区设置，或者时间窗口滚动前移错误造成的
             QA_util_log_info(
                 'A unexpected \'Future\' timestamp got, Please check self.missing_data_list_func param \'tzlocalize\' set. More info: {:s}@{:s} at {:s} but current time is {}'
@@ -259,7 +258,7 @@ def QA_fetch_huobi_kline_subscription(
                 retries = retries + 1
                 if (retries % 6 == 0):
                     print(ILOVECHINA)
-                print("Retry request_historical_kline #{}".format(retries - 1))
+                print(f"Retry request_historical_kline #{retries - 1}")
                 time.sleep(0.5)
             if (retries == 0):
                 # 等待3秒，请求下一个时间段的批量K线数据

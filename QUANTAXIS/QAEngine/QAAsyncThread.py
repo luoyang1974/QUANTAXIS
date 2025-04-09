@@ -39,7 +39,7 @@ class QA_AsyncThread(threading.Thread):
             asyncio.new_event_loop().run_until_complete(self.main())
             self._status = RUNNING_STATUS.RUNNING
         except Exception as e:
-            print('QAASYNCTHREAD ERROR: {}'.format(e))
+            print(f'QAASYNCTHREAD ERROR: {e}')
             self._status = RUNNING_STATUS.STOPED
             raise Exception
 

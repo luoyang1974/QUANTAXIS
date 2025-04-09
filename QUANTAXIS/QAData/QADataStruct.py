@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -107,7 +106,7 @@ def _QA_fetch_stock_adj(
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
 
         res = pd.DataFrame([item for item in cursor])
-        res.date = pd.to_datetime(res.date)
+        res.date = pd.to_datetime(res.date, utc=False)
         return res.set_index('date', drop=False)
 
 
@@ -126,7 +125,7 @@ class QA_DataStruct_Stock_day(_quotation_base):
         '''
         super().__init__(init_data_by_df, dtype, if_fq)
 
-        if isinstance(init_data_by_df, pd.DataFrame) == False:
+        if isinstance(init_data_by_df, pd.DataFrame) is False:
             print("QAError init_data_by_df is not kind of DataFrame type !")
 
     # 抽象类继承
@@ -154,7 +153,7 @@ class QA_DataStruct_Stock_day(_quotation_base):
                 try:
                     date = self.date
                     adj = _QA_fetch_stock_adj(
-                        self.code.to_list(),
+                        list(self.code),
                         str(date[0])[0:10],
                         str(date[-1])[0:10]
                     ).set_index(['date',
@@ -209,7 +208,7 @@ class QA_DataStruct_Stock_day(_quotation_base):
             return self
 
     @property
-    @lru_cache()
+    @lru_cache
     def high_limit(self):
         '涨停价'
         return self.groupby(
@@ -218,7 +217,7 @@ class QA_DataStruct_Stock_day(_quotation_base):
                                       2)).sort_index()
 
     @property
-    @lru_cache()
+    @lru_cache
     def low_limit(self):
         '跌停价'
         return self.groupby(
@@ -227,7 +226,7 @@ class QA_DataStruct_Stock_day(_quotation_base):
                                       2)).sort_index()
 
     @property
-    @lru_cache()
+    @lru_cache
     def next_day_low_limit(self):
         "明日跌停价"
         return self.groupby(
@@ -236,7 +235,7 @@ class QA_DataStruct_Stock_day(_quotation_base):
                                       2)).sort_index()
 
     @property
-    @lru_cache()
+    @lru_cache
     def next_day_high_limit(self):
         "明日涨停价"
         return self.groupby(
@@ -261,17 +260,17 @@ class QA_DataStruct_Stock_day(_quotation_base):
             return None
 
     @property
-    @lru_cache()
+    @lru_cache
     def week(self):
         return self.resample('w')
 
     @property
-    @lru_cache()
+    @lru_cache
     def month(self):
         return self.resample('M')
 
     @property
-    @lru_cache()
+    @lru_cache
     def quarter(self):
         return self.resample('Q')
 
@@ -281,7 +280,7 @@ class QA_DataStruct_Stock_day(_quotation_base):
     #     return self.resample('SA')
 
     @property
-    @lru_cache()
+    @lru_cache
     def year(self):
         return self.resample('Y')
 
@@ -289,7 +288,7 @@ class QA_DataStruct_Stock_day(_quotation_base):
         try:
             return self.add_func(QA_data_day_resample, level).sort_index()
         except Exception as e:
-            print('QA ERROR : FAIL TO RESAMPLE {}'.format(e))
+            print(f'QA ERROR : FAIL TO RESAMPLE {e}')
             return None
 
 
@@ -429,26 +428,26 @@ class QA_DataStruct_Stock_min(_quotation_base):
         try:
             return self.add_funcx(QA_data_min_resample, level).sort_index()
         except Exception as e:
-            print('QA ERROR : FAIL TO RESAMPLE {}'.format(e))
+            print(f'QA ERROR : FAIL TO RESAMPLE {e}')
             return None
 
     @property
-    @lru_cache()
+    @lru_cache
     def min5(self):
         return self.resample('5min')
 
     @property
-    @lru_cache()
+    @lru_cache
     def min15(self):
         return self.resample('15min')
 
     @property
-    @lru_cache()
+    @lru_cache
     def min30(self):
         return self.resample('30min')
 
     @property
-    @lru_cache()
+    @lru_cache
     def min60(self):
         return self.resample('60min')
 
@@ -501,22 +500,22 @@ class QA_DataStruct_Index_min(_quotation_base):
         )
 
     @property
-    @lru_cache()
+    @lru_cache
     def min5(self):
         return self.resample('5min')
 
     @property
-    @lru_cache()
+    @lru_cache
     def min15(self):
         return self.resample('15min')
 
     @property
-    @lru_cache()
+    @lru_cache
     def min30(self):
         return self.resample('30min')
 
     @property
-    @lru_cache()
+    @lru_cache
     def min60(self):
         return self.resample('60min')
 
@@ -524,7 +523,7 @@ class QA_DataStruct_Index_min(_quotation_base):
         try:
             return self.add_funcx(QA_data_min_resample, level).sort_index()
         except Exception as e:
-            print('QA ERROR : FAIL TO RESAMPLE {}'.format(e))
+            print(f'QA ERROR : FAIL TO RESAMPLE {e}')
             return None
 
     __str__ = __repr__
@@ -559,22 +558,22 @@ class QA_DataStruct_Future_day(_quotation_base):
     __str__ = __repr__
 
     @property
-    @lru_cache()
+    @lru_cache
     def week(self):
         return self.resample('w')
 
     @property
-    @lru_cache()
+    @lru_cache
     def month(self):
         return self.resample('M')
 
     @property
-    @lru_cache()
+    @lru_cache
     def quarter(self):
         return self.resample('Q')
 
     @property
-    @lru_cache()
+    @lru_cache
     def tradedate(self):
         """返回交易所日历下的日期
 
@@ -588,7 +587,7 @@ class QA_DataStruct_Future_day(_quotation_base):
             return None
 
     @property
-    @lru_cache()
+    @lru_cache
     def tradetime(self):
         """返回交易所日历下的日期
 
@@ -607,7 +606,7 @@ class QA_DataStruct_Future_day(_quotation_base):
     #     return self.resample('SA')
 
     @property
-    @lru_cache()
+    @lru_cache
     def year(self):
         return self.resample('Y')
 
@@ -615,7 +614,7 @@ class QA_DataStruct_Future_day(_quotation_base):
         try:
             return self.add_func(QA_data_futureday_resample, level).sort_index()
         except Exception as e:
-            print('QA ERROR : FAIL TO RESAMPLE {}'.format(e))
+            print(f'QA ERROR : FAIL TO RESAMPLE {e}')
             return None
 
 
@@ -647,7 +646,7 @@ class QA_DataStruct_Future_min(_quotation_base):
         self.mongo_coll = DATABASE.future_min
 
     @property
-    @lru_cache()
+    @lru_cache
     def tradedate(self):
         """返回交易所日历下的日期
 
@@ -661,7 +660,7 @@ class QA_DataStruct_Future_min(_quotation_base):
             return None
 
     @property
-    @lru_cache()
+    @lru_cache
     def tradetime(self):
         """返回交易所日历下的日期
 
@@ -675,22 +674,22 @@ class QA_DataStruct_Future_min(_quotation_base):
             return None
 
     @property
-    @lru_cache()
+    @lru_cache
     def min5(self):
         return self.resample('5min')
 
     @property
-    @lru_cache()
+    @lru_cache
     def min15(self):
         return self.resample('15min')
 
     @property
-    @lru_cache()
+    @lru_cache
     def min30(self):
         return self.resample('30min')
 
     @property
-    @lru_cache()
+    @lru_cache
     def min60(self):
         return self.resample('60min')
 
@@ -706,7 +705,7 @@ class QA_DataStruct_Future_min(_quotation_base):
             return self.add_funcx(QA_data_futuremin_resample,
                                   level).sort_index()
         except Exception as e:
-            print('QA ERROR : FAIL TO RESAMPLE {}'.format(e))
+            print(f'QA ERROR : FAIL TO RESAMPLE {e}')
             return None
 
 
@@ -741,17 +740,17 @@ class QA_DataStruct_Index_day(_quotation_base):
     __str__ = __repr__
 
     @property
-    @lru_cache()
+    @lru_cache
     def week(self):
         return self.resample('w')
 
     @property
-    @lru_cache()
+    @lru_cache
     def month(self):
         return self.resample('M')
 
     @property
-    @lru_cache()
+    @lru_cache
     def quarter(self):
         return self.resample('Q')
 
@@ -761,7 +760,7 @@ class QA_DataStruct_Index_day(_quotation_base):
     #     return self.resample('SA')
 
     @property
-    @lru_cache()
+    @lru_cache
     def year(self):
         return self.resample('Y')
 
@@ -769,7 +768,7 @@ class QA_DataStruct_Index_day(_quotation_base):
         try:
             return self.add_func(QA_data_day_resample, level).sort_index()
         except Exception as e:
-            print('QA ERROR : FAIL TO RESAMPLE {}'.format(e))
+            print(f'QA ERROR : FAIL TO RESAMPLE {e}')
             return None
 
 
@@ -795,7 +794,7 @@ class QA_DataStruct_Stock_transaction():
         self.mongo_coll = DATABASE.stock_transaction
 
     @property
-    @lru_cache()
+    @lru_cache
     def buyorsell(self):
         """return the buy or sell towards 0--buy 1--sell 2--none
 
@@ -809,7 +808,7 @@ class QA_DataStruct_Stock_transaction():
         return self.data.buyorsell
 
     @property
-    @lru_cache()
+    @lru_cache
     def price(self):
         """return the deal price of tick transaction
 
@@ -823,7 +822,7 @@ class QA_DataStruct_Stock_transaction():
         return self.data.price
 
     @property
-    @lru_cache()
+    @lru_cache
     def vol(self):
         """return the deal volume of tick
 
@@ -842,7 +841,7 @@ class QA_DataStruct_Stock_transaction():
     volume = vol
 
     @property
-    @lru_cache()
+    @lru_cache
     def date(self):
         """return the date of transaction
 
@@ -856,7 +855,7 @@ class QA_DataStruct_Stock_transaction():
         return self.data.date
 
     @property
-    @lru_cache()
+    @lru_cache
     def time(self):
         """return the exact time of transaction(to minute level)
 
@@ -870,7 +869,7 @@ class QA_DataStruct_Stock_transaction():
         return self.data.time
 
     @property
-    @lru_cache()
+    @lru_cache
     def datetime(self):
         """return the datetime of transaction
 
@@ -884,7 +883,7 @@ class QA_DataStruct_Stock_transaction():
         return self.data.datetime
 
     @property
-    @lru_cache()
+    @lru_cache
     def order(self):
         """return the order num of transaction/ for everyday change
 
@@ -898,7 +897,7 @@ class QA_DataStruct_Stock_transaction():
         return self.data.order
 
     @property
-    @lru_cache()
+    @lru_cache
     def index(self):
         """return the transaction index
 
@@ -912,7 +911,7 @@ class QA_DataStruct_Stock_transaction():
         return self.data.index
 
     @property
-    @lru_cache()
+    @lru_cache
     def amount(self):
         """return current tick trading amount
 
@@ -989,7 +988,7 @@ class QA_DataStruct_Stock_transaction():
             [type] -- [description]
         """
 
-        return self.data.query('amount>={}'.format(bigamount))
+        return self.data.query(f'amount>={bigamount}')
 
     def get_medium_order(self, lower=200000, higher=1000000):
         """return medium
@@ -1002,8 +1001,8 @@ class QA_DataStruct_Stock_transaction():
             [type] -- [description]
         """
 
-        return self.data.query('amount>={}'.format(lower)
-                              ).query('amount<={}'.format(higher))
+        return self.data.query(f'amount>={lower}'
+                              ).query(f'amount<={higher}')
 
     def get_small_order(self, smallamount=200000):
         """return small level order
@@ -1015,7 +1014,7 @@ class QA_DataStruct_Stock_transaction():
             [type] -- [description]
         """
 
-        return self.data.query('amount<={}'.format(smallamount))
+        return self.data.query(f'amount<={smallamount}')
 
     def get_time(self, start, end=None):
         if end is None:
@@ -1046,7 +1045,7 @@ class QA_DataStruct_Index_transaction():
         self.mongo_coll = DATABASE.index_transaction
 
     @property
-    @lru_cache()
+    @lru_cache
     def buyorsell(self):
         """return the buy or sell towards 0--buy 1--sell 2--none
 
@@ -1060,7 +1059,7 @@ class QA_DataStruct_Index_transaction():
         return self.data.buyorsell
 
     @property
-    @lru_cache()
+    @lru_cache
     def price(self):
         """return the deal price of tick transaction
 
@@ -1074,7 +1073,7 @@ class QA_DataStruct_Index_transaction():
         return self.data.price
 
     @property
-    @lru_cache()
+    @lru_cache
     def vol(self):
         """return the deal volume of tick
 
@@ -1093,7 +1092,7 @@ class QA_DataStruct_Index_transaction():
     volume = vol
 
     @property
-    @lru_cache()
+    @lru_cache
     def date(self):
         """return the date of transaction
 
@@ -1107,7 +1106,7 @@ class QA_DataStruct_Index_transaction():
         return self.data.date
 
     @property
-    @lru_cache()
+    @lru_cache
     def time(self):
         """return the exact time of transaction(to minute level)
 
@@ -1121,7 +1120,7 @@ class QA_DataStruct_Index_transaction():
         return self.data.time
 
     @property
-    @lru_cache()
+    @lru_cache
     def datetime(self):
         """return the datetime of transaction
 
@@ -1135,7 +1134,7 @@ class QA_DataStruct_Index_transaction():
         return self.data.datetime
 
     @property
-    @lru_cache()
+    @lru_cache
     def order(self):
         """return the order num of transaction/ for everyday change
 
@@ -1149,7 +1148,7 @@ class QA_DataStruct_Index_transaction():
         return self.data.order
 
     @property
-    @lru_cache()
+    @lru_cache
     def index(self):
         """return the transaction index
 
@@ -1163,7 +1162,7 @@ class QA_DataStruct_Index_transaction():
         return self.data.index
 
     @property
-    @lru_cache()
+    @lru_cache
     def amount(self):
         """return current tick trading amount
 
@@ -1240,7 +1239,7 @@ class QA_DataStruct_Index_transaction():
             [type] -- [description]
         """
 
-        return self.data.query('amount>={}'.format(bigamount))
+        return self.data.query(f'amount>={bigamount}')
 
     def get_medium_order(self, lower=200000, higher=1000000):
         """return medium
@@ -1253,8 +1252,8 @@ class QA_DataStruct_Index_transaction():
             [type] -- [description]
         """
 
-        return self.data.query('amount>={}'.format(lower)
-                              ).query('amount<={}'.format(higher))
+        return self.data.query(f'amount>={lower}'
+                              ).query(f'amount<={higher}')
 
     def get_small_order(self, smallamount=200000):
         """return small level order
@@ -1266,7 +1265,7 @@ class QA_DataStruct_Index_transaction():
             [type] -- [description]
         """
 
-        return self.data.query('amount<={}'.format(smallamount))
+        return self.data.query(f'amount<={smallamount}')
 
     def get_time(self, start, end=None):
         if end is None:
@@ -1610,22 +1609,22 @@ class QA_DataStruct_CryptoCurrency_day(_quotation_base):
     __str__ = __repr__
 
     @property
-    @lru_cache()
+    @lru_cache
     def week(self):
         return self.resample('w')
 
     @property
-    @lru_cache()
+    @lru_cache
     def month(self):
         return self.resample('M')
 
     @property
-    @lru_cache()
+    @lru_cache
     def quarter(self):
         return self.resample('Q')
 
     @property
-    @lru_cache()
+    @lru_cache
     def tradedate(self):
         """返回交易所日历下的日期
 
@@ -1639,7 +1638,7 @@ class QA_DataStruct_CryptoCurrency_day(_quotation_base):
             return None
 
     @property
-    @lru_cache()
+    @lru_cache
     def tradetime(self):
         """返回交易所日历下的日期
 
@@ -1653,7 +1652,7 @@ class QA_DataStruct_CryptoCurrency_day(_quotation_base):
             return None
 
     @property
-    @lru_cache()
+    @lru_cache
     def year(self):
         return self.resample('Y')
 
@@ -1661,7 +1660,7 @@ class QA_DataStruct_CryptoCurrency_day(_quotation_base):
         try:
             return self.add_func(QA_data_day_resample, level).sort_index()
         except Exception as e:
-            print('QA ERROR : FAIL TO RESAMPLE {}'.format(e))
+            print(f'QA ERROR : FAIL TO RESAMPLE {e}')
             return None
 
 
@@ -1681,22 +1680,22 @@ class QA_DataStruct_CryptoCurrency_min(_quotation_base):
         self.mongo_coll = DATABASE.cryptocurrency_min
 
     @property
-    @lru_cache()
+    @lru_cache
     def min5(self):
         return self.resample('5min')
 
     @property
-    @lru_cache()
+    @lru_cache
     def min15(self):
         return self.resample('15min')
 
     @property
-    @lru_cache()
+    @lru_cache
     def min30(self):
         return self.resample('30min')
 
     @property
-    @lru_cache()
+    @lru_cache
     def min60(self):
         return self.resample('60min')
 
@@ -1712,5 +1711,5 @@ class QA_DataStruct_CryptoCurrency_min(_quotation_base):
             return self.add_funcx(QA_data_cryptocurrency_min_resample,
                                   level).sort_index()
         except Exception as e:
-            print('QA ERROR : FAIL TO RESAMPLE {}'.format(e))
+            print(f'QA ERROR : FAIL TO RESAMPLE {e}')
             return None

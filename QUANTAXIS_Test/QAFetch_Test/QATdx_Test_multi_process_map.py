@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from unittest import TestCase
 import QUANTAXIS as QA
 from QUANTAXIS.QAFetch import QATdx
@@ -9,7 +7,8 @@ from QUANTAXIS.QASU.save_tdx import gen_param, now_time
 from QUANTAXIS.QAUtil.QASetting import QA_Setting
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_tradetime
 from QUANTAXIS.QAUtil.Parallelism import Parallelism
-import datetime, time
+import datetime
+import time
 import os
 from multiprocessing import cpu_count
 from QUANTAXIS.QACmd import QA_SU_save_stock_day, QA_SU_save_index_day, QA_SU_save_etf_day
@@ -89,7 +88,7 @@ class TestSelect_best_ip(TestCase):
         b = time.time()
         t1 = b - a
         data = list(data)
-        print('返回数据{}条，用时：{}秒'.format(len(data), t1))
+        print(f'返回数据{len(data)}条，用时：{t1}秒')
         # print(data)
         # print([x.code.unique() for x in data])
         self.assertTrue(len(data) == codeListCount,
@@ -101,7 +100,7 @@ class TestSelect_best_ip(TestCase):
                 # print(x)
                 i += 1
                 self.assertTrue((x is None) or (len(x) > 0),
-                                '返回数据太少：{}'.format(len(x)))
+                                f'返回数据太少：{len(x)}')
                 if not ((x is None) or (len(x) > 0)):
                     print('data is None')
                 if i % 10 == 0:
@@ -133,7 +132,7 @@ class TestSelect_best_ip(TestCase):
                                                       end, end2))
         print('数据长度：{} {} 日期： {} {}'.format(
             len(data1), len(data2), end, end2))
-        print('当前数据： {} {}'.format(data1.close[-1], data2.close[-1]))
+        print(f'当前数据： {data1.close[-1]} {data2.close[-1]}')
 
         # 设定在交易时间内
         end = datetime.datetime(end.year, end.month, end.day, 10, 0)
@@ -155,7 +154,7 @@ class TestSelect_best_ip(TestCase):
                                                           end2))
         print('数据长度：{} {} 日期： {} {}'.format(
             len(data1), len(data2), end, end2))
-        print('当前数据： {} {}'.format(data1.close[-1], data2.close[-1]))
+        print(f'当前数据： {data1.close[-1]} {data2.close[-1]}')
 
     def test_QA_SU_save_stock_day(self):
         print('start test_QA_SU_save_stock_day')
@@ -170,7 +169,7 @@ class TestSelect_best_ip(TestCase):
         self.assertTrue(
             len(data2) == len(data1) if data1.datetime[-1] == data2.datetime[
                 -1] else len(data2) > len(data1),
-            '保存后的数据应该比未保存前长： {} {}'.format(len(data2), len(data1)))
+            f'保存后的数据应该比未保存前长： {len(data2)} {len(data1)}')
 
     def test_QA_SU_save_stock_day_with_delete(self):
         stockDay = DATABASE.stock_day
@@ -208,13 +207,13 @@ class TestSelect_best_ip(TestCase):
                                                            _type='stock')
         stockip = QATdx.get_ip_list_by_ping(stock_ip_list, _type='stock')
         self.assertTrue(stockip == stockips[0],
-                        '没有使用缓存： {} {}'.format(stockip, stockips[0]))
+                        f'没有使用缓存： {stockip} {stockips[0]}')
 
         futurips = QATdx.get_ip_list_by_multi_process_ping(future_ip_list,
                                                            _type='future')
         futurip = QATdx.get_ip_list_by_ping(future_ip_list, _type='future')
         self.assertTrue(futurip == futurips[0],
-                        '没有使用缓存： {} {}'.format(futurip, futurips[0]))
+                        f'没有使用缓存： {futurip} {futurips[0]}')
 
         stockips = QATdx.get_ip_list_by_multi_process_ping(stock_ip_list,
                                                            _type='stock')

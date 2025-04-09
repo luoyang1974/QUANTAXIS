@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -276,7 +275,7 @@ class QA_OrderHandler(QA_Worker):
         try:
             self.monitor.pop(account)
         except:
-            print('failled to unscribe {}'.format(account.account_cookie))
+            print(f'failled to unscribe {account.account_cookie}')
 
     def _trade(self, order=None, account=None):
         # 回测通过query_order加快速度，实盘只有query_orders方法

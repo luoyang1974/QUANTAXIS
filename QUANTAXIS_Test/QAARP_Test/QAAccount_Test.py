@@ -124,7 +124,7 @@ class Test_QAAccount(unittest.TestCase):
 
                 rand_value = rnd.random()
                 buy_price = price_low + price_diff * rand_value
-                print("{} 申报买入的成交价格 {}".format(dt, buy_price))
+                print(f"{dt} 申报买入的成交价格 {buy_price}")
                 # 每天随机在开盘价格和收盘价格直接买入
                 Order = Account.send_order(code=test_stock_code,
                                            price=buy_price,
@@ -137,7 +137,7 @@ class Test_QAAccount(unittest.TestCase):
                                            )
                 print('ORDER的占用资金: {}'.format(
                     (Order.amount * Order.price) * (1 + Account.commission_coeff)))
-                print('账户剩余资金 :{}'.format(Account.cash_available))  # ??
+                print(f'账户剩余资金 :{Account.cash_available}')  # ??
                 cash_available = Account.cash_available
                 print(cash_available)
 
@@ -148,9 +148,9 @@ class Test_QAAccount(unittest.TestCase):
                 knock_down_price = rec_mes['body']['order']['price']
                 bid_price = round(buy_price, 2)
 
-                print("{} 获取订单的价格 {}".format(dt, buy_price))
+                print(f"{dt} 获取订单的价格 {buy_price}")
 
                 self.assertEqual(knock_down_price, bid_price)
 
-                print('账户的可用资金 {}'.format(Account.cash_available))
+                print(f'账户的可用资金 {Account.cash_available}')
                 print('-----------------------------------------------')

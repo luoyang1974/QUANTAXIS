@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -54,12 +53,12 @@ def QA_SU_save_financial_files(fromtdx=False):
             continue
 
         date = int(item.split('.')[0][-8:])
-        print('QUANTAXIS NOW SAVING {}'.format(date))
+        print(f'QUANTAXIS NOW SAVING {date}')
         print('在数据库中的条数 {}'.format(coll.find({'report_date': date}).count()))
         try:
             data = QA_util_to_json_from_pandas(parse_filelist([item]).reset_index(
             ).drop_duplicates(subset=['code', 'report_date']).sort_index())
-            print('即将更新的条数 {}'.format(len(data)))
+            print(f'即将更新的条数 {len(data)}')
             # data["crawl_date"] = str(datetime.date.today())
             try:
                 for d in data:

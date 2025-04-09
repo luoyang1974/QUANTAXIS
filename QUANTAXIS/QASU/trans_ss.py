@@ -67,7 +67,7 @@ def QA_SU_trans_stock_min(client=DATABASE, ui_log=None, ui_progress=None,
         ).drop(
             "symbol", axis=1)
         df_local = df_local.assign(
-            datetime=pd.to_datetime(df_local.datetime),
+            datetime=pd.to_datetime(df_local.datetime, utc=False),
             date_stamp=df_local.date.apply(lambda x: QA_util_date_stamp(x)),
             time_stamp=df_local.datetime.apply(
                 lambda x: QA_util_time_stamp(x)),
@@ -94,7 +94,7 @@ def QA_SU_trans_stock_min(client=DATABASE, ui_log=None, ui_progress=None,
 
     def __saving_work(code, coll):
         QA_util_log_info(
-            "##JOB03 Now Saving STOCK_MIN ==== {}".format(code), ui_log=ui_log)
+            f"##JOB03 Now Saving STOCK_MIN ==== {code}", ui_log=ui_log)
         try:
             col_filter = {"code": code, "type": type_}
             ref_ = coll.find(col_filter)

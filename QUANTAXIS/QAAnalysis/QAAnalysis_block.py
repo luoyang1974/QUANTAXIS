@@ -1,5 +1,3 @@
-# coding:utf-8
-
 import datetime
 from functools import lru_cache
 
@@ -37,16 +35,16 @@ class QAAnalysis_block():
         self.name = name
 
     def __repr__(self):
-        return '< QAAnalysis_Block {} with {} code >'.format(self.name, len(self.code))
+        return f'< QAAnalysis_Block {self.name} with {len(self.code)} code >'
 
     @property
-    @lru_cache()
+    @lru_cache
     def market_data(self):
         return QA_quotation(self.code, self.start, self.end, self.frequence,
                             market=MARKET_TYPE.STOCK_CN, source=DATASOURCE.MONGO, output=OUTPUT_FORMAT.DATASTRUCT).to_qfq()
 
     @property
-    @lru_cache()
+    @lru_cache
     def market_value(self):
         return QA_data_marketvalue(self.market_data.data)
 

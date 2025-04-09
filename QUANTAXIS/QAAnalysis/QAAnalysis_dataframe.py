@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -194,7 +193,7 @@ class QAAnalysis_stock():
         return self.price.mad()
 
     # 函数 指标计算
-    @lru_cache()
+    @lru_cache
     def add_func(self, func, *arg, **kwargs):
         return func(self.data, *arg, **kwargs)
 
@@ -225,10 +224,10 @@ def shadow_calc(data):
     entity = abs(data.open - data.close)
     towards = True if data.open < data.close else False
     print('=' * 15)
-    print('up_shadow : {}'.format(up_shadow))
-    print('down_shadow : {}'.format(down_shadow))
-    print('entity: {}'.format(entity))
-    print('towards : {}'.format(towards))
+    print(f'up_shadow : {up_shadow}')
+    print(f'down_shadow : {down_shadow}')
+    print(f'entity: {entity}')
+    print(f'towards : {towards}')
     return up_shadow, down_shadow, entity, data.date, data.code
 
 

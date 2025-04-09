@@ -2,7 +2,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -209,7 +209,7 @@ class QA_Broker(QA_Worker):
                 #     str(order.datetime), '%Y-%m-%d %H-%M-%S') + datetime.timedelta(day=1))
 
                 order.date = order.datetime[0:10]
-                order.datetime = '{} 09:30:00'.format(order.date)
+                order.datetime = f'{order.date} 09:30:00'
             elif order.frequence in [FREQUENCE.ONE_MIN,
                                      FREQUENCE.FIVE_MIN,
                                      FREQUENCE.FIFTEEN_MIN,
@@ -238,9 +238,9 @@ class QA_Broker(QA_Worker):
                               '%Y-%m-%d %H-%M-%S') + datetime.timedelta(day=1)
                 )
                 order.date = exact_time[0:10]
-                order.datetime = '{} 09:30:00'.format(order.date)
+                order.datetime = f'{order.date} 09:30:00'
             except:
-                order.datetime = '{} 15:00:00'.format(order.date)
+                order.datetime = f'{order.date} 15:00:00'
             self.market_data = self.get_market(order)
             if self.market_data is None:
                 return order
@@ -253,7 +253,7 @@ class QA_Broker(QA_Worker):
                 if len(str(order.datetime)) == 19:
                     pass
                 else:
-                    order.datetime = '{} 15:00:00'.format(order.date)
+                    order.datetime = f'{order.date} 15:00:00'
             self.market_data = self.get_market(order)
             if self.market_data is None:
                 return order
@@ -269,7 +269,7 @@ class QA_Broker(QA_Worker):
                 )
 
                 order.date = exact_time[0:10]
-                order.datetime = '{} 09:30:00'.format(order.date)
+                order.datetime = f'{order.date} 09:30:00'
             elif order.frequence in [FREQUENCE.ONE_MIN,
                                      FREQUENCE.FIVE_MIN,
                                      FREQUENCE.FIFTEEN_MIN,

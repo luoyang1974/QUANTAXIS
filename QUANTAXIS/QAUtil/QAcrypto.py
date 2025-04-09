@@ -47,13 +47,13 @@ def QA_util_save_raw_symbols(fetch_symnol_func, exchange):
         #        inplace=True
         #    )
         QA_util_log_info(
-            "Delete the original {} symbols collections".format(exchange)
+            f"Delete the original {exchange} symbols collections"
         )
         QASETTING.client.exchange.drop_collection("symbols")
         QA_util_log_info("Downloading the new symbols")
         col.insert_many(symbols)
         QA_util_log_info(
-            "{} Symbols download is done! Thank you man!".format(exchange)
+            f"{exchange} Symbols download is done! Thank you man!"
         )
     return symbols
 
@@ -172,7 +172,7 @@ def QA_util_find_missing_kline(
                      'date',
                      'datetime']
         ).drop_duplicates()
-        _data['date'] = pd.to_datetime(_data['date'])
+        _data['date'] = pd.to_datetime(_data['date'], utc=False)
         _data = _data.set_index(pd.DatetimeIndex(_data['date']), drop=False)
 
     if (freq != FREQUENCE.DAY):

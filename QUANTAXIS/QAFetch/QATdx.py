@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -74,11 +73,11 @@ def ping(ip, port=7709, type_='stock'):
                     if len(api.get_security_list(0, 1)) > 800:
                         return datetime.datetime.now() - __time1
                     else:
-                        print('BAD RESPONSE {}'.format(ip))
+                        print(f'BAD RESPONSE {ip}')
                         return datetime.timedelta(9, 9, 0)
                 else:
 
-                    print('BAD RESPONSE {}'.format(ip))
+                    print(f'BAD RESPONSE {ip}')
                     return datetime.timedelta(9, 9, 0)
         elif type_ in ['future']:
             with apix.connect(ip, port, time_out=0.7):
@@ -87,10 +86,10 @@ def ping(ip, port=7709, type_='stock'):
                     if res > 20000:
                         return datetime.datetime.now() - __time1
                     else:
-                        print('️Bad FUTUREIP REPSONSE {}'.format(ip))
+                        print(f'️Bad FUTUREIP REPSONSE {ip}')
                         return datetime.timedelta(9, 9, 0)
                 else:
-                    print('️Bad FUTUREIP REPSONSE {}'.format(ip))
+                    print(f'️Bad FUTUREIP REPSONSE {ip}')
                     return datetime.timedelta(9, 9, 0)
     except Exception as e:
         if isinstance(e, TypeError):
@@ -100,7 +99,7 @@ def ping(ip, port=7709, type_='stock'):
             print('pip install pytdx')
 
         else:
-            print('BAD RESPONSE {}'.format(ip))
+            print(f'BAD RESPONSE {ip}')
         return datetime.timedelta(9, 9, 0)
 
 
@@ -127,7 +126,7 @@ def select_best_ip():
 
     ipdefault = eval(ipdefault) if isinstance(ipdefault, str) else ipdefault
     assert isinstance(ipdefault, dict)
-    if ipdefault['stock']['ip'] == None:
+    if ipdefault['stock']['ip'] is None:
 
         best_stock_ip = get_ip_list_by_ping(stock_ip_list)
     else:
@@ -138,7 +137,7 @@ def select_best_ip():
         else:
             print('DEFAULT STOCK IP is BAD, RETESTING')
             best_stock_ip = get_ip_list_by_ping(stock_ip_list)
-    if ipdefault['future']['ip'] == None:
+    if ipdefault['future']['ip'] is None:
         best_future_ip = get_ip_list_by_ping(future_ip_list, _type='future')
     else:
         if ping(ipdefault['future']['ip'], ipdefault['future']['port'],
@@ -146,7 +145,7 @@ def select_best_ip():
             print('USING DEFAULT FUTURE IP')
             best_future_ip = ipdefault['future']
         else:
-            print('DEFAULT FUTURE IP {} is BAD, RETESTING'.format(ipdefault))
+            print(f'DEFAULT FUTURE IP {ipdefault} is BAD, RETESTING')
             best_future_ip = get_ip_list_by_ping(future_ip_list,
                                                  _type='future')
     ipbest = {'stock': best_stock_ip, 'future': best_future_ip}
@@ -179,7 +178,7 @@ def get_ip_list_by_multi_process_ping(ip_list=[], n=0, _type='stock',
     results = cache.get(_type)
     if results:
         # read the data from cache
-        print('loading ip list from {} cache.'.format(_type))
+        print(f'loading ip list from {_type} cache.')
     else:
         ips = [(x['ip'], x['port'], _type) for x in ip_list]
         ps = Parallelism()
@@ -195,7 +194,7 @@ def get_ip_list_by_multi_process_ping(ip_list=[], n=0, _type='stock',
         if _type:
             # store the data as binary data stream
             cache.set(_type, results, age=cache_age)
-            print('saving ip list to {} cache {}'.format(_type, len(results)))
+            print(f'saving ip list to {_type} cache {len(results)}')
     if len(results) > 0:
         if n == 0 and len(results) > 0:
             return results
@@ -285,7 +284,7 @@ def QA_fetch_get_security_bars(code, _type, lens, ip=None, port=None):
         data = data \
             .drop(['year', 'month', 'day', 'hour', 'minute'], axis=1,
                   inplace=False) \
-            .assign(datetime=pd.to_datetime(data['datetime']),
+            .assign(datetime=pd.to_datetime(data['datetime'], utc=False),
                     date=data['datetime'].apply(lambda x: str(x)[0:10]),
                     date_stamp=data['datetime'].apply(
                         lambda x: QA_util_date_stamp(x)),
@@ -416,7 +415,7 @@ def QA_fetch_get_stock_min(code, start, end, frequence='1min', ip=None,
         data = data \
             .drop(['year', 'month', 'day', 'hour', 'minute'], axis=1,
                   inplace=False) \
-            .assign(datetime=pd.to_datetime(data['datetime']),
+            .assign(datetime=pd.to_datetime(data['datetime'], utc=False),
                     code=str(code),
                     date=data['datetime'].apply(lambda x: str(x)[0:10]),
                     date_stamp=data['datetime'].apply(
@@ -461,7 +460,7 @@ def QA_fetch_get_stock_latest(code, frequence='day', ip=None, port=None):
             code=item) for item in code], axis=0, sort=False)
         return data \
             .assign(date=pd.to_datetime(data['datetime']
-                                        .apply(lambda x: x[0:10])),
+                                        .apply(lambda x: x[0:10]), utc=False),
                     date_stamp=data['datetime']
                     .apply(lambda x: QA_util_date_stamp(str(x[0:10])))) \
             .set_index('date', drop=False) \
@@ -570,7 +569,7 @@ def QA_fetch_get_bond_realtime(code=['010107'], ip=None, port=None):
              'ask_vol4', 'bid4', 'bid_vol4', 'ask5', 'ask_vol5', 'bid5',
              'bid_vol5']]
         data = data.assign(last_close=data.last_close/10, open=data.open/10, high=data.high/10, low=data.low/10,
-                        price= data.price/10,  
+                        price= data.price/10,
                         ask1=data.ask1/10, ask2=data.ask2/10, ask3=data.ask3/10, ask4=data.ask4/10, ask5=data.ask5/10,
                         bid1=data.bid1/10, bid2=data.bid2/10, bid3=data.bid3/10, bid4=data.bid4/10, bid5=data.bid5/10)
 
@@ -655,7 +654,7 @@ def for_sz(code):
         return 'stock_cn'
     elif str(code)[0:2] in ['39']:
         return 'index_cn'
-    elif str(code)[0:2] in ['15']:
+    elif str(code)[0:2] in ['15', '16']:
         return 'etf_cn'
     elif str(code)[0:3] in ['101', '104', '105', '106', '107', '108', '109',
                             '111', '112', '114', '115', '116', '117', '118', '119',
@@ -681,7 +680,7 @@ def for_sh(code):
         return 'stock_cn'
     elif str(code)[0:3] in ['000', '880']:
         return 'index_cn'
-    elif str(code)[0:2] == '51':
+    elif str(code)[0:2] in ['51', '58']:
         return 'etf_cn'
     # 110×××120×××企业债券；
     # 129×××100×××可转换债券；
@@ -882,7 +881,7 @@ def QA_fetch_get_bond_min(code, start, end, frequence='1min', ip=None,
         data = data \
             .drop(['year', 'month', 'day', 'hour', 'minute'], axis=1,
                   inplace=False) \
-            .assign(datetime=pd.to_datetime(data['datetime']),
+            .assign(datetime=pd.to_datetime(data['datetime'], utc=False),
                     code=str(code),
                     date=data['datetime'].apply(lambda x: str(x)[0:10]),
                     date_stamp=data['datetime'].apply(
@@ -996,7 +995,7 @@ def QA_fetch_get_index_min(code, start, end, frequence='1min', ip=None,
                 code, (int(lens / 800) - i) * 800, 800))
                 for i in range(int(lens / 800) + 1)], axis=0, sort=False)
         data = data \
-            .assign(datetime=pd.to_datetime(data['datetime']),
+            .assign(datetime=pd.to_datetime(data['datetime'], utc=False),
                     code=str(code)) \
             .drop(['year', 'month', 'day', 'hour', 'minute'], axis=1,
                   inplace=False) \
@@ -1062,7 +1061,7 @@ def QA_fetch_get_index_latest(code, frequence='day', ip=None, port=None):
         data = pd.concat(data, axis=0, sort=False)
         return data \
             .assign(date=pd.to_datetime(data['datetime']
-                                        .apply(lambda x: x[0:10])),
+                                        .apply(lambda x: x[0:10]), utc=False),
                     date_stamp=data['datetime']
                     .apply(lambda x: QA_util_date_stamp(str(x[0:10])))) \
             .set_index('date', drop=False) \
@@ -1093,7 +1092,7 @@ def __QA_fetch_get_stock_transaction(code, day, retry, api):
             data_ = data_.assign(
                 date=day,
                 datetime=pd.to_datetime(data_['time'].apply(
-                    lambda x: str(day) + ' ' + x)),
+                    lambda x: str(day) + ' ' + x), utc=False),
                 code=str(code))
             data_ = data_.assign(date_stamp=data_['datetime'].apply(lambda x: QA_util_date_stamp(x)),
                                  time_stamp=data_['datetime'].apply(
@@ -1127,7 +1126,7 @@ def __QA_fetch_get_index_transaction(code, day, retry, api):
             data_ = data_.assign(
                 date=day,
                 datetime=pd.to_datetime(data_['time'].apply(
-                    lambda x: str(day) + ' ' + x)),
+                    lambda x: str(day) + ' ' + x), utc=False),
                 code=str(code))
             data_ = data_.assign(date_stamp=data_['datetime'].apply(lambda x: QA_util_date_stamp(x)),
                                  time_stamp=data_['datetime'].apply(
@@ -1250,7 +1249,7 @@ def QA_fetch_get_stock_transaction_realtime(code, ip=None, port=None):
             return data.assign(
                 date=str(day),
                 datetime=pd.to_datetime(data['time'].apply(
-                    lambda x: str(day) + ' ' + str(x))),
+                    lambda x: str(day) + ' ' + str(x)), utc=False),
                 code=str(code),
                 order=range(len(data.index))).set_index('datetime', drop=False,
                                                         inplace=False)
@@ -1274,7 +1273,7 @@ def QA_fetch_get_stock_xdxr(code, ip=None, port=None):
         data = api.to_df(api.get_xdxr_info(market_code, code))
         if len(data) >= 1:
             data = data \
-                .assign(date=pd.to_datetime(data[['year', 'month', 'day']])) \
+                .assign(date=pd.to_datetime(data[['year', 'month', 'day']], utc=False)) \
                 .drop(['year', 'month', 'day'], axis=1) \
                 .assign(category_meaning=data['category'].apply(
                     lambda x: category[str(x)])) \
@@ -1306,22 +1305,111 @@ def QA_fetch_get_stock_block(ip=None, port=None):
     api = TdxHq_API()
     with api.connect(ip, port):
 
-        data = pd.concat([api.to_df(
-            api.get_and_parse_block_info("block_gn.dat")).assign(type='gn'),
-            api.to_df(api.get_and_parse_block_info(
-                "block.dat")).assign(type='yb'),
-            api.to_df(api.get_and_parse_block_info(
-                "block_zs.dat")).assign(type='zs'),
-            api.to_df(api.get_and_parse_block_info(
-                "block_fg.dat")).assign(type='fg')], sort=False)
+        data = pd.concat([
+            api.to_df(api.get_and_parse_block_info("block_gn.dat")).assign(type='gn'),
+            api.to_df(api.get_and_parse_block_info("block.dat")).assign(type='yb'),
+            api.to_df(api.get_and_parse_block_info("block_zs.dat")).assign(type='zs'),
+            api.to_df(api.get_and_parse_block_info("block_fg.dat")).assign(type='fg'),
+            api.to_df(api.get_and_parse_block_info("spblock.dat")).assign(type='sp'),
+            api.to_df(api.get_and_parse_block_info("sbblock.dat")).assign(type='sb'),
+            api.to_df(api.get_and_parse_block_info("jjblock.dat")).assign(type='jj'),
+            api.to_df(api.get_and_parse_block_info("ukblock.dat")).assign(type='uk'),
+            api.to_df(api.get_and_parse_block_info("hkblock.dat")).assign(type='hk'),
+            api.to_df(api.get_and_parse_block_info("mgblock.dat")).assign(type='mg')],sort=False)
+        addblockdat=api.get_block_dat_ver_up("incon.dat").decode("GB18030")
+    df = QA_fetch_get_tdx_industry(addblockdat)
+    if len(data) > 10:
+        data = data.assign(source='tdx').drop(['block_type', 'code_index'],
+                                              axis=1).set_index('code',
+                                                                drop=False,
+                                                                inplace=False).drop_duplicates()
+        if len(df):
+            df.set_index('code', drop=False, inplace=True)
+            data = data.append(
+                    df[['code', 'tdxnhy']].rename({'tdxnhy': 'blockname'}, axis=1).assign(type='tdxhy').append(
+                        df[['code', 'swhy']].rename({'swhy': 'blockname'}, axis=1).assign(type='swhy')
+                        ).assign(source='tdx')
+                    )
+        return data
+    else:
+        QA_util_log_info('Wrong with fetch block ')
 
-        if len(data) > 10:
-            return data.assign(source='tdx').drop(['block_type', 'code_index'],
-                                                  axis=1).set_index('code',
-                                                                    drop=False,
-                                                                    inplace=False).drop_duplicates()
-        else:
-            QA_util_log_info('Wrong with fetch block ')
+
+def QA_fetch_get_tdx_industry(incon) -> pd.DataFrame:
+    import os
+    import random
+    import shutil
+    import tempfile
+    from urllib.request import urlopen
+
+    def download_tdx_file() -> str:
+        url = 'http://www.tdx.com.cn/products/data/data/dbf/base.zip'
+        tmpdir_root = tempfile.gettempdir()
+        subdir_name = 'tdx_' + str(random.randint(0, 1000000))
+        tmpdir = os.path.join(tmpdir_root, subdir_name)
+        shutil.rmtree(tmpdir, ignore_errors=True)
+        os.makedirs(tmpdir)
+
+        try:
+            file = tmpdir + '/' + 'base.zip'
+            f = urlopen(url)
+            data = f.read()
+            with open(file, 'wb') as code:
+                code.write(data)
+            f.close()
+            shutil.unpack_archive(file, extract_dir=tmpdir)
+            os.remove(file)
+        except:
+            pass
+        return tmpdir
+
+    def read_industry(folder:str,incon0) -> pd.DataFrame:
+        # incon = folder + '/incon.dat' # tdx industry file
+        hy = folder + '/tdxhy.cfg' # tdx stock file
+
+        # tdx industry file
+        #with open(incon0, encoding='GB18030', mode='r') as f:
+        #    incon = f.readlines()
+        incon=[i.replace('\r','\n') for i in incon0.strip('\r\n').split('\n')] 
+        incon_dict = {}
+        for i in incon:
+            if not len(i.strip()):
+                continue
+            if i[0] == '#' and i[1] != '#':
+                j = i.replace('\n', '').replace('#', '')
+                incon_dict[j] = []
+            else:
+                if i[1] != '#':
+                    incon_dict[j].append(i.replace('\n', '').split(' ')[0].split('|'))
+
+        incon = pd.concat([pd.DataFrame.from_dict(v).assign(type=k) for k,v in incon_dict.items()]) \
+            .rename({0: 'code', 1: 'name'}, axis=1).reset_index(drop=True)
+
+        with open(hy, encoding='GB18030') as f:
+            hy = f.readlines()
+        hy = [line.replace('\n', '') for line in hy]
+        hy = pd.DataFrame(line.split('|') for line in hy)
+        # filter codes
+        hy = hy[~hy[1].str.startswith('9')]
+        hy = hy[~hy[1].str.startswith('2')]
+
+        hy1 = hy[[1, 2]].set_index(2).join(incon.set_index('code')).set_index(1)[['name', 'type']]
+        hy2 = hy[[1, 5]].set_index(5).join(incon.set_index('code')).set_index(1)[['name', 'type']]
+        # join tdxhy and swhy
+        df = hy.set_index(1) \
+            .join(hy1.rename({'name': hy1.dropna()['type'].values[0], 'type': hy1.dropna()['type'].values[0]+'_type'}, axis=1)) \
+            .join(hy2.rename({'name': hy2.dropna()['type'].values[0], 'type': hy2.dropna()['type'].values[0]+'_type'}, axis=1)).reset_index()
+
+        df.rename({0: 'sse', 1: 'code', 2: 'TDX_code', 5: 'SW_code','TDXRSHY':'swhy'}, axis=1, inplace=True)
+        df = df[[i for i in df.columns if not isinstance(i, int) and  '_type' not in str(i)]]
+        df.columns = [i.lower() for i in df.columns]
+
+        shutil.rmtree(folder, ignore_errors=True)
+        return df
+
+    folder = download_tdx_file()
+    df = read_industry(folder,incon)
+    return df
 
 
 """
@@ -1367,7 +1455,7 @@ http://www.tdx.com.cn/page_46.html
        47         3     中金所期货         CZ
        50         3      渤海商品         BH
        76         3      齐鲁商品         QL
-## 基金 
+## 基金
        33         8     开放式基金         FU
        34         9     货币型基金         FB
        35         8  招商理财产品         LC
@@ -1620,11 +1708,11 @@ def QA_fetch_get_option_all_contract_time_to_market():
     result = QA_fetch_get_option_list('tdx')
     # pprint.pprint(result)
     #  category  market code name desc  code
-    '''
-    fix here : 
+    r'''
+    fix here :
     See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
     result['meaningful_name'] = None
-    C:\work_new\QUANTAXIS\QUANTAXIS\QAFetch\QATdx.py:1468: SettingWithCopyWarning: 
+    C:\work_new\QUANTAXIS\QUANTAXIS\QAFetch\QATdx.py:1468: SettingWithCopyWarning:
     A value is trying to be set on a copy of a slice from a DataFrame.
     Try using .loc[row_indexer,col_indexer] = value instead
     '''
@@ -1689,7 +1777,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 adjust = " 第10次以上的调整，调整代码 %s" + strName[8:9]
 
             executePrice = strName[9:]
-            result.loc[idx, 'meaningful_name'] = '%s,到期月份:%s,%s,行权价:%s' % (
+            result.loc[idx, 'meaningful_name'] = '{},到期月份:{},{},行权价:{}'.format(
                 putcall, expireMonth, adjust, executePrice)
 
             row = result.loc[idx]
@@ -1744,7 +1832,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 adjust = " 第10次以上的调整，调整代码 %s" + strName[8:9]
 
             executePrice = strName[9:]
-            result.loc[idx, 'meaningful_name'] = '%s,到期月份:%s,%s,行权价:%s' % (
+            result.loc[idx, 'meaningful_name'] = '{},到期月份:{},{},行权价:{}'.format(
                 putcall, expireMonth, adjust, executePrice)
 
             row = result.loc[idx]
@@ -1765,7 +1853,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 putcall = "Unkown code name ： " + strName
 
             executePrice = strName[9:]
-            result.loc[idx, 'meaningful_name'] = '%s,到期年月份:%s%s,行权价:%s' % (
+            result.loc[idx, 'meaningful_name'] = '{},到期年月份:{}{},行权价:{}'.format(
                 putcall, expireYear, expireMonth, executePrice)
 
             row = result.loc[idx]
@@ -1789,7 +1877,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 putcall = "Unkown code name ： " + strName
 
             executePrice = strName[9:]
-            result.loc[idx, 'meaningful_name'] = '%s,到期年月份:%s%s,行权价:%s' % (
+            result.loc[idx, 'meaningful_name'] = '{},到期年月份:{}{},行权价:{}'.format(
                 putcall, expireYear, expireMonth, executePrice)
 
             row = result.loc[idx]
@@ -1813,7 +1901,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 putcall = "Unkown code name ： " + strName
 
             executePrice = strName[9:]
-            result.loc[idx, 'meaningful_name'] = '%s,到期年月份:%s%s,行权价:%s' % (
+            result.loc[idx, 'meaningful_name'] = '{},到期年月份:{}{},行权价:{}'.format(
                 putcall, expireYear, expireMonth, executePrice)
 
             row = result.loc[idx]
@@ -1837,7 +1925,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 putcall = "Unkown code name ： " + strName
 
             executePrice = strName[9:]
-            result.loc[idx, 'meaningful_name'] = '%s,到期年月份:%s%s,行权价:%s' % (
+            result.loc[idx, 'meaningful_name'] = '{},到期年月份:{}{},行权价:{}'.format(
                 putcall, expireYear, expireMonth, executePrice)
 
             row = result.loc[idx]
@@ -1861,7 +1949,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 putcall = "Unkown code name ： " + strName
 
             executePrice = strName[8:]
-            result.loc[idx, 'meaningful_name'] = '%s,到期年月份:%s%s,行权价:%s' % (
+            result.loc[idx, 'meaningful_name'] = '{},到期年月份:{}{},行权价:{}'.format(
                 putcall, expireYear, expireMonth, executePrice)
 
             row = result.loc[idx]
@@ -1885,7 +1973,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 putcall = "Unkown code name ： " + strName
 
             executePrice = strName[8:]
-            result.loc[idx, 'meaningful_name'] = '%s,到期年月份:%s%s,行权价:%s' % (
+            result.loc[idx, 'meaningful_name'] = '{},到期年月份:{}{},行权价:{}'.format(
                 putcall, expireYear, expireMonth, executePrice)
 
             row = result.loc[idx]
@@ -1952,7 +2040,7 @@ def QA_fetch_get_option_50etf_list():
     def __meaningful_name(df):
         putcall = {'C':'认购期权', 'P':'认沽期权'}
         adjust={'M':'未调整','A':'第1次调整','B':'第2次调整','C':'第3次调整','D':'第4次调整','E':'第5次调整','F':'第6次调整','G':'第7次调整','H':'第8次调整','I':'第9次调整','J':'第10次调整'}
-        return '%s,%s,到期月份:%s月,%s,行权价:%s' % ('50ETF', putcall.get(df.putcall, '错误编码'), df.expireMonth, adjust.get(df.adjust, '第10次以上的调整，调整代码 %s' % df.adjust), df.price)
+        return '{},{},到期月份:{}月,{},行权价:{}'.format('50ETF', putcall.get(df.putcall, '错误编码'), df.expireMonth, adjust.get(df.adjust, '第10次以上的调整，调整代码 %s' % df.adjust), df.price)
     result = result.assign(meaningful_name=result.apply(__meaningful_name, axis=1))
     return result
 
@@ -1975,11 +2063,11 @@ def QA_fetch_get_option_300etf_contract_time_to_market():
     result = QA_fetch_get_option_list('tdx')
     # pprint.pprint(result)
     #  category  market code name desc  code
-    '''
-    fix here : 
+    r'''
+    fix here :
     See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
     result['meaningful_name'] = None
-    C:\work_new\QUANTAXIS\QUANTAXIS\QAFetch\QATdx.py:1468: SettingWithCopyWarning: 
+    C:\work_new\QUANTAXIS\QUANTAXIS\QAFetch\QATdx.py:1468: SettingWithCopyWarning:
     A value is trying to be set on a copy of a slice from a DataFrame.
     Try using .loc[row_indexer,col_indexer] = value instead
     '''
@@ -2043,7 +2131,7 @@ def QA_fetch_get_option_300etf_contract_time_to_market():
                 adjust = " 第10次以上的调整，调整代码 %s" + strName[8:9]
 
             executePrice = strName[9:]
-            result.loc[idx, 'meaningful_name'] = '%s,到期月份:%s,%s,行权价:%s' % (
+            result.loc[idx, 'meaningful_name'] = '{},到期月份:{},{},行权价:{}'.format(
                 putcall, expireMonth, adjust, executePrice)
 
             row = result.loc[idx]
@@ -2375,7 +2463,7 @@ def QA_fetch_get_future_day(code, start_date, end_date, frequence='day',
 
     with apix.connect(ip, port):
         code_market = extension_market_list.query(
-            'code=="{}"'.format(code)).iloc[0]
+            f'code=="{code}"').iloc[0]
 
         data = pd.concat(
             [apix.to_df(apix.get_instrument_bars(
@@ -2442,7 +2530,7 @@ def QA_fetch_get_future_min(code, start, end, frequence='1min', ip=None,
     with apix.connect(ip, port):
 
         code_market = extension_market_list.query(
-            'code=="{}"'.format(code)).iloc[0]
+            f'code=="{code}"').iloc[0]
         data = pd.concat([apix.to_df(
             apix.get_instrument_bars(frequence, int(code_market.market), str(
                 code), (int(lens / 700) - i) * 700, 700)) for i in
@@ -2452,7 +2540,7 @@ def QA_fetch_get_future_min(code, start, end, frequence='1min', ip=None,
         data = data \
             .assign(tradetime=data['datetime'].apply(str), code=str(code),
                     datetime=pd.to_datetime(
-                data['datetime'].apply(QA_util_future_to_realdatetime, 1))) \
+                data['datetime'].apply(QA_util_future_to_realdatetime, 1), utc=False)) \
             .drop(['year', 'month', 'day', 'hour', 'minute'], axis=1,
                   inplace=False) \
             .assign(date=data['datetime'].apply(lambda x: str(x)[0:10]),
@@ -2489,7 +2577,7 @@ def __QA_fetch_get_future_transaction(code, day, retry, code_market, apix):
             time.sleep(1)
             return __QA_fetch_get_stock_transaction(code, day, 0, apix)
         else:
-            return data_.assign(datetime=pd.to_datetime(data_['date'])).assign(
+            return data_.assign(datetime=pd.to_datetime(data_['date']), utc=False).assign(
                 date=str(day)) \
                 .assign(code=str(code)).assign(
                 order=range(len(data_.index))).set_index('datetime',
@@ -2511,7 +2599,7 @@ def QA_fetch_get_future_transaction(code, start, end, retry=4, ip=None,
     real_id_range = []
     with apix.connect(ip, port):
         code_market = extension_market_list.query(
-            'code=="{}"'.format(code)).iloc[0]
+            f'code=="{code}"').iloc[0]
         data = pd.DataFrame()
         for index_ in range(trade_date_sse.index(real_start),
                             trade_date_sse.index(real_end) + 1):
@@ -2549,13 +2637,13 @@ def QA_fetch_get_future_transaction_realtime(code, ip=None, port=None):
     ) if extension_market_list is None else extension_market_list
 
     code_market = extension_market_list.query(
-        'code=="{}"'.format(code)).iloc[0]
+        f'code=="{code}"').iloc[0]
     with apix.connect(ip, port):
         data = pd.DataFrame()
         data = pd.concat([apix.to_df(apix.get_transaction_data(
             int(code_market.market), code, (30 - i) * 1800), ) for i in
             range(31)], axis=0,sort=True)
-        return data.assign(datetime=pd.to_datetime(data['date'])).assign(
+        return data.assign(datetime=pd.to_datetime(data['date']), utc=False).assign(
             date=lambda x: str(x)[0:10]) \
             .assign(code=str(code)).assign(
             order=range(len(data.index))).set_index('datetime', drop=False,
@@ -2571,7 +2659,7 @@ def QA_fetch_get_future_realtime(code, ip=None, port=None):
     ) if extension_market_list is None else extension_market_list
     __data = pd.DataFrame()
     code_market = extension_market_list.query(
-        'code=="{}"'.format(code)).iloc[0]
+        f'code=="{code}"').iloc[0]
     with apix.connect(ip, port):
         __data = apix.to_df(apix.get_instrument_quote(
             int(code_market.market), code))

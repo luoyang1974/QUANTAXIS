@@ -18,14 +18,14 @@ class Test_QA_Date_trade(unittest.TestCase):
 
             QADate.QA_util_date_valid(realTradeDWWWay)
 
-            if toDayIsTradeDay == False:
+            if toDayIsTradeDay is False:
                 prev_trade_day = QADate_trade.QA_util_get_last_day(
                     str_from_today, -1)
                 realTradeDay = QADate_trade.QA_util_get_real_date(
                     prev_trade_day)
-                self.assertEquals(realTradeDay, toDayIsTradeDay)
+                self.assertEqual(realTradeDay, toDayIsTradeDay)
             else:
-                self.assertEquals(realTradeDay, realTradeDay)
+                self.assertEqual(realTradeDay, realTradeDay)
 
             str_from_today = QADate_trade.QA_util_get_last_day(str_from_today)
             nDayLeft = nDayLeft - 1

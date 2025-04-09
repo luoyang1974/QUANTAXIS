@@ -2,7 +2,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -98,7 +98,7 @@ class QA_Market(QA_Trade):
         '''
         输出market市场对象的字符串
         '''
-        return '<QA_Market with {} QA_Broker >'.format(list(self.broker.keys()))
+        return f'<QA_Market with {list(self.broker.keys())} QA_Broker >'
 
     def upcoming_data(self, broker, data):
         '''
@@ -637,7 +637,7 @@ class QA_Market(QA_Trade):
             print(account.history)
             account.settle()
 
-        print('===== SETTLED {} ====='.format(self.running_time))
+        print(f'===== SETTLED {self.running_time} =====')
 
     def settle_order(self):
         """交易前置结算

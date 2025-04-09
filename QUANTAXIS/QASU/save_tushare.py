@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -89,7 +88,7 @@ def QA_save_stock_day_all(client=DATABASE):
             QA_util_log_info('error in saving ==== %s' % str(i))
 
     for i_ in range(len(df.index)):
-        QA_util_log_info('The %s of Total %s' % (i_, len(df.index)))
+        QA_util_log_info('The {} of Total {}'.format(i_, len(df.index)))
         QA_util_log_info(
             'DOWNLOAD PROGRESS %s ' %
             str(float(i_ / len(df.index) * 100))[0:4] + '%'
@@ -215,7 +214,7 @@ def QA_save_stock_day_all_bfq(client=DATABASE):
             QA_util_log_info('error in saving ==== %s' % str(i))
 
     for i_ in range(len(df.index)):
-        QA_util_log_info('The %s of Total %s' % (i_, len(df.index)))
+        QA_util_log_info('The {} of Total {}'.format(i_, len(df.index)))
         QA_util_log_info(
             'DOWNLOAD PROGRESS %s ' %
             str(float(i_ / len(df.index) * 100))[0:4] + '%'
@@ -248,7 +247,7 @@ def QA_save_stock_day_with_fqfactor(client=DATABASE):
             QA_util_log_info('error in saving ==== %s' % str(i))
 
     for i_ in range(len(df.index)):
-        QA_util_log_info('The %s of Total %s' % (i_, len(df.index)))
+        QA_util_log_info('The {} of Total {}'.format(i_, len(df.index)))
         QA_util_log_info(
             'DOWNLOAD PROGRESS %s ' %
             str(float(i_ / len(df.index) * 100))[0:4] + '%'
@@ -305,7 +304,7 @@ def QA_save_lhb(client=DATABASE):
 def _saving_work(code, coll_stock_day, ui_log=None, err=[]):
     try:
         QA_util_log_info(
-            '##JOB01 Now Saving STOCK_DAY==== {}'.format(str(code)),
+            f'##JOB01 Now Saving STOCK_DAY==== {str(code)}',
             ui_log
         )
 
@@ -390,7 +389,7 @@ def QA_SU_save_stock_day(client=DATABASE, ui_log=None, ui_progress=None):
     err = []
     num_stocks = len(stock_list)
     for index, ts_code in enumerate(stock_list):
-        QA_util_log_info('The {} of Total {}'.format(index, num_stocks))
+        QA_util_log_info(f'The {index} of Total {num_stocks}')
 
         strProgressToLog = 'DOWNLOAD PROGRESS {} {}'.format(
             str(float(index / num_stocks * 100))[0:4] + '%',

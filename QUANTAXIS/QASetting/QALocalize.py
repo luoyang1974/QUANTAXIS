@@ -1,4 +1,3 @@
-# coding:utf-8
 import os
 
 """创建本地文件夹
@@ -18,7 +17,7 @@ qa_path = '{}{}{}'.format(path, os.sep, '.quantaxis')
 
 
 def generate_path(name):
-    return '{}{}{}'.format(qa_path, os.sep, name)
+    return f'{qa_path}{os.sep}{name}'
 
 
 def make_dir(path, exist_ok=True):

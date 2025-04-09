@@ -1,7 +1,6 @@
-# coding:utf-8
-
 import QUANTAXIS as QA
 import uuid
+from pprint import pprint
 
 user = QA.QA_User(username = 'quantaxis', password= 'quantaxis')
 
@@ -39,7 +38,5 @@ print('TEST PORTFOLIO')
 
 perf = QA.QA_Performance(ac)
 print(perf.pnl)
-
-from pprint import pprint
 
 pprint(perf.message)

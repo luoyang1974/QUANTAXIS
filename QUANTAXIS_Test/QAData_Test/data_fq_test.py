@@ -5,7 +5,7 @@ import os
 import struct
 import sqlite3
 
-import pprint;
+import pprint
 
 import QUANTAXIS as QA
 import QUANTAXIS.QAUtil.QADate as QAUtilDate
@@ -150,7 +150,7 @@ close     1     0.6    0.7    0.8     0.6
 
 
 
-    '''
+    r'''
     文件名称：sh601318.day(中国平安示例)
     路径：vipdoc\sh\lday  ---上海
          vipdoc\sz\lday   ---深圳
@@ -177,8 +177,8 @@ close     1     0.6    0.7    0.8     0.6
         if fsize % 32 != 0:
             print("💔文件长度不是 32 字节的整数倍")
 
-        nStockCount = fsize // 32;
-        print("🦖准备读取{}文件共{}个日线数据🛸".format(lday_fullpath, nStockCount))
+        nStockCount = fsize // 32
+        print(f"🦖准备读取{lday_fullpath}文件共{nStockCount}个日线数据🛸")
 
         with open(file=lday_fullpath, mode='rb') as f:
 
@@ -187,7 +187,7 @@ close     1     0.6    0.7    0.8     0.6
             path_for_save_data = curdir + "/tdx_days"
             path_for_save_data = path_for_save_data.rstrip("\\")
             isExists = os.path.exists(path_for_save_data)
-            if isExists == False:
+            if isExists is False:
                 os.mkdir(path_for_save_data)
                 print("新建文件夹",path_for_save_data)
 
@@ -238,14 +238,14 @@ close     1     0.6    0.7    0.8     0.6
         self.tdxPath_SZ_lday = ''
 
         if sys.platform == 'darwin':
-            home_dir = os.path.expandvars('$HOME');
+            home_dir = os.path.expandvars('$HOME')
             self.tdxPath_SH_lday = home_dir + '/.wine/drive_c/new_tdx/vipdoc/sh/lday'
             self.tdxPath_SZ_lday = home_dir + '/.wine/drive_c/new_tdx/vipdoc/sz/lday'
 
             bExist1 = os.path.exists(self.tdxPath_SH_lday)
             bExist2 = os.path.exists(self.tdxPath_SZ_lday)
 
-            if bExist1 == True and bExist2 == True:
+            if bExist1 is True and bExist2 is True:
                 print("读取通达信 日线数据 ")
         else:
             # todo 🛠 windows 环境下 读取注册获取通达信安装位置
@@ -257,18 +257,18 @@ close     1     0.6    0.7    0.8     0.6
         lday_sh_filelist = os.listdir(self.tdxPath_SH_lday)
         sh_stock_count = len(lday_sh_filelist)
         lday_sh_filelist.sort()
-        print("准备读取上海交易所证券日线数据 共{}个股票".format(sh_stock_count))
+        print(f"准备读取上海交易所证券日线数据 共{sh_stock_count}个股票")
         for iIndex in range(sh_stock_count):
-            print(' 进度 {}/{} '.format(iIndex, sh_stock_count))
+            print(f' 进度 {iIndex}/{sh_stock_count} ')
             self.parse_a_lday_file_to_df(self.tdxPath_SH_lday + "/" + lday_sh_filelist[iIndex], lday_sh_filelist[iIndex])
 
 
         lday_sz_filelist = os.listdir(self.tdxPath_SZ_lday)
         sz_stock_count = len(lday_sz_filelist)
         lday_sz_filelist.sort()
-        print("准备读取深圳交易所证券日线数据 共{}个股票".format(sz_stock_count))
+        print(f"准备读取深圳交易所证券日线数据 共{sz_stock_count}个股票")
         for iIndex in range(sz_stock_count):
-            print(' 进度 {}/{} '.format(iIndex, sz_stock_count))
+            print(f' 进度 {iIndex}/{sz_stock_count} ')
             self.parse_a_lday_file_to_df(self.tdxPath_SZ_lday + "/" + lday_sz_filelist[iIndex],lday_sz_filelist[iIndex])
 
 
@@ -332,32 +332,32 @@ close     1     0.6    0.7    0.8     0.6
         isSz = fileName.startswith('sz')
 
         strCode = fileName[2:8]
-        if isSz == True and strCode.startswith('000') == True:
+        if isSz is True and strCode.startswith('000') is True:
             return '上证指数'
 
-        if isSh == True and strCode.startswith('50') == True:
+        if isSh is True and strCode.startswith('50') is True:
             return '上交所传统封闭式基金'
 
-        if isSz == True and strCode.startswith('18') == True:
+        if isSz is True and strCode.startswith('18') is True:
             return '深交所传统封闭式基金'
 
-        if isSz == True and strCode.startswith('16') == True:
+        if isSz is True and strCode.startswith('16') is True:
             return '深交所LOF基金 '
 
-        if isSh == True and strCode.startswith('51') == True:
+        if isSh is True and strCode.startswith('51') is True:
             return '上交所ETF基金'
 
-        if isSz == True and strCode.startswith('15') == True:
+        if isSz is True and strCode.startswith('15') is True:
             return '深交所ETF基金或分级基金'
 
-        if isSz == True and strCode.startswith('16') == True:
+        if isSz is True and strCode.startswith('16') is True:
             return '深交所其他基金'
 
 
-        if isSh == True and strCode.startswith('60') == True:
+        if isSh is True and strCode.startswith('60') is True:
             return '上交所A股'
 
-        if isSh == True and strCode.startswith('800')== True:
+        if isSh is True and strCode.startswith('800') is True:
             '''
             880001 总市值
             880011 A主总值
@@ -386,22 +386,22 @@ close     1     0.6    0.7    0.8     0.6
             '''
             return '统计指数'
 
-        if isSh == True and strCode.startswith('900')== True:
+        if isSh is True and strCode.startswith('900') is True:
             return '上交所B股'
 
-        if isSz == True and strCode.startswith('000') == True:
+        if isSz is True and strCode.startswith('000') is True:
             return '深交所主板'
 
-        if isSz == True and strCode.startswith('002') == True:
+        if isSz is True and strCode.startswith('002') is True:
             return '深交所中小板'
 
-        if isSz == True and strCode.startswith('200') == True:
+        if isSz is True and strCode.startswith('200') is True:
             return '深交所B股'
 
-        if isSz == True and strCode.startswith('300') == True:
+        if isSz is True and strCode.startswith('300') is True:
             return '深交所创业板'
 
-        if isSz == True and strCode.startswith('399') == True:
+        if isSz is True and strCode.startswith('399') is True:
             return '深交所指数'
 
 
@@ -427,11 +427,11 @@ close     1     0.6    0.7    0.8     0.6
         path_for_saved_data = curdir + "/tdx_days"
         path_for_saved_data = path_for_saved_data.rstrip("\\")
         isExists = os.path.exists(path_for_saved_data)
-        if isExists == False:
+        if isExists is False:
             print("数据库目录不存在， 请线运行 testLocalTdxDayFileData 测试 ，获取日线数据！💔")
         #读取通达信数据库文件
 
-        saved_sqllite_files = os.listdir(path_for_saved_data);
+        saved_sqllite_files = os.listdir(path_for_saved_data)
         sqllite_file_count = len(saved_sqllite_files)
 
         saved_sqllite_files.sort()
@@ -446,7 +446,7 @@ close     1     0.6    0.7    0.8     0.6
                     bFound = True
                     break
 
-            if bFound == False:
+            if bFound is False:
                 if (self.checkFileNameStockType(aSavedFileName) == '上交所A股') or \
                         (self.checkFileNameStockType(aSavedFileName) == '深交所中小板') or \
                         (self.checkFileNameStockType(aSavedFileName) == '深交所创业板'):
@@ -467,13 +467,13 @@ close     1     0.6    0.7    0.8     0.6
                         continue
 
                     print("💔通达信数据下载不全， 没有找到 股票代码 ", aSavedFileName)
-                    self.fail("💔通达信数据下载不全， 没有找到 股票代码 {}".format(aSavedFileName))
+                    self.fail(f"💔通达信数据下载不全， 没有找到 股票代码 {aSavedFileName}")
                     break
             else:
                     continue
 
         for iIndexSQLLiteFile in range(sqllite_file_count):
-            strSavedFileName = saved_sqllite_files[iIndexSQLLiteFile];
+            strSavedFileName = saved_sqllite_files[iIndexSQLLiteFile]
             strCodeType = self.checkFileNameStockType(strSavedFileName)
             if strCodeType == '上交所A股' or \
                     strCodeType == '深交所中小板' or \
@@ -483,7 +483,7 @@ close     1     0.6    0.7    0.8     0.6
                 continue
 
             sqlLiteFile = path_for_saved_data + '/' + strSavedFileName
-            print("⛓⚙️🔬📈📉️读取SQLLite文件{}比对数据".format(sqlLiteFile))
+            print(f"⛓⚙️🔬📈📉️读取SQLLite文件{sqlLiteFile}比对数据")
 
             conn = sqlite3.connect(sqlLiteFile)
             cur = conn.cursor()

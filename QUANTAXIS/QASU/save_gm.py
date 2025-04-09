@@ -76,7 +76,7 @@ def QA_SU_save_stock_min(client=DATABASE, ui_log=None, ui_progress=None):
         }).drop(["bob", "frequency", "position", "pre_close"], axis=1)
         df["code"] = df["code"].map(str).str.slice(5, )
         df["datetime"] = pd.to_datetime(df["datetime"].map(str).str.slice(
-            0, 19))
+            0, 19), utc=False)
         df["date"] = df.datetime.map(str).str.slice(0, 10)
         df = df.set_index("datetime", drop=False)
         df["date_stamp"] = df["date"].apply(lambda x: QA_util_date_stamp(x))
@@ -101,7 +101,7 @@ def QA_SU_save_stock_min(client=DATABASE, ui_log=None, ui_progress=None):
 
     def __saving_work(code, coll):
         QA_util_log_info(
-            "##JOB03 Now Saving STOCK_MIN ==== {}".format(code), ui_log=ui_log)
+            f"##JOB03 Now Saving STOCK_MIN ==== {code}", ui_log=ui_log)
         try:
             for type_ in ["1min", "5min", "15min", "30min", "60min"]:
                 col_filter = {"code": str(code)[5:], "type": type_}

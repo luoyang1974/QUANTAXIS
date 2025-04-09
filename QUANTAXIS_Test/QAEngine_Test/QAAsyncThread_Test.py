@@ -22,7 +22,7 @@ CEP的基础
 class job1(QA_AsyncThread):
     def do(self, event):
         try:
-            print('job1 do {}'.format(event))
+            print(f'job1 do {event}')
         except:
             pass
 
@@ -30,7 +30,7 @@ class job1(QA_AsyncThread):
 class job2(QA_AsyncThread):
     def do(self, event):
         try:
-            print('job2 do {}'.format(event))
+            print(f'job2 do {event}')
         except:
             pass
 
@@ -49,7 +49,7 @@ for i in range(100):
     j2.put(i)
 
 """
-λ  python .\QUANTAXIS\Exp\test_async.py   
+λ  python .\\QUANTAXIS\\Exp\test_async.py   
 <QA_AsyncThread: QA_AsyncThread_SRq  id=1872684598216 ident None>           
 <QA_AsyncThread: QA_AsyncThread_2tf  id=1872684555904 ident None>           
 start                                                                       

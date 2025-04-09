@@ -55,7 +55,7 @@ def _recursive_subclasses(cls):
     return classmap
 
 
-class Message(object):
+class Message:
     @classmethod
     def deserialize(cls, objects):
         classmap = _recursive_subclasses(cls)
@@ -82,12 +82,12 @@ class Message(object):
     def __repr__(self):
         r = self.serialize()
         args = ', '.join([repr(arg) for arg in r['args']])
-        kwargs = ''.join([', {}={}'.format(k, repr(v)) for k, v in r['kwargs'].items()])
+        kwargs = ''.join([f', {k}={repr(v)}' for k, v in r['kwargs'].items()])
         name = r['class']
-        return '{}({}{})'.format(name, args, kwargs)
+        return f'{name}({args}{kwargs})'
 
 
-class Client(object):
+class Client:
     def __init__(self, server_address):
         self.addr = server_address
         if isinstance(self.addr, basestring):

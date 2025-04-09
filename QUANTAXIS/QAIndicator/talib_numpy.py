@@ -1,10 +1,9 @@
-# coding:utf-8
 # Author: 阿财（Rgveda@github）（4910163#qq.com）
 # Created date: 2020-02-27
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -269,8 +268,8 @@ def ATR_RSI_Stops(data, period=10):
     PRICE_PREDICT = pd.DataFrame(columns=['POSITION'], index=data.index)
     PREDICT_JX = (CROSS(data.close, top_line) == 1)
     PREDICT_SX = (CROSS(bottom_line, data.close) == 1)
-    PREDICT_JX = PREDICT_JX[PREDICT_JX.apply(lambda x: x == True)]  # eqv.  Trim(x == False)
-    PREDICT_SX = PREDICT_SX[PREDICT_SX.apply(lambda x: x == True)]  # eqv.  Trim(x == False)
+    PREDICT_JX = PREDICT_JX[PREDICT_JX.apply(lambda x: x is True)]  # eqv.  Trim(x == False)
+    PREDICT_SX = PREDICT_SX[PREDICT_SX.apply(lambda x: x is True)]  # eqv.  Trim(x == False)
     PRICE_PREDICT.loc[PREDICT_JX.index, 'POSITION'] = 1
     PRICE_PREDICT.loc[PREDICT_SX.index, 'POSITION'] = -1
     PRICE_PREDICT['POSITION'] = PRICE_PREDICT['POSITION'].ffill()

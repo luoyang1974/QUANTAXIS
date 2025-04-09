@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -70,7 +69,7 @@ def get_coll(client=None):
 class QA_SU_save_day_parallelism(Parallelism):
     def __init__(self, processes=cpu_count(), client=DATABASE, ui_log=None,
                  ui_progress=None):
-        super(QA_SU_save_day_parallelism, self).__init__(processes)
+        super().__init__(processes)
         self.client = client
         self.ui_log = ui_log
         self.ui_progress = ui_progress
@@ -106,7 +105,7 @@ class QA_SU_save_day_parallelism(Parallelism):
                 str += + self._loginfolist[i] + ' '
             str += code
             QA_util_log_info(
-                '##JOB02 Now Saved STOCK_DAY==== {}'.format(
+                '##JOB02 Now Saved STOCK_DAY==== {}'.format(str
                     ),
                 self.ui_log
             )
@@ -115,7 +114,7 @@ class QA_SU_save_day_parallelism(Parallelism):
 class QA_SU_save_day_parallelism_thread(Parallelism_Thread):
     def __init__(self, processes=cpu_count(), client=DATABASE, ui_log=None,
                  ui_progress=None):
-        super(QA_SU_save_day_parallelism_thread, self).__init__(processes)
+        super().__init__(processes)
         self.client = client
         self.ui_log = ui_log
         self.ui_progress = ui_progress
@@ -151,7 +150,7 @@ class QA_SU_save_day_parallelism_thread(Parallelism_Thread):
                 str += + self._loginfolist[i] + ' '
             str += code
             QA_util_log_info(
-                '##JOB02 Now Saved STOCK_DAY==== {}'.format(
+                '##JOB02 Now Saved STOCK_DAY==== {}'.format(str
                     ),
                 self.ui_log
             )
@@ -168,11 +167,11 @@ class QA_SU_save_stock_day_parallelism(QA_SU_save_day_parallelism):
         for value in result:
             self.__saving_work(value)
 
-        super(QA_SU_save_stock_day_parallelism, self).complete(result)
+        super().complete(result)
 
     def __saving_work(self, df=pd.DataFrame()):
         try:
-            if not (df is None) and len(df) > 0:
+            if df is not None and len(df) > 0:
                 coll_stock_day = self.client.stock_day
                 coll_stock_day.create_index(
                     [("code",
@@ -226,7 +225,7 @@ def QA_SU_save_stock_day(client=DATABASE, ui_log=None, ui_progress=None):
             try:
                 code = stock_list[item]
                 QA_util_log_info(
-                    '##JOB01 Now Saving STOCK_DAY=== {}'.format(str(code)),
+                    f'##JOB01 Now Saving STOCK_DAY=== {str(code)}',
                     ui_log
                 )
 
@@ -260,7 +259,7 @@ def QA_SU_save_stock_day(client=DATABASE, ui_log=None, ui_progress=None):
                                      total,
                                      ui_log, ui_progress)])
             except Exception as error0:
-                print('Exception:{}'.format(error0))
+                print(f'Exception:{error0}')
                 err.append(code)
         return results
 
@@ -284,7 +283,7 @@ def do_saving_work(code, start_date, end_date, if_fq='00', frequence='day',
                    ui_log=None, ui_progress=None):
     try:
         # print(code, item, flush=True)
-        QA_util_log_info('The {} of Total {}'.format(item, total))
+        QA_util_log_info(f'The {item} of Total {total}')
         if item % 10 or total - item < 5:
             # 每隔10个或者接近完成打印进度
             strProgressToLog = 'DOWNLOAD PROGRESS {} {}'.format(
@@ -413,7 +412,7 @@ class QA_SU_save_index_day_parallelism(QA_SU_save_day_parallelism_thread):
                                             self.total_counts),
                 ui_log=self.ui_log
             )
-            strLogProgress = 'DOWNLOAD PROGRESS {0:.2f}% '.format(
+            strLogProgress = 'DOWNLOAD PROGRESS {:.2f}% '.format(
                 self.code_counts / self.total_counts * 100
             )
             intLogProgress = int(
@@ -505,7 +504,7 @@ def QA_SU_save_stock_xdxr(client=DATABASE, ui_log=None, ui_progress=None):
 
     def __saving_work(code, coll):
         QA_util_log_info(
-            '##JOB02 Now Saving XDXR INFO ==== {}'.format(str(code)),
+            f'##JOB02 Now Saving XDXR INFO ==== {str(code)}',
             ui_log=ui_log
         )
         try:

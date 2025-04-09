@@ -1,8 +1,7 @@
-# coding=utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -41,11 +40,11 @@ def QA_fetch_get_tdxtraderecord(file):
     QUANTAXIS 读取历史交易记录 通达信 历史成交-输出-xlsfile--转换csvfile
     """
     try:
-        with open('./20180606.csv', 'r') as f:
+        with open('./20180606.csv') as f:
             l = csv.reader(f)
             data = [item for item in l]
 
         res = pd.DataFrame(data[1:], columns=data[0])
         return res
     except:
-        raise IOError('QA CANNOT READ THIS RECORD')
+        raise OSError('QA CANNOT READ THIS RECORD')

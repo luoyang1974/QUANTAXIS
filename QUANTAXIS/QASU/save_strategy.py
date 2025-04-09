@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +32,7 @@ import requests
 
 
 def QA_SU_save_strategy(name, portfolio_cookie='default', account_cookie='default', version=1, if_save=False, if_web_request=False, webreuquestsurl='http://localhost:8010/backtest/write'):
-    absoult_path = '{}{}strategy_{}.py'.format(strategy_path, os.sep, name)
+    absoult_path = f'{strategy_path}{os.sep}strategy_{name}.py'
     with open(sys.argv[0], 'rb') as p:
         data = p.read()
         if if_web_request:

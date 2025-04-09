@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +37,7 @@ headers_data['X-Requested-With'] = 'XMLHttpRequest'
 
 def QA_fetch_get_stock_day_in_year(code, year, if_fq='00'):
     data_ = []
-    url = 'http://d.10jqka.com.cn/v2/line/hs_%s/%s/%s.js' % (
+    url = 'http://d.10jqka.com.cn/v2/line/hs_{}/{}/{}.js'.format(
         str(code), str(if_fq), str(year))
     try:
         for item in requests.get(url).text.split('\"')[3].split(';'):
@@ -46,7 +45,7 @@ def QA_fetch_get_stock_day_in_year(code, year, if_fq='00'):
 
         data = pd.DataFrame(data_, index=list(np.asarray(data_).T[0]), columns=[
                             'date', 'open', 'high', 'low', 'close', 'volume', 'amount', 'factor'])
-        data['date'] = pd.to_datetime(data['date'])
+        data['date'] = pd.to_datetime(data['date'], utc=False)
         data = data.set_index('date')
         return data
     except:

@@ -87,11 +87,11 @@ class Test_QA_Fetch(unittest.TestCase):
             toDayIsBeforeOpen = False
 
         prev_trade_day = ""
-        if toDayIsTradeDay == False:
+        if toDayIsTradeDay is False:
             prev_trade_day = QADate_trade.QA_util_get_real_date(
                 str_from_today)  # 今天不是交易日，往前移一天
             print("非交易日，下载前一天交易日 %s" % (prev_trade_day))
-        elif nowTimeIsTrading == True or toDayIsBeforeOpen == True:
+        elif nowTimeIsTrading is True or toDayIsBeforeOpen is True:
             prev_trade_day = QADate_trade.QA_util_get_real_date(
                 str_from_today)  # 当天交易时段无法下载今天的数据，往前移一天
             prev_trade_day = QADate_trade.QA_util_get_last_day(prev_trade_day)
@@ -108,12 +108,12 @@ class Test_QA_Fetch(unittest.TestCase):
 
             str_month = prev_trade_day[5:7]
             str_day = prev_trade_day[8:10]
-            url_data = "http://www.wstock.net/wstock/download/%s/wss%s%sr.zip" % (
+            url_data = "http://www.wstock.net/wstock/download/{}/wss{}{}r.zip".format(
                 real_value_password, str_month, str_day)
             print(url_data)
 
             # 下载文件
-            local_file_name = "wss%s%sr.zip" % (str_month, str_day)
+            local_file_name = "wss{}{}r.zip".format(str_month, str_day)
             urllib.request.urlretrieve(url_data, local_file_name, Schedule)
 
             # 解压缩文件

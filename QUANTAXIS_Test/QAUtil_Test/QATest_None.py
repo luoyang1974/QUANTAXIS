@@ -13,12 +13,12 @@ from pandas_datareader import data as wb
 import matplotlib.pyplot as plt
 import subprocess
 
+#from QUANTAXIS.QAFetch import (QATdx );
+from QUANTAXIS.QAUtil import QADate, QADate_trade
+
 '''
  这个文件的代码 都是 实验性质的。 scribble code！
 '''
-
-#from QUANTAXIS.QAFetch import (QATdx );
-from QUANTAXIS.QAUtil import QADate, QADate_trade
 
 # 学习 lru_cache
 
@@ -60,7 +60,7 @@ class MyCache:
         oldest_entry = None
 
         for key in self.cache:
-            if oldest_entry == None:
+            if oldest_entry is None:
                 oldest_entry = key
                 print('assign oldest_entry key', oldest_entry)
             elif self.cache[key]['date_accessed'] < self.cache[oldest_entry]['date_accessed']:
@@ -91,7 +91,7 @@ class Test_LRU(unittest.TestCase):
             else:
                 value = ''.join([random.choice(s) for i in range(20)])
                 cache.update(key, value)
-            print("#%s iterations, #%s cached entries" % (i + 1, cache.size))
+            print("#{} iterations, #{} cached entries".format(i + 1, cache.size))
         pass
 
     def fab(self, max):

@@ -1,0 +1,105 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quantaxis"
+version = "1.10.19"
+authors = [
+    { name = "yutiansut", email = "yutiansut@qq.com" },
+]
+description = "QUANTAXIS:Quantitative Financial Strategy Framework"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+keywords = ["quantaxis", "quant", "finance", "Backtest", "Framework"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pymongo",
+    "bs4",
+    "pandas",
+    "lxml",
+    "matplotlib",
+    "requests",
+    "numpy",
+    "pytesseract",
+    "gevent-websocket",
+    "apscheduler",
+    "tornado",
+    "zenlog",
+    "protobuf",
+    "motor",
+    "retrying",
+    "seaborn",
+    "attrs",
+    "pyconvert",
+    "janus",
+    "pyecharts_snapshot",
+    "async_timeout",
+    "IPython",
+    "numba",
+    "websocket-client",
+    "tushare",
+    "statsmodels",
+    "scipy",
+    "pytdx",
+    "delegator.py",
+    "flask",
+    "pyecharts",
+    "six"
+]
+
+[project.urls]
+Homepage = "https://github.com/quantaxis/quantaxis"
+
+[project.entry-points.console_scripts]
+quantaxis = "QUANTAXIS.QACmd:QA_cmd"
+quantaxisq = "QUANTAXIS.QAFetch.QATdx_adv:bat"
+qarun = "QUANTAXIS.QACmd.runner:run"
+
+[tool.setuptools]
+packages = [
+    "QUANTAXIS",
+    "QUANTAXIS.QAFetch",
+    "QUANTAXIS.QACmd",
+    "QUANTAXIS.QAMarket",
+    "QUANTAXIS.QASetting",
+    "QUANTAXIS.QAFactor",
+    "QUANTAXIS.QAApplication",
+    "QUANTAXIS.QAEngine",
+    "QUANTAXIS.QAData",
+    "QUANTAXIS.QAData.proto",
+    "QUANTAXIS.QAAnalysis",
+    "QUANTAXIS.QASelector",
+    "QUANTAXIS.QASU",
+    "QUANTAXIS.QAUtil",
+    "QUANTAXIS.QAARP",
+    "QUANTAXIS.QAIndicator"
+]
+include-package-data = true
+zip-safe = true
+
+[tool.ruff]
+# Ruff 的基础配置
+
+# 设置目标 Python 版本为 3.12
+target-version = "py312"
+
+# 忽略特定的错误或警告代码。
+# 在升级过程中，你可能需要暂时忽略一些旧代码中存在的问题，逐步修复
+ignore = [
+    "F401",
+    "F811",
+    "E722",
+    "F821",
+    "F841",
+    "E731",
+    "F405",
+    "F403",
+    "E741"
+]

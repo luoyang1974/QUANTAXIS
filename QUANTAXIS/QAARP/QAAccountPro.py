@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -357,7 +356,7 @@ class QA_AccountPRO(QA_Worker):
         """
         该账户曾交易代码 用set 去重
         """
-        return list(set([item[1] for item in self.history]))
+        return list({item[1] for item in self.history})
 
     @property
     def date(self):
@@ -385,7 +384,7 @@ class QA_AccountPRO(QA_Worker):
         Returns:
             [type] -- [description]
         """
-        if self.start_ == None:
+        if self.start_ is None:
             if len(self.time_index_max) > 0:
                 return str(min(self.time_index_max))[0:10]
             else:
@@ -407,7 +406,7 @@ class QA_AccountPRO(QA_Worker):
         Returns:
             [type] -- [description]
         """
-        if self.end_ == None:
+        if self.end_ is None:
             if len(self.time_index_max) > 0:
                 return str(max(self.time_index_max))[0:10]
             else:
@@ -424,7 +423,7 @@ class QA_AccountPRO(QA_Worker):
         if QA_util_if_trade(date):
             self.end_ = date
         else:
-            print('error {} not a trade date'.format(date))
+            print(f'error {date} not a trade date')
 
     @property
     def market_data(self):
@@ -833,7 +832,7 @@ class QA_AccountPRO(QA_Worker):
         """
 
         order_list = []
-        time = '{} 15:00:00'.format(self.date)
+        time = f'{self.date} 15:00:00'
         if self.running_environment == RUNNING_ENVIRONMENT.TZERO:
             for code, amount in self.hold_available.iteritems():
                 order = False

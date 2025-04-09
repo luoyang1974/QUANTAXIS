@@ -22,7 +22,7 @@ def mean_return_by_quantile(
         by_group: bool = False,
         demeaned: bool = True,
         group_adjust: bool = False,
-) -> Tuple:
+) -> tuple:
     """
     按分位计算因子远期收益和标准差
 
@@ -344,8 +344,8 @@ def factor_information_coefficient(
 def quantile_turnover(
         quantile_factor: pd.DataFrame,
         quantile: int,
-        period: Union[int,
-                      str] = 1
+        period: (int |
+                      str) = 1
 ):
     """
     Computes the proportion of names in a factor quantile that were
@@ -391,8 +391,8 @@ def quantile_turnover(
 
 def factor_rank_autocorrelation(
         factor_data: pd.DataFrame,
-        period: Union[int,
-                      str] = 1
+        period: (int |
+                      str) = 1
 ):
     grouper = ["datetime"]
 

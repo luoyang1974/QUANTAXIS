@@ -86,7 +86,7 @@ def QA_fmt_code(code: str, style: str = None):
         return code
 
 
-def QA_fmt_code_list(code_list: Union[str, Tuple[str], List[str]], style: str = None):
+def QA_fmt_code_list(code_list: str | tuple[str] | list[str], style: str = None):
     """
     为了适应不同行情源股票代码，加入对股票代码格式化的操作, 目前支持 “聚宽” “掘金” “万得” “天软”
     股票代码格式格式化
@@ -123,26 +123,26 @@ def get_period(period: str):
     if not flag:
         raise ValueError("检查 period 格式")
     if "min" in period:
-        min_interval = re.findall("\d+min", period.lower())[0]
+        min_interval = re.findall(r"\d+min", period.lower())[0]
         period = period.lower().replace(min_interval, "")
-    hour_interval = re.findall("\d+h", period)
-    day_interval = re.findall("\d+d", period)
-    week_interval = re.findall("\d+w", period)
-    month_interval = re.findall("\d+m", period)
-    quarter_interval = re.findall("\d+q", period)
-    year_interval = re.findall("\d+y", period)
+    hour_interval = re.findall(r"\d+h", period)
+    day_interval = re.findall(r"\d+d", period)
+    week_interval = re.findall(r"\d+w", period)
+    month_interval = re.findall(r"\d+m", period)
+    quarter_interval = re.findall(r"\d+q", period)
+    year_interval = re.findall(r"\d+y", period)
     day_count = 0
     hour_count = 0
     if day_interval:
-        day_count += int(re.findall("\d+", day_interval[0])[0])
+        day_count += int(re.findall(r"\d+", day_interval[0])[0])
     if week_interval:
-        day_count += DAYS_PER_WEEK * int(re.findall("\d+", week_interval[0])[0])
+        day_count += DAYS_PER_WEEK * int(re.findall(r"\d+", week_interval[0])[0])
     if month_interval:
-        day_count += DAYS_PER_MONTH * int(re.findall("\d+", month_interval[0])[0])
+        day_count += DAYS_PER_MONTH * int(re.findall(r"\d+", month_interval[0])[0])
     if quarter_interval:
-        day_count += DAYS_PER_QUARTER * int(re.findall("\d+", quarter_interval[0])[0])
+        day_count += DAYS_PER_QUARTER * int(re.findall(r"\d+", quarter_interval[0])[0])
     if year_interval:
-        day_count += DAYS_PER_YEAR * int(re.findall("\d+", year_interval[0])[0])
+        day_count += DAYS_PER_YEAR * int(re.findall(r"\d+", year_interval[0])[0])
     day_interval = str(day_count) + "d"
     if "min" in origin_period:
         return "".join([day_interval] + hour_interval) + min_interval
@@ -162,7 +162,7 @@ def get_forward_returns_columns(columns: pd.Index) -> pd.Index:
     ---
     :return: 相应远期收益对应列
     """
-    syntax = re.compile("^period_\d+")
+    syntax = re.compile(r"^period_\d+")
     return columns[columns.astype("str").str.contains(syntax, regex=True)]
 
 

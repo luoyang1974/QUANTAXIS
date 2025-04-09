@@ -1,4 +1,3 @@
-# coding: utf-8
 # Author: 阿财（Rgveda@github）（11652964@qq.com）
 # Created date: 2020-02-27
 #
@@ -95,7 +94,7 @@ def QA_SU_save_bitfinex_day(
     end = datetime.datetime.now(tzutc())
 
     QA_util_log_info(
-        'Starting DOWNLOAD PROGRESS of day Klines from {:s}... '.format(Bitfinex_EXCHANGE),
+        f'Starting DOWNLOAD PROGRESS of day Klines from {Bitfinex_EXCHANGE:s}... ',
         ui_log=ui_log,
         ui_progress=ui_progress
     )
@@ -268,7 +267,7 @@ def QA_SU_save_bitfinex_min(
     end = datetime.datetime.now(tzutc())
 
     QA_util_log_info(
-        'Starting DOWNLOAD PROGRESS of min Klines from {:s}... '.format(Bitfinex_EXCHANGE),
+        f'Starting DOWNLOAD PROGRESS of min Klines from {Bitfinex_EXCHANGE:s}... ',
         ui_log=ui_log,
         ui_progress=ui_progress
     )
@@ -401,7 +400,7 @@ def QA_SU_save_bitfinex_min(
             )
             continue
     QA_util_log_info(
-        'DOWNLOAD PROGRESS of min Klines from {:s} accomplished.'.format(Bitfinex_EXCHANGE),
+        f'DOWNLOAD PROGRESS of min Klines from {Bitfinex_EXCHANGE:s} accomplished.',
         ui_log=ui_log,
         ui_progress=ui_progress
     )
@@ -426,7 +425,7 @@ def QA_SU_save_bitfinex_symbol(
     """
     保存Bitfinex交易对信息
     """
-    QA_util_log_info('Downloading {:s} symbol list...'.format(market))
+    QA_util_log_info(f'Downloading {market:s} symbol list...')
 
     # 保存 Bitfinex API 原始 Symbol 数据备查阅，自动交易用得着
     raw_symbol_lists = QA_util_save_raw_symbols(

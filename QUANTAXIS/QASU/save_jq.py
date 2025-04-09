@@ -105,7 +105,7 @@ def QA_SU_save_stock_min(client=DATABASE, ui_log=None, ui_progress=None):
 
     def __saving_work(code, coll):
         QA_util_log_info(
-            "##JOB03 Now Saving STOCK_MIN ==== {}".format(code), ui_log=ui_log)
+            f"##JOB03 Now Saving STOCK_MIN ==== {code}", ui_log=ui_log)
         try:
             for type_ in ["1min", "5min", "15min", "30min", "60min"]:
                 col_filter = {"code": str(code)[0:6], "type": type_}

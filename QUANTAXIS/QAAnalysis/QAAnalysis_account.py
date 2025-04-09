@@ -1,5 +1,3 @@
-# coding:utf-8
-
 from QUANTAXIS.QAARP import QA_Account, QA_Portfolio, QA_User, QA_Risk, QA_Performance
 
 

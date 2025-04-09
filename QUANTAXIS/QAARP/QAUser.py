@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -599,7 +598,7 @@ class QA_User():
         self.password = message.get('password')
         self.user_cookie = message.get('user_cookie')
         #
-        self.portfolio_list = list(set([
+        self.portfolio_list = list({
             item['portfolio_cookie'] for item in DATABASE.portfolio.find(
                 {'user_cookie': self.user_cookie},
                 {
@@ -607,7 +606,7 @@ class QA_User():
                     '_id': 0
                 }
             )
-        ]))
+        })
 
         # portfolio_list = message.get('portfolio_list')
         # if len(portfolio_list) > 0:

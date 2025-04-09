@@ -1,4 +1,3 @@
-
 import unittest
 
 import QUANTAXIS as QA
@@ -16,7 +15,7 @@ class job(QA.QA_Worker):
         super().__init__()
 
     def run(self, event):
-        if event.event_type is 'selfdesign':
+        if event.event_type == 'selfdesign':
             print(vars(event))
             if event.callback:
                 event.callback(event.message)

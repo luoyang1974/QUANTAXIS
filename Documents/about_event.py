@@ -1,7 +1,3 @@
-
-# coding: utf-8
-
-
 import QUANTAXIS as QA
 
 """ 
@@ -25,7 +21,7 @@ class job(QA.QA_Worker):
         super().__init__()
 
     def run(self, event):
-        if event.event_type is 'selfdesign':
+        if event.event_type == 'selfdesign':
             print(vars(event))
             print( )
             if event.callback:
@@ -58,7 +54,7 @@ engine.join()
 thread.join()
 thread.stop()
 
-""" 运行结果
+r""" 运行结果
 PS E:\quantaxis> & python e:/quantaxis/Documents/about_event.py
 QUANTAXIS>> start QUANTAXIS
 QUANTAXIS>> Welcome to QUANTAXIS, the Version is 1.0.58

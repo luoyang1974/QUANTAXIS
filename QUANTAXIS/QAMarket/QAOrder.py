@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -152,7 +151,7 @@ class QA_Order():
         # 🛠todo 移动到 Util 类中 时间处理函数
         if datetime is None and date is not None:
             self.date = date
-            self.datetime = '{} 09:31:00'.format(self.date)
+            self.datetime = f'{self.date} 09:31:00'
         elif date is None and datetime is not None:
             self.date = datetime[0:10]
             self.datetime = datetime
@@ -411,7 +410,7 @@ class QA_Order():
         else:
             print(
                 RuntimeError(
-                    'ORDER STATUS {} CANNNOT TRADE'.format(self.status)
+                    f'ORDER STATUS {self.status} CANNNOT TRADE'
                 )
             )
             return False
@@ -445,7 +444,7 @@ class QA_Order():
             if key is None:
                 print("key is none , return none!")
                 return None
-            return eval('self.{}'.format(key))
+            return eval(f'self.{key}')
         except Exception as e:
             return exception
 
@@ -690,7 +689,7 @@ class QA_Order():
 
             return self
         except Exception as e:
-            QA_util_log_info('Failed to tran from dict {}'.format(e))
+            QA_util_log_info(f'Failed to tran from dict {e}')
 
 
 class QA_OrderQueue():  # also the order tree ？？ what's the tree means?

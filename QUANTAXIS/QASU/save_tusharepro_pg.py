@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -32,13 +31,14 @@ import tushare as ts
 from sqlalchemy import create_engine
 import psycopg2  
 import warnings
-warnings.filterwarnings("ignore")
 import QUANTAXIS as QA
 from QUANTAXIS.QAUtil.QALogs import (QA_util_log_debug, QA_util_log_expection,
                                      QA_util_log_info)
 
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_get_trade_range
 from QUANTAXIS.QAUtil.QADate import (QA_util_date_str2int,QA_util_date_int2str)
+
+warnings.filterwarnings("ignore")
 
 
 token='xxxx'  #你的tusharepro token
@@ -69,14 +69,14 @@ def download_day_data_from_tushare(trade_date='20190102'):
             break 
         except Exception as ex:
             lastEx = ex
-            QA_util_log_info("[{}]TuSharePro数据异常: {}, retrying...".format(trade_date, ex))
+            QA_util_log_info(f"[{trade_date}]TuSharePro数据异常: {ex}, retrying...")
     else:
-        QA_util_log_info("[{}]TuSharePro异常: {}, retried {} times".format(trade_date,lastEx, retry))
+        QA_util_log_info(f"[{trade_date}]TuSharePro异常: {lastEx}, retried {retry} times")
         return None   
     df=pd.merge(df_daily,df_factor,how='left')
     res=pd.merge(df,df_daily_basic,how='left').sort_values(by = 'ts_code')
     res['code']=res['ts_code'].apply(lambda x:x[:6]) #x[7:9].lower()
-    res['trade_date'] = pd.to_datetime(res['trade_date'], format='%Y-%m-%d')
+    res['trade_date'] = pd.to_datetime(res['trade_date'], format='%Y-%m-%d', utc=False)
     return res 
       
 def QA_fetch_stock_day_pg(code=['000001','000002'],start_date='19000101',end_date='20500118',data='*'):

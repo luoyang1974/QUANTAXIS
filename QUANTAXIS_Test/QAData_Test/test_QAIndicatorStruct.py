@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """ test QAIndicatorStuct
 """
 from unittest import TestCase
@@ -29,7 +28,7 @@ class testQAIndicatorStuct(unittest.TestCase):
         #  相同时间段数据对比
         dftest = self.getTimeRange(inc, startdate, enddate, isUsingQA=False)
         dforgin = inc.get_timerange(startdate, enddate)
-        self.assertTrue(dftest.equals(dforgin) , "两种计算方式结果应该一致。\n{} {}".format(dftest.tail(), dforgin.tail()))
+        self.assertTrue(dftest.equals(dforgin) , f"两种计算方式结果应该一致。\n{dftest.tail()} {dforgin.tail()}")
 
 
     def getTimeRange(self, inc, startdate, enddate, code=None, isUsingQA=False):

@@ -1,4 +1,3 @@
-# coding: utf-8
 # Author: 阿财（Rgveda@github）（11652964@qq.com）
 # Created date: 2020-02-27
 #
@@ -106,7 +105,7 @@ def format_binance_data_fields(datas, symbol, frequency):
     volume 	String 	交易量
     """
     frame = pd.DataFrame(datas, columns=column_names)
-    frame['symbol'] = 'BINANCE.{}'.format(symbol)
+    frame['symbol'] = f'BINANCE.{symbol}'
     # UTC时间转换为北京时间
     frame['start_time'] = frame.apply(
         lambda x: int(x['start_time'] / 1000),
@@ -115,12 +114,12 @@ def format_binance_data_fields(datas, symbol, frequency):
     frame['date'] = pd.to_datetime(
         frame['start_time'],
         unit='s'
-    ).dt.tz_localize('UTC').dt.tz_convert('Asia/Shanghai')
+    , utc=False)
     frame['date'] = frame['date'].dt.strftime('%Y-%m-%d')
     frame['datetime'] = pd.to_datetime(
         frame['start_time'],
         unit='s'
-    ).dt.tz_localize('UTC').dt.tz_convert('Asia/Shanghai')
+    , utc=False)
     frame['datetime'] = frame['datetime'].dt.strftime('%Y-%m-%d %H:%M:%S')
     # GMT+0 String 转换为 UTC Timestamp
     frame['date_stamp'] = pd.to_datetime(frame['date']
@@ -166,7 +165,7 @@ def QA_fetch_binance_symbols():
             retries = retries + 1
             if (retries % 6 == 0):
                 print(ILOVECHINA)
-            print("Retry /api/v1/exchangeInfo #{}".format(retries - 1))
+            print(f"Retry /api/v1/exchangeInfo #{retries - 1}")
             time.sleep(0.5)
 
         if (retries == 0):
@@ -216,7 +215,7 @@ def QA_fetch_binance_kline_with_auto_retry(
             retries = retries + 1
             if (retries % 6 == 0):
                 print(ILOVECHINA)
-            print("Retry /api/v1/klines #{}".format(retries))
+            print(f"Retry /api/v1/klines #{retries}")
             time.sleep(0.5)
 
         if (retries == 0):
@@ -251,8 +250,8 @@ def QA_fetch_binance_kline(
     reqParams['to'] = end_time
 
     while (reqParams['to'] > start_time):
-        if ((reqParams['from'] > QA_util_datetime_to_Unix_timestamp())) or \
-            ((reqParams['from'] > reqParams['to'])):
+        if (reqParams['from'] > QA_util_datetime_to_Unix_timestamp()) or \
+            (reqParams['from'] > reqParams['to']):
             # 出现“未来”时间，一般是默认时区设置，或者时间窗口滚动前移错误造成的
             QA_util_log_info(
                 'A unexpected \'Future\' timestamp got, Please check self.missing_data_list_func param \'tzlocalize\' set. More info: {:s}@{:s} at {:s} but current time is {}'
@@ -324,8 +323,8 @@ def QA_fetch_binance_kline_min(
     requested_counter = 1
     datas = list()
     while (reqParams['to'] > start_time):
-        if ((reqParams['from'] > QA_util_datetime_to_Unix_timestamp())) or \
-            ((reqParams['from'] > reqParams['to'])):
+        if (reqParams['from'] > QA_util_datetime_to_Unix_timestamp()) or \
+            (reqParams['from'] > reqParams['to']):
             # 出现“未来”时间，一般是默认时区设置，或者时间窗口滚动前移错误造成的
             QA_util_log_info(
                 'A unexpected \'Future\' timestamp got, Please check self.missing_data_list_func param \'tzlocalize\' set. More info: {:s}@{:s} at {:s} but current time is {}'

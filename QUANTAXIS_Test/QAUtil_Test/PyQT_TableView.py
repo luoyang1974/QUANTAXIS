@@ -50,7 +50,7 @@ class MyWindow(QWidget):
     def showSelection(self, item):
         cellContent = item.data()
         # print(cellContent)  # test
-        sf = "You clicked on {}".format(cellContent)
+        sf = f"You clicked on {cellContent}"
         # display in title bar for convenience
         self.setWindowTitle(sf)
 
@@ -212,7 +212,7 @@ if __name__ == '__main__':
     header = ['开关', '只平', '期货账号', '策略编号', '交易合约', '总持仓', '买持仓', '卖持仓', '持仓盈亏', '平仓盈亏', '手续费', '净盈亏', '成交量', '成交金额',
               'A成交率', 'B成交率', '交易模型', '下单算法']
     # a list of (fname, lname, age, weight) tuples
-    checkbox1 = QCheckBox("关");
+    checkbox1 = QCheckBox("关")
     checkbox1.setChecked(True)
     dataList = [
         [checkbox1, 0, '058176', '01', 'rb1705,rb1710', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'MA', '01'],

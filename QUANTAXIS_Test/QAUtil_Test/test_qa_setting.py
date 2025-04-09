@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 -------------------------------------------------
 
@@ -33,16 +32,16 @@ class Testqa_setting(TestCase):
         alist.append(excludejson)
         ipexclude = qasetting.get_config(section='IPLIST', option='exclude', default_value=alist)
         print(ipexclude)
-        self.assertTrue(excludejson in json.loads(ipexclude), '原始数据：{}， 读取数据：{}'.format(excludejson, ipexclude))
+        self.assertTrue(excludejson in json.loads(ipexclude), f'原始数据：{excludejson}， 读取数据：{ipexclude}')
 
     def test_exclude_from_stock_ip_list(self):
         excludejson = {'ip': '161.153.144.179', 'port': 7709}
         stock_ip_list.append(excludejson)
-        self.assertTrue(excludejson in stock_ip_list, '此ip {} 不在 stock_ip_list中'.format(excludejson))
+        self.assertTrue(excludejson in stock_ip_list, f'此ip {excludejson} 不在 stock_ip_list中')
         alist = []
         alist.append(excludejson)
         exclude_from_stock_ip_list(alist)
-        self.assertFalse(excludejson in stock_ip_list, '此ip {} 在 stock_ip_list中'.format(excludejson))
+        self.assertFalse(excludejson in stock_ip_list, f'此ip {excludejson} 在 stock_ip_list中')
 
         alist = []
         exclude_from_stock_ip_list(alist)
@@ -56,7 +55,7 @@ class Testqa_setting(TestCase):
         for exc in alist:
             self.assertTrue(exc in stock_ip_list)
         exclude_from_stock_ip_list(alist)
-        self.assertFalse(excludejson in stock_ip_list, '此ip {} 在 stock_ip_list中'.format(excludejson))
+        self.assertFalse(excludejson in stock_ip_list, f'此ip {excludejson} 在 stock_ip_list中')
 
         data = QA.QAFetch.QATdx.QA_fetch_get_stock_day('00001', '2017-01-01', '2017-01-31')
         self.assertTrue(len(data) > 15)

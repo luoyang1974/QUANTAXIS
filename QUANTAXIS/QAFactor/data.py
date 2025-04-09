@@ -43,9 +43,9 @@ class DataApi:
             fq: str = "qfq",  # 复权方式
             factor_time_range: list = None,
             industry_cls: str = "sw_l1",  # 行业分类
-            industry_data: Union[dict, pd.Series, pd.DataFrame] = None,  # 行业信息
+            industry_data: dict | pd.Series | pd.DataFrame = None,  # 行业信息
             weight_cls: str = "avg",  # 权重分类
-            weight_data: Union[dict, pd.Series, pd.DataFrame] = None,  # 权重信息
+            weight_data: dict | pd.Series | pd.DataFrame = None,  # 权重信息
             frequence: str = "DAY",  # 频率
             detailed: bool = False,  # 是否按日期进行行业查询
     ):
@@ -128,13 +128,13 @@ class DataApi:
 
     def get_prices(
             self,
-            code_list: Union[str,
-                             Tuple[str],
-                             List[str]] = None,
-            start_time: Union[str,
-                              datetime.datetime] = None,
-            end_time: Union[str,
-                            datetime.datetime] = None,
+            code_list: (str |
+                             tuple[str] |
+                             list[str]) = None,
+            start_time: (str |
+                              datetime.datetime) = None,
+            end_time: (str |
+                            datetime.datetime) = None,
             fq: str = None,
             frequence: str = None,
             price_type: str = None,
@@ -221,14 +221,14 @@ class DataApi:
 
     def get_groupby(
             self,
-            code_list: Union[str,
-                             Tuple[str],
-                             List[str]],
+            code_list: (str |
+                             tuple[str] |
+                             list[str]),
             factor_time_range: list = None,
             industry_cls: str = None,
-            industry_data: Union[dict,
-                                 pd.Series,
-                                 pd.DataFrame] = None,
+            industry_data: (dict |
+                                 pd.Series |
+                                 pd.DataFrame) = None,
             frequence: str = 'DAY',
             detailed: bool = False,
     ) -> pd.Series:
@@ -326,14 +326,14 @@ class DataApi:
 
     def get_weights(
             self,
-            code_list: Union[str,
-                             Tuple[str],
-                             List[str]],
+            code_list: (str |
+                             tuple[str] |
+                             list[str]),
             factor_time_range: list = None,
             weight_cls: str = None,
-            weight_data: Union[dict,
-                               pd.Series,
-                               pd.DataFrame] = None,
+            weight_data: (dict |
+                               pd.Series |
+                               pd.DataFrame) = None,
             detailed: bool = True,
             frequence: str = '1d'
     ):
@@ -425,9 +425,9 @@ class DataApi:
 
     def get_start_date(
             self,
-            code_list: Union[str,
-                             Tuple[str],
-                             List[str]],
+            code_list: (str |
+                             tuple[str] |
+                             list[str]),
             factor_time_range: list
     ):
         """

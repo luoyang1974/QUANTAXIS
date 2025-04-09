@@ -1,8 +1,7 @@
-# coding: utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -99,9 +98,9 @@ def QA_fetch_stock_day(
         try:
             res = res.assign(
                 volume=res.vol,
-                date=pd.to_datetime(res.date)
-            ).drop_duplicates((['date',
-                                'code'])).query('volume>1').set_index(
+                date=pd.to_datetime(res.date, utc=False)
+            ).drop_duplicates(['date',
+                                'code']).query('volume>1').set_index(
                                     'date',
                                     drop=False
                                 )
@@ -177,7 +176,7 @@ def QA_fetch_stock_adj(
         #res=[QA_util_dict_remove_key(data, '_id') for data in cursor]
 
         res = pd.DataFrame([item for item in cursor])
-        res.date = pd.to_datetime(res.date)
+        res.date = pd.to_datetime(res.date, utc=False)
         return res.set_index('date', drop=False)
 
 
@@ -230,7 +229,7 @@ def QA_fetch_stock_min(
     try:
         res = res.assign(
             volume=res.vol,
-            datetime=pd.to_datetime(res.datetime)
+            datetime=pd.to_datetime(res.datetime, utc=False)
         ).query('volume>1').drop_duplicates(['datetime',
                                              'code']).set_index(
                                                  'datetime',
@@ -297,7 +296,7 @@ def QA_fetch_stock_transaction(
     try:
         res = res.assign(
             volume=res.vol,
-            datetime=pd.to_datetime(res.datetime)
+            datetime=pd.to_datetime(res.datetime, utc=False)
         ).query('volume>1').drop_duplicates(['datetime',
                                              'code']).set_index(
                                                  'datetime',
@@ -364,7 +363,7 @@ def QA_fetch_index_transaction(
     try:
         res = res.assign(
             volume=res.vol,
-            datetime=pd.to_datetime(res.datetime)
+            datetime=pd.to_datetime(res.datetime, utc=False)
         ).query('volume>1').drop_duplicates(['datetime',
                                              'code']).set_index(
                                                  'datetime',
@@ -535,7 +534,7 @@ def QA_fetch_stock_full(date, format='numpy', collections=DATABASE.stock_day):
                     'date'
                 ]
             )
-            _data['date'] = pd.to_datetime(_data['date'])
+            _data['date'] = pd.to_datetime(_data['date'], utc=False)
             _data = _data.set_index('date', drop=False)
         else:
             print(
@@ -562,7 +561,7 @@ def QA_fetch_index_day(
     start = str(start)[0:10]
     end = str(end)[0:10]
     code = QA_util_code_tolist(code)
-    if QA_util_date_valid(end) == True:
+    if QA_util_date_valid(end) is True:
 
         cursor = collections.find(
             {
@@ -583,9 +582,9 @@ def QA_fetch_index_day(
         try:
             res = res.assign(
                 volume=res.vol,
-                date=pd.to_datetime(res.date)
-            ).drop_duplicates((['date',
-                                'code'])).set_index(
+                date=pd.to_datetime(res.date, utc=False)
+            ).drop_duplicates(['date',
+                                'code']).set_index(
                                     'date',
                                     drop=False
                                 )
@@ -657,7 +656,7 @@ def QA_fetch_index_min(
     try:
         res = res.assign(
             volume=res.vol,
-            datetime=pd.to_datetime(res.datetime)
+            datetime=pd.to_datetime(res.datetime, utc=False)
         ).query('volume>1').drop_duplicates(['datetime',
                                              'code']).set_index(
                                                  'datetime',
@@ -696,7 +695,7 @@ def QA_fetch_future_day(
     end = str(end)[0:10]
     code = QA_util_code_tolist(code, auto_fill=False)
 
-    if QA_util_date_valid(end) == True:
+    if QA_util_date_valid(end) is True:
 
         _data = []
         cursor = collections.find(
@@ -751,7 +750,7 @@ def QA_fetch_future_day(
                     'date'
                 ]
             ).drop_duplicates()
-            _data['date'] = pd.to_datetime(_data['date'])
+            _data['date'] = pd.to_datetime(_data['date'], utc=False)
             _data = _data.set_index('date', drop=False)
         else:
             print(
@@ -842,9 +841,9 @@ def QA_fetch_future_min(
             'type'
         ]
     )
-    _data = _data.assign(datetime=pd.to_datetime(_data['datetime'])
-                        ).drop_duplicates((['datetime',
-                                            'code'])).set_index(
+    _data = _data.assign(datetime=pd.to_datetime(_data['datetime'], utc=False)
+                        ).drop_duplicates(['datetime',
+                                            'code']).set_index(
                                                 'datetime',
                                                 drop=False
                                             )
@@ -938,7 +937,7 @@ def QA_fetch_ctp_tick(
         (p1.UpdateMillisec / 1000000).apply(lambda x: str('%.6f' % x)[1:]),
         code=p1.InstrumentID
     )
-    p1.datetime = pd.to_datetime(p1.datetime)
+    p1.datetime = pd.to_datetime(p1.datetime, utc=False)
     return p1.set_index(p1.datetime)
 
 
@@ -955,7 +954,7 @@ def QA_fetch_stock_xdxr(code, format='pd', collections=DATABASE.stock_xdxr):
         ]
     ).drop(['_id'],
            axis=1)
-    data['date'] = pd.to_datetime(data['date'])
+    data['date'] = pd.to_datetime(data['date'], utc=False)
     return data.set_index('date', drop=False)
 
 
@@ -1049,7 +1048,7 @@ def QA_fetch_stock_info(code, format='pd', collections=DATABASE.stock_info):
                       batch_size=10000)
             ]
         )
-        #data['date'] = pd.to_datetime(data['date'])
+        #data['date'] = pd.to_datetime(data['date'], utc=False)
         return data.set_index('code', drop=False)
     except Exception as e:
         QA_util_log_info(e)
@@ -1066,7 +1065,7 @@ def QA_fetch_stock_name(code, collections=DATABASE.stock_list, ):
             return res['name']
         except Exception as e:
             if (res is None):
-                QA_util_log_info(u'请检查mongodb quantaxis.stock_list collection 是否为空。')
+                QA_util_log_info('请检查mongodb quantaxis.stock_list collection 是否为空。')
             QA_util_log_info(e)
             return code
     elif isinstance(code, list):
@@ -1081,7 +1080,7 @@ def QA_fetch_stock_name(code, collections=DATABASE.stock_list, ):
                       batch_size=10000)
             ]
         )
-        #data['date'] = pd.to_datetime(data['date'])
+        #data['date'] = pd.to_datetime(data['date'], utc=False)
         return data.set_index('code', drop=False)
 
 
@@ -1107,7 +1106,7 @@ def QA_fetch_index_name(code, collections=DATABASE.index_list):
                       batch_size=10000)
             ]
         )
-        #data['date'] = pd.to_datetime(data['date'])
+        #data['date'] = pd.to_datetime(data['date'], utc=False)
         return data.set_index('code', drop=False)
 
 
@@ -1133,14 +1132,14 @@ def QA_fetch_etf_name(code, collections=DATABASE.etf_list):
                       batch_size=10000)
             ]
         )
-        #data['date'] = pd.to_datetime(data['date'])
+        #data['date'] = pd.to_datetime(data['date'], utc=False)
         return data.set_index('code', drop=False)
 
 
 def QA_fetch_quotation(code, date=datetime.date.today(), db=DATABASE):
     '获取某一只实时5档行情的存储结果'
     try:
-        collections = db.get_collection('realtime_{}'.format(date))
+        collections = db.get_collection(f'realtime_{date}')
         data = pd.DataFrame(
             [
                 item for item in
@@ -1149,7 +1148,7 @@ def QA_fetch_quotation(code, date=datetime.date.today(), db=DATABASE):
                                  batch_size=10000)
             ]
         )
-        return data.assign(date=pd.to_datetime(data.datetime.apply(lambda x: str(x)[0:10])), datetime=pd.to_datetime(data.datetime)) \
+        return data.assign(date=pd.to_datetime(data.datetime.apply(lambda x: str(x)[0:10]), utc=False), datetime=pd.to_datetime(data.datetime, utc=False)) \
             .set_index('datetime', drop=False).sort_index()
     except Exception as e:
         raise e
@@ -1158,7 +1157,7 @@ def QA_fetch_quotation(code, date=datetime.date.today(), db=DATABASE):
 def QA_fetch_quotations(date=datetime.date.today(), db=DATABASE):
     '获取全部实时5档行情的存储结果'
     try:
-        collections = db.get_collection('realtime_{}'.format(date))
+        collections = db.get_collection(f'realtime_{date}')
         data = pd.DataFrame(
             [
                 item
@@ -1168,8 +1167,8 @@ def QA_fetch_quotations(date=datetime.date.today(), db=DATABASE):
             ]
         )
         return data.assign(
-            date=pd.to_datetime(data.datetime.apply(lambda x: str(x)[0:10]))
-        ).assign(datetime=pd.to_datetime(data.datetime)
+            date=pd.to_datetime(data.datetime.apply(lambda x: str(x)[0:10]), utc=False)
+        ).assign(datetime=pd.to_datetime(data.datetime, utc=False)
                 ).set_index(['datetime',
                              'code'],
                             drop=False).sort_index()
@@ -1467,9 +1466,9 @@ def QA_fetch_financial_report(code, report_date, ltype='EN', db=DATABASE):
             if res_pd.report_date.dtype == numpy.int64:
                 res_pd.report_date = pd.to_datetime(
                     res_pd.report_date.apply(QA_util_date_int2str)
-                )
+                , utc=False)
             else:
-                res_pd.report_date = pd.to_datetime(res_pd.report_date)
+                res_pd.report_date = pd.to_datetime(res_pd.report_date, utc=False)
 
             return res_pd.replace(-4.039810335e+34,
                                   numpy.nan).set_index(
@@ -1515,7 +1514,7 @@ def QA_fetch_stock_financial_calendar(
 
         res = pd.DataFrame([item for item in cursor])
         try:
-            res = res.drop_duplicates((['report_date', 'code']))
+            res = res.drop_duplicates(['report_date', 'code'])
             res = res.loc[:,
                           [
                               'code',
@@ -1586,7 +1585,7 @@ def QA_fetch_stock_divyield(
 
         res = pd.DataFrame([item for item in cursor])
         try:
-            res = res.drop_duplicates((['dir_dcl_date', 'a_stockcode']))
+            res = res.drop_duplicates(['dir_dcl_date', 'a_stockcode'])
             res = res.loc[:,
                           [
                               'a_stockcode',
@@ -1707,7 +1706,7 @@ def QA_fetch_cryptocurrency_day(
     end = str(end)[0:10]
     code = QA_util_code_tolist(code, auto_fill=False)
 
-    if QA_util_date_valid(end) == True:
+    if QA_util_date_valid(end) is True:
 
         _data = []
         cursor = collections.find(
@@ -1762,8 +1761,8 @@ def QA_fetch_cryptocurrency_day(
                     'amount',
                     'date'
                 ]
-            ).drop_duplicates((['date', 'code']))
-            _data['date'] = pd.to_datetime(_data['date'])
+            ).drop_duplicates(['date', 'code'])
+            _data['date'] = pd.to_datetime(_data['date'], utc=False)
             _data = _data.set_index('date', drop=False)
         else:
             print(
@@ -1850,8 +1849,8 @@ def QA_fetch_cryptocurrency_min(
             'type'
         ]
     )
-    _data = _data.assign(datetime=pd.to_datetime(_data['datetime'])
-                        ).drop_duplicates((['datetime', 'code'])).set_index(
+    _data = _data.assign(datetime=pd.to_datetime(_data['datetime'], utc=False)
+                        ).drop_duplicates(['datetime', 'code']).set_index(
                                                 'datetime',
                                                 drop=False
                                             )

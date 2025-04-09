@@ -196,6 +196,6 @@ def QA_util_firstDayTrading(codelist: list):
             start_date = ref2[0]['date']
             dates.append(start_date)
         else:
-            raise ValueError('{} 没有数据'.format(code))
+            raise ValueError(f'{code} 没有数据')
 
     return pd.DataFrame({'code':codelist, 'date': dates} )

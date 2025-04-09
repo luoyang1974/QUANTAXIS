@@ -24,11 +24,11 @@ import json
 def open_chrome_driver():
 
     currentFile  = __file__
-    print(currentFile);
+    print(currentFile)
 
-    dirName = os.path.dirname(currentFile);
-    dirName1 = os.path.dirname(dirName);
-    dirName2 = os.path.dirname(dirName1);
+    dirName = os.path.dirname(currentFile)
+    dirName1 = os.path.dirname(dirName)
+    dirName2 = os.path.dirname(dirName1)
     print(dirName2)
 
 
@@ -61,7 +61,7 @@ def crawly_code(code=None, conn = None, browser = None):
 
 
 
-    urls = 'http://data.eastmoney.com/zjlx/{}.html'.format(code)
+    urls = f'http://data.eastmoney.com/zjlx/{code}.html'
     pa = re.compile(r'\w+')
 
     # 启动chrome
@@ -97,7 +97,7 @@ def crawly_code(code=None, conn = None, browser = None):
         head1_list = []
         head2_list = []
 
-        if isinstance(table_header, list) == True:
+        if isinstance(table_header, list) is True:
             # print(table_header[0])
             # print(table_header[0].text)
 
@@ -122,7 +122,7 @@ def crawly_code(code=None, conn = None, browser = None):
             print("error !!!!!!!!")
 
         row1_list = []
-        if isinstance(table_body2, list) == True:
+        if isinstance(table_body2, list) is True:
 
             table_body_row = table_body2[0].find_elements_by_tag_name('tr')
             print("🖼 成功获取 %d 天的资金流向数据️" % (len(table_body_row)))
@@ -228,7 +228,7 @@ if __name__ == '__main__':
     # Listen for incoming connections
     sock.listen(1)
 
-    browser = open_chrome_driver();
+    browser = open_chrome_driver()
 
     while True:
         # Wait for a connection
@@ -240,9 +240,9 @@ if __name__ == '__main__':
             # Receive the data in small chunks and retransmit it
             while True:
                 data = connection.recv(11)
-                print('received {!r}'.format(data))
+                print(f'received {data!r}')
                 if data:
-                    cmdString = data.decode('utf-8');
+                    cmdString = data.decode('utf-8')
                     cmdArry = cmdString.split(':')
                     print(cmdArry)
                     print('sending data back to the client')
@@ -250,8 +250,8 @@ if __name__ == '__main__':
 
                     if cmdArry[0] == 'read':
                     # do the lone time get the data , report the status
-                        crawly_code(code = cmdArry[1], conn= connection, browser= browser);
-                        break;
+                        crawly_code(code = cmdArry[1], conn= connection, browser= browser)
+                        break
 
                 else:
                     print('no data from', client_address)

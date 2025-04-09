@@ -1,6 +1,3 @@
-# coding:utf-8
-
-
 try: 
     import jqdatasdk
     #jqdatasdk.auth(input('account:'),input('password:'))

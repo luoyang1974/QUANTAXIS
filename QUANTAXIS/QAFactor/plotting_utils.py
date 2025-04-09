@@ -105,7 +105,7 @@ def axes_style(style: str = "darkgrid", rc: dict = None):
 
 
 def print_table(
-    table: Union[pd.Series, pd.DataFrame], name: str = None, fmt: str = None
+    table: pd.Series | pd.DataFrame, name: str = None, fmt: str = None
 ):
     """
     设置输出的 pandas DataFrame 格式

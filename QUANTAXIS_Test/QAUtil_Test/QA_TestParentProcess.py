@@ -62,7 +62,7 @@ if __name__ == '__main__':
         s = p.stdout.read(sz)
         print(s)
         if len(s) == 0:
-            break;
+            break
 
 
     p.wait()

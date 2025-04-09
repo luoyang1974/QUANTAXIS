@@ -87,11 +87,11 @@ class QA_Test(unittest.TestCase):
         lst.sort(key=lambda k: (k.get('time', 0)))
 
         t1 = trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix],trace=0,count=1)
-        t1.run('''lst = [{'level': 19, 'star': 36, 'time': 1},{'level': 20, 'star': 40, 'time': 2},{'level': 20, 'star': 40, 'time': 3},{'level': 20, 'star': 40, 'time': 4},{'level': 20, 'star': 40, 'time': 5},{'level': 18, 'star': 40, 'time': 1}];lst.sort(key=lambda k: (k.get('time', 0)))''');
+        t1.run('''lst = [{'level': 19, 'star': 36, 'time': 1},{'level': 20, 'star': 40, 'time': 2},{'level': 20, 'star': 40, 'time': 3},{'level': 20, 'star': 40, 'time': 4},{'level': 20, 'star': 40, 'time': 5},{'level': 18, 'star': 40, 'time': 1}];lst.sort(key=lambda k: (k.get('time', 0)))''')
         r = t1.results()
         r.write_results(show_missing=True, coverdir=".")
 
-        cProfile.run('''lst = [{'level': 19, 'star': 36, 'time': 1},{'level': 20, 'star': 40, 'time': 2},{'level': 20, 'star': 40, 'time': 3},{'level': 20, 'star': 40, 'time': 4},{'level': 20, 'star': 40, 'time': 5},{'level': 18, 'star': 40, 'time': 1}];lst.sort(key=lambda k: (k.get('time', 0)))''');
+        cProfile.run('''lst = [{'level': 19, 'star': 36, 'time': 1},{'level': 20, 'star': 40, 'time': 2},{'level': 20, 'star': 40, 'time': 3},{'level': 20, 'star': 40, 'time': 4},{'level': 20, 'star': 40, 'time': 5},{'level': 18, 'star': 40, 'time': 1}];lst.sort(key=lambda k: (k.get('time', 0)))''')
 
 
         # 再按照level和star顺序

@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -76,7 +75,7 @@ def QA_fetch_get_stock_day(name, startDate, endDate, if_fq='01'):
     except:
         QA_util_log_info('No WindPY Module!')
     w.start()
-    if(QA_util_date_valid(endDate) == False):
+    if(QA_util_date_valid(endDate) is False):
         QA_util_log_info("wrong date")
     else:
         if if_fq in ['00', 'bfq']:
@@ -104,7 +103,7 @@ def QA_fetch_get_stock_day_simple(name, startDate, endDate):
     except:
         QA_util_log_info('No WindPY Module!')
     w.start()
-    if(QA_util_date_valid(endDate) == False):
+    if(QA_util_date_valid(endDate) is False):
         QA_util_log_info("wrong date")
     else:
         data = w.wsd(name, "sec_name,preclose,open,high,low,close,volume",
@@ -122,7 +121,7 @@ def QA_fetch_get_stock_indicator(name, startDate, endDate):
     except:
         QA_util_log_info('No WindPY Module!')
     w.start()
-    if(QA_util_date_valid(endDate) == False):
+    if(QA_util_date_valid(endDate) is False):
         QA_util_log_info("wrong date")
     else:
         # ADTM动态买卖气指标,ATR真实波幅,BBI多空指数,BBIBOLL多空布林线,BIAS乖离率,BOLL布林带,CCI顺势指标,CDP逆势操作,DMA平均线差,
@@ -161,7 +160,7 @@ def QA_fetch_get_stock_shape(name, startDate, endDate):
     except:
         QA_util_log_info('No WindPY Module!')
     w.start()
-    if(QA_util_date_valid(endDate) == False):
+    if(QA_util_date_valid(endDate) is False):
         QA_util_log_info("wrong date")
     else:
         # history_low近期创历史新低,stage_high近期创阶段新高,history_high近期创历史新高,stage_low近期创阶段新高,up_days连涨天数,down_days连跌天数,breakout_ma向上有效突破均线,breakdown_ma向下有效突破均线,bull_bear_ma均线多空排列看涨看跌
@@ -178,7 +177,7 @@ def QA_fetch_get_stock_risk(name, startDate, endDate):
     except:
         QA_util_log_info('No WindPY Module!')
     w.start()
-    if(QA_util_date_valid(endDate) == False):
+    if(QA_util_date_valid(endDate) is False):
         QA_util_log_info("wrong date")
     else:
         data = w.wsd(name, "annualyeild_100w,annualyeild_24m,annualyeild_60m,\
@@ -197,7 +196,7 @@ def QA_fetch_get_stock_xueqiu(name, startDate, endDate):
     except:
         QA_util_log_info('No WindPY Module!')
     w.start()
-    if(QA_util_date_valid(endDate) == False):
+    if(QA_util_date_valid(endDate) is False):
         QA_util_log_info("wrong date")
     else:
         data = w.wsd(name, "xq_accmfocus,xq_accmcomments,xq_accmshares,\
@@ -243,7 +242,7 @@ def QA_fetch_get_stock_list(date):
     except:
         QA_util_log_info('No WindPY Module!')
     w.start()
-    if(QA_util_date_valid(date) == False):
+    if(QA_util_date_valid(date) is False):
         QA_util_log_info("wrong date")
     else:
         awgs = 'date=' + date + ';sectorid=a001010100000000'
@@ -257,7 +256,7 @@ def QA_fetch_get_stock_list_special(date, id):
     except:
         QA_util_log_info('No WindPY Module!')
     w.start()
-    if(QA_util_date_valid(date) == False):
+    if(QA_util_date_valid(date) is False):
         QA_util_log_info("wrong date")
     else:
         if id in ['big', 'small', 'cixin', 'yujing', 'rzrq', 'rq', 'yj', 'st', 'sst']:

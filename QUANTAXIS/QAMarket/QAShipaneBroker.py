@@ -1,5 +1,3 @@
-# coding:utf-8
-
 import asyncio
 import base64
 import configparser
@@ -436,7 +434,7 @@ class QA_SPEBroker(QA_Broker):
 
     def cancel_order(self, accounts, orderid):
         return self.call_delete(
-            'orders/{}'.format(orderid),
+            f'orders/{orderid}',
             {'client': accounts}
         )
 
@@ -459,7 +457,7 @@ class QA_SPEBroker(QA_Broker):
             # order.status = ORDER_STATUS.QUEUED
             # order.text = 'SUCCESS'
             order.queued(realorder_id=res['id'])
-            print('success receive order {}'.format(order.realorder_id))
+            print(f'success receive order {order.realorder_id}')
             return order
             # else:
 

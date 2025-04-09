@@ -17,7 +17,7 @@ def create_summary_tear_sheet(
         by_group: bool = False,  # 按分组计算
         long_short: bool = True,  # 多空组合
         group_neutral: bool = False,  # 分组中性
-        periods: Union[int, Tuple[int], List[int]] = 1,
+        periods: int | tuple[int] | list[int] = 1,
         frequence: str = '1d'):
     """
     创建一个小型的汇总表格，包括因子的收益率分析，IC 值，换手率等分析

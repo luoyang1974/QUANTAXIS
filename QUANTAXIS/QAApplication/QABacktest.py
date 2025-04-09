@@ -1,8 +1,7 @@
-# coding=utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -129,7 +128,7 @@ class QA_Backtest():
             ).to_qfq().panel_gen
 
         else:
-            QA_util_log_info("{} 的市场类型没有实现！".format(market_type))
+            QA_util_log_info(f"{market_type} 的市场类型没有实现！")
 
     def _generate_account(self):
         """
@@ -167,8 +166,8 @@ class QA_Backtest():
         for data in self.ingest_data:                    # 对于在ingest_data中的数据
                                                          # <class 'QUANTAXIS.QAData.QADataStruct.QA_DataStruct_Stock_day'>
             date = data.date[0]
-            print('current date : {}'.format(date))
-            print('current time : {}'.format(data.datetime[0]))
+            print(f'current date : {date}')
+            print(f'current time : {data.datetime[0]}')
             if self.market_type is MARKET_TYPE.STOCK_CN: # 如果是股票市场
                 if _date != date:                        # 如果新的date
 

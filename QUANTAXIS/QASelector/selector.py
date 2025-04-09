@@ -1,5 +1,3 @@
-# coding:utf-8
-
 import datetime
 from functools import lru_cache
 from QUANTAXIS.QAData.financial_mean import financial_dict
@@ -26,7 +24,7 @@ class QA_Selector():
         self.code_list = QA_fetch_stock_list_adv().code.tolist() if code is None and if_whole_market else code
         
     @property
-    @lru_cache()
+    @lru_cache
     def block(self):
         return QA_fetch_stock_block_adv(code=self.code_list)
 

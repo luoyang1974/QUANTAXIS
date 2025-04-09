@@ -4,7 +4,7 @@ class job1(QA_AsyncExec):
     def do(self):
         try:
             event = self.get()
-            print('job1 do {}'.format(event))
+            print(f'job1 do {event}')
         except:
             pass
 
@@ -13,7 +13,7 @@ class job2(QA_AsyncExec):
     def do(self):
         try:
             event = self.get()
-            print('job2 do {}'.format(event))
+            print(f'job2 do {event}')
         except:
             pass
 

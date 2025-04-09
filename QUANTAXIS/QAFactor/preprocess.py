@@ -11,10 +11,6 @@
 from functools import partial
 from typing import List, Tuple, Union
 
-try:
-    import jqdatasdk
-except:
-    print("jqdatasdk not installed")
 import numpy as np
 import pandas as pd
 
@@ -23,7 +19,7 @@ from QUANTAXIS.QAAnalysis.QAAnalysis_block import QAAnalysis_block
 from QUANTAXIS.QAFactor.utils import QA_fmt_code_list
 from QUANTAXIS.QAFactor.fetcher import (QA_fetch_stock_basic, QA_fetch_industry_adv)
 
-def QA_fmt_factor(factor: Union[pd.Series, pd.DataFrame]):
+def QA_fmt_factor(factor: pd.Series | pd.DataFrame):
     """
     将 factor 格式化
     """
@@ -47,8 +43,8 @@ def QA_fmt_factor(factor: Union[pd.Series, pd.DataFrame]):
 
 
 def QA_winsorize_factor(
-        factor: Union[pd.Series,
-                      pd.DataFrame],
+        factor: (pd.Series |
+                      pd.DataFrame),
         grouper: list = ["datetime"],
         extreme_scale: float = 1.4826,
         extreme_method: str = "mad",
@@ -459,7 +455,7 @@ def QA_neutralize_factor(
     ---
     :return: 中性化处理后的因子数据
     """
-    if type(mkt_cap) == pd.Series:
+    if isinstance(mkt_cap, pd.Series):
         LnMktCap = mkt_cap.apply(lambda x: math.log(x))
         if industry:  # 行业、市值
             dummy_industry = get_industry_exposure(factor, date=date)

@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -79,7 +78,7 @@ def datastruct_formater(
             if frequence is FREQUENCE.DAY:
                 if market_type is MARKET_TYPE.STOCK_CN:
                     return QA_DataStruct_Stock_day(
-                        res.assign(date=pd.to_datetime(res.date)
+                        res.assign(date=pd.to_datetime(res.date, utc=False)
                                   ).set_index(['date',
                                                'code'],
                                               drop=False),
@@ -92,7 +91,7 @@ def datastruct_formater(
                                FREQUENCE.SIXTY_MIN]:
                 if market_type is MARKET_TYPE.STOCK_CN:
                     return QA_DataStruct_Stock_min(
-                        res.assign(datetime=pd.to_datetime(res.datetime)
+                        res.assign(datetime=pd.to_datetime(res.datetime, utc=False)
                                   ).set_index(['datetime',
                                                'code'],
                                               drop=False),
@@ -106,7 +105,7 @@ def datastruct_formater(
             if frequence is FREQUENCE.DAY:
                 if market_type is MARKET_TYPE.STOCK_CN:
                     return QA_DataStruct_Stock_day(
-                        res.assign(date=pd.to_datetime(res.date)
+                        res.assign(date=pd.to_datetime(res.date, utc=False)
                                   ).set_index(['date',
                                                'code'],
                                               drop=False),
@@ -119,7 +118,7 @@ def datastruct_formater(
                                FREQUENCE.SIXTY_MIN]:
                 if market_type is MARKET_TYPE.STOCK_CN:
                     return QA_DataStruct_Stock_min(
-                        res.assign(datetime=pd.to_datetime(res.datetime)
+                        res.assign(datetime=pd.to_datetime(res.datetime, utc=False)
                                   ).set_index(['datetime',
                                                'code'],
                                               drop=False),
@@ -150,7 +149,7 @@ def from_tushare(dataframe, dtype='day'):
 
     if dtype in ['day']:
         return QA_DataStruct_Stock_day(
-            dataframe.assign(date=pd.to_datetime(dataframe.date)
+            dataframe.assign(date=pd.to_datetime(dataframe.date, utc=False)
                             ).set_index(['date',
                                          'code'],
                                         drop=False),
@@ -158,7 +157,7 @@ def from_tushare(dataframe, dtype='day'):
         )
     elif dtype in ['min']:
         return QA_DataStruct_Stock_min(
-            dataframe.assign(datetime=pd.to_datetime(dataframe.datetime)
+            dataframe.assign(datetime=pd.to_datetime(dataframe.datetime, utc=False)
                             ).set_index(['datetime',
                                          'code'],
                                         drop=False),
@@ -179,7 +178,7 @@ def QDS_StockDayWarpper(func):
             return QA_DataStruct_Stock_day(data)
         else:
             return QA_DataStruct_Stock_day(
-                data.assign(date=pd.to_datetime(data.date)
+                data.assign(date=pd.to_datetime(data.date, utc=False)
                            ).set_index(['date',
                                         'code'],
                                        drop=False),
@@ -201,7 +200,7 @@ def QDS_StockMinWarpper(func, *args, **kwargs):
             return QA_DataStruct_Stock_min(data)
         else:
             return QA_DataStruct_Stock_min(
-                data.assign(datetime=pd.to_datetime(data.datetime)
+                data.assign(datetime=pd.to_datetime(data.datetime, utc=False)
                            ).set_index(['datetime',
                                         'code'],
                                        drop=False),
@@ -223,7 +222,7 @@ def QDS_IndexDayWarpper(func, *args, **kwargs):
             return QA_DataStruct_Index_day(data)
         else:
             return QA_DataStruct_Index_day(
-                data.assign(date=pd.to_datetime(data.date)
+                data.assign(date=pd.to_datetime(data.date, utc=False)
                            ).set_index(['datetime',
                                         'code'],
                                        drop=False),
@@ -245,7 +244,7 @@ def QDS_IndexMinWarpper(func, *args, **kwargs):
             return QA_DataStruct_Index_min(data)
         else:
             return QA_DataStruct_Index_min(
-                data.assign(datetime=pd.to_datetime(data.datetime)
+                data.assign(datetime=pd.to_datetime(data.datetime, utc=False)
                            ).set_index(['datetime',
                                         'code'],
                                        drop=False),

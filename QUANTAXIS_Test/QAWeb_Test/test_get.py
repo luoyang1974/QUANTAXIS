@@ -11,7 +11,7 @@ def t1(func):
     url = "http://localhost:8010/marketdata/stock/day?code=000005"
     f=requests.get(url)
     endtime = datetime.datetime.now()
-    print( "round:%s, tread number:%s,len : %s,time:%f" % (i, func,len(f.text), (endtime - starttime).microseconds / 1000))
+    print( "round:{}, tread number:{},len : {},time:{:f}".format(i, func,len(f.text), (endtime - starttime).microseconds / 1000))
 
  
  

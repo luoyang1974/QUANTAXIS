@@ -1,8 +1,7 @@
-# encoding: UTF-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +27,7 @@ EVENT 是会被推送进QUEUE的任务class
 通过EVENT_QUEUE.get()拿到标准的event,然后执行"""
 
 
-class QA_Worker(object):
+class QA_Worker:
     """JOB是worker 需要接受QA_EVENT 需要完善RUN方法
         👻QA_Broker 继承这个类
         👻QA_Account 继承这个类
@@ -40,7 +39,7 @@ class QA_Worker(object):
         self.type = None
 
     def __repr__(self):
-        return '< QA_Worker {} id = {} >'.format(self.type, id(self))
+        return f'< QA_Worker {self.type} id = {id(self)} >'
 
     @abstractmethod
     def run(self, event):
@@ -52,7 +51,7 @@ class QA_Worker(object):
         raise NotImplementedError
 
 
-class QA_Event(object):
+class QA_Event:
     '''
     QA_Event 事件
     '''
@@ -72,7 +71,7 @@ class QA_Event(object):
         self.callback = callback
         # This statement supports dynamic execution of Python code
         for item in kwargs.keys():
-            exec('self.{}=kwargs[item]'.format(item))
+            exec(f'self.{item}=kwargs[item]')
 
     #for debug purpose
     def __repr__(self):

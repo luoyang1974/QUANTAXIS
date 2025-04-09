@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -66,7 +65,7 @@ def QA_indicator_MA(DataFrame,*args,**kwargs):
     """
 
     CLOSE = DataFrame['close']
-    return pd.DataFrame({'MA{}'.format(N): MA(CLOSE, N)  for N in list(args)})
+    return pd.DataFrame({f'MA{N}': MA(CLOSE, N)  for N in list(args)})
 
 def QA_indicator_MA_VOL(DataFrame,*args,**kwargs):
     """MA_VOLU
@@ -79,7 +78,7 @@ def QA_indicator_MA_VOL(DataFrame,*args,**kwargs):
     """
 
     VOL = DataFrame['volume']
-    return pd.DataFrame({'MA_VOL{}'.format(N): MA(VOL, N)  for N in list(args)})
+    return pd.DataFrame({f'MA_VOL{N}': MA(VOL, N)  for N in list(args)})
 
 def QA_indicator_EMA(DataFrame, N):
     CLOSE = DataFrame['close']

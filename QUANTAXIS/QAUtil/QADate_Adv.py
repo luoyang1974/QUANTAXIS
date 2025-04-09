@@ -1,4 +1,3 @@
-# coding:utf-8
 # Author:阿财（11652964@qq.com）
 # Created date: 2018-06-03
 #
@@ -88,11 +87,11 @@ def QA_util_str_to_datetime(time, tz_str= ' +0800'):
     :return: 类型datetime.datatime
     """
     if len(str(time)) == 10:
-        _time = '{} 00:00:00'.format(time)
+        _time = f'{time} 00:00:00'
     elif len(str(time)) == 19:
         _time = str(time)
     else:
-        QA_util_log_info('WRONG DATETIME FORMAT {}'.format(time))
+        QA_util_log_info(f'WRONG DATETIME FORMAT {time}')
     return datetime.strptime(_time + tz_str, '%Y-%m-%d %H:%M:%S %z')
 
 

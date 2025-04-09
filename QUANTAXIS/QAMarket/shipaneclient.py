@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import copy
 import datetime
 import re
@@ -27,7 +25,7 @@ class ConnectionMethod(Enum):
     PROXY = 'PROXY'
 
 
-class Client(object):
+class Client:
     KEY_REGEX = r'key=([^&]*)'
 
     def __init__(self, logger=None, **kwargs):
@@ -150,7 +148,7 @@ class Client(object):
         today = datetime.datetime.strftime(datetime.datetime.today(), '%Y-%m-%d')
         df = self.query_new_stocks()
         df = df[(df.ipo_date == today)]
-        self._logger.info('今日有[{}]支可申购新股'.format(len(df)))
+        self._logger.info(f'今日有[{len(df)}]支可申购新股')
         for index, row in df.iterrows():
             try:
                 order = {
@@ -158,7 +156,7 @@ class Client(object):
                     'price': row['price'],
                     'amountProportion': 'ALL'
                 }
-                self._logger.info('申购新股：{}'.format(order))
+                self._logger.info(f'申购新股：{order}')
                 self.ipo(client, timeout, **order)
             except Exception as e:
                 self._logger.error(
@@ -168,7 +166,7 @@ class Client(object):
         today = datetime.datetime.strftime(datetime.datetime.today(), '%Y-%m-%d')
         df = self.query_convertible_bonds()
         df = df[(df.ipo_date == today)]
-        self._logger.info('今日有[{}]支可申购转债'.format(len(df)))
+        self._logger.info(f'今日有[{len(df)}]支可申购转债')
         for index, row in df.iterrows():
             try:
                 order = {
@@ -176,7 +174,7 @@ class Client(object):
                     'price': 100,
                     'amountProportion': 'ALL'
                 }
-                self._logger.info('申购转债：{}'.format(order))
+                self._logger.info(f'申购转债：{order}')
                 self.buy(client, timeout, **order)
             except Exception as e:
                 self._logger.error(
@@ -208,10 +206,7 @@ class Client(object):
         DATA_URL = 'http://vip.stock.finance.sina.com.cn/corp/view/vRPD_NewStockIssue.php?page=1&cngem=0&orderBy=NetDate&orderType=desc'
         html = lxml.html.parse(DATA_URL)
         res = html.xpath('//table[@id=\"NewStockTable\"]/tr')
-        if six.PY2:
-            sarr = [etree.tostring(node) for node in res]
-        else:
-            sarr = [etree.tostring(node).decode('utf-8') for node in res]
+        sarr = [etree.tostring(node).decode('utf-8') for node in res]
         sarr = ''.join(sarr)
         sarr = sarr.replace('<font color="red">*</font>', '')
         sarr = '<table>%s</table>' % sarr
@@ -234,15 +229,15 @@ class Client(object):
         all_params.update(client=(client or self._client))
         all_params.update(key=(self._key or ''))
         if resource_id is None:
-            path = '/{}'.format(resource)
+            path = f'/{resource}'
         else:
-            path = '/{}/{}'.format(resource, resource_id)
-        url = '{}{}?{}'.format(self._base_url, path, urlencode(all_params))
+            path = f'/{resource}/{resource_id}'
+        url = f'{self._base_url}{path}?{urlencode(all_params)}'
         return url
 
     def __create_base_url(self):
         if self._connection_method is ConnectionMethod.DIRECT:
-            return 'http://{}:{}'.format(self._host, self._port)
+            return f'http://{self._host}:{self._port}'
         else:
             return self._proxy_base_url
 
@@ -261,12 +256,12 @@ class Client(object):
     def __log_request(self, prepared_request):
         url = self.__eliminate_privacy(prepared_request.path_url)
         if prepared_request.body is None:
-            self._logger.info('Request:\n{} {}'.format(prepared_request.method, url))
+            self._logger.info(f'Request:\n{prepared_request.method} {url}')
         else:
-            self._logger.info('Request:\n{} {}\n{}'.format(prepared_request.method, url, prepared_request.body))
+            self._logger.info(f'Request:\n{prepared_request.method} {url}\n{prepared_request.body}')
 
     def __log_response(self, response):
-        message = u'Response:\n{} {}\n{}'.format(response.status_code, response.reason, response.text)
+        message = f'Response:\n{response.status_code} {response.reason}\n{response.text}'
         if response.status_code == 200:
             self._logger.info(message)
         else:
@@ -279,5 +274,5 @@ class Client(object):
             return url
         key = match.group(1)
         masked_key = '*' * len(key)
-        url = re.sub(cls.KEY_REGEX, "key={}".format(masked_key), url)
+        url = re.sub(cls.KEY_REGEX, f"key={masked_key}", url)
         return url

@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +26,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 
 
-class Parallelism_abs(object, metaclass=ABCMeta):
+class Parallelism_abs(metaclass=ABCMeta):
     def __init__(self, processes=cpu_count()):
         '''
 
@@ -70,7 +69,7 @@ class Parallelism(Parallelism_abs):
     """
 
     def __init__(self, processes=cpu_count()):
-        super(Parallelism, self).__init__(processes)
+        super().__init__(processes)
         self.pool = Pool(processes=processes)
 
     def run(self, func, iter):
@@ -116,7 +115,7 @@ class Parallelism_Thread(Parallelism_abs):
     """
 
     def __init__(self, processes=cpu_count()):
-        super(Parallelism_Thread, self).__init__(processes)
+        super().__init__(processes)
         self.pool = ThreadPoolExecutor(self.cores)
 
 
@@ -140,7 +139,7 @@ class Parallelism_Thread(Parallelism_abs):
             self.total_processes += 1
         for i in range(self.total_processes):
             adata = list(self.data[i])
-            print('{} SAVED: {}'.format(len(adata), adata))
+            print(f'{len(adata)} SAVED: {adata}')
             self.complete(adata)
 
     def do_working(self, code):

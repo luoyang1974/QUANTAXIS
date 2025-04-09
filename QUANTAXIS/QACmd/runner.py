@@ -6,7 +6,7 @@ from QUANTAXIS.QAUtil.QALogs import QA_util_log_info
 
 
 def run_backtest(shell_cmd):
-    shell_cmd = 'python "{}"'.format(shell_cmd)
+    shell_cmd = f'python "{shell_cmd}"'
     cmd = shlex.split(shell_cmd)
     p = subprocess.Popen(
         cmd,

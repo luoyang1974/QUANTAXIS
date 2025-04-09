@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +34,7 @@ from QUANTAXIS.QASetting.QALocalize import qa_path, download_path
 参见PYTDX 1.65
 """
 
-FINANCIAL_URL = 'http://data.yutiansut.com/content.txt'
+FINANCIAL_URL = 'http://down.tdx.com.cn:8001/tdxfin/gpcw.txt'
 
 
 class QAHistoryFinancialCrawler(HistoryFinancialCrawler):
@@ -49,7 +48,7 @@ class QAHistoryFinancialCrawler(HistoryFinancialCrawler):
 
        length = total_lengh - 2
        for i in range(0, length):
-           col.append('00{}'.format(str(i + 1))[-3:])
+           col.append(f'00{str(i + 1)}'[-3:])
 
        df = pd.DataFrame(data=data, columns=col)
        df.set_index('code', inplace=True)
@@ -94,13 +93,13 @@ def download_financialzip():
     result = get_filename()
     res = []
     for item, md5 in result:
-        if item in os.listdir(download_path) and md5 == QA_util_file_md5('{}{}{}'.format(download_path, os.sep, item)):
+        if item in os.listdir(download_path) and md5 == QA_util_file_md5(f'{download_path}{os.sep}{item}'):
 
-            print('FILE {} is already in {}'.format(item, download_path))
+            print(f'FILE {item} is already in {download_path}')
         else:
-            print('CURRENTLY GET/UPDATE {}'.format(item[0:12]))
-            r = requests.get('http://data.yutiansut.com/{}'.format(item))
-            file = '{}{}{}'.format(download_path, os.sep, item)
+            print(f'CURRENTLY GET/UPDATE {item[0:12]}')
+            r = requests.get(f'http://down.tdx.com.cn:8001/tdxfin/{item}')
+            file = f'{download_path}{os.sep}{item}'
 
             with open(file, "wb") as code:
                 code.write(r.content)
@@ -116,10 +115,10 @@ def download_financialzip_fromtdx():
     res = []
     for item, md5 in result:
         if item in os.listdir(download_path) and \
-                md5 == QA_util_file_md5('{}{}{}'.format(download_path, os.sep, item)):
-            print('FILE {} is already in {}'.format(item, download_path))
+                md5 == QA_util_file_md5(f'{download_path}{os.sep}{item}'):
+            print(f'FILE {item} is already in {download_path}')
         else:
-            print('CURRENTLY GET/UPDATE {}'.format(item[0:12]))
+            print(f'CURRENTLY GET/UPDATE {item[0:12]}')
             downloadpath = download_path + '/' + item
             datacrawler = HistoryFinancialCrawler()
             datacrawler.fetch_and_parse(reporthook=None,
@@ -135,7 +134,7 @@ def get_and_parse(filename):
 
 def parse_filelist(filelist):
 
-    return pd.concat([get_and_parse('{}{}{}'.format(download_path, os.sep, item)) for item in filelist])
+    return pd.concat([get_and_parse(f'{download_path}{os.sep}{item}') for item in filelist])
 
 
 def parse_all():

@@ -1,5 +1,4 @@
 # named pipe Client
-# encoding: utf-8
 
 import os
 import sys
@@ -44,7 +43,7 @@ if __name__ == '__main__':
 
         counter += 1
 
-        if rf == None:
+        if rf is None:
             # *要点1：在这里第一次打开read_path，实际这里的open是一个阻塞操作
             # 打开的时机很重要。如果在程序刚开始，没发送请求就打开read_path，肯定会阻塞住
             logging.debug("ready rf = os.open(read_path, os.O_RDONLY)", rf)

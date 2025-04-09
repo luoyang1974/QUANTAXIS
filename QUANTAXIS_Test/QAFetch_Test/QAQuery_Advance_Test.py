@@ -1,4 +1,3 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 # Copyright (c) 2016-2020 yutiansut/QUANTAXIS
@@ -39,12 +38,12 @@ import ctypes
 
 
     📛钱龙数据文件格式
-    上海日线存储路径为:\ml30\data\shase\day,文件扩展名为:.day
-    上海周线存储路径为:\ml30\data\shase\week,文件扩展名为: .wek
-    上海月线存储路径为:\ml30\data\shase\month,文件扩展名为: .mnt
-    深圳日线存储路径为:\ml30\data\sznse\day
-    深圳周线存储路径为:\ml30\data\sznse\week
-    深圳月线存储路径为:\ml30\data\sznse\month
+    上海日线存储路径为:\\ml30\\data\\shase\\day,文件扩展名为:.day
+    上海周线存储路径为:\\ml30\\data\\shase\\week,文件扩展名为: .wek
+    上海月线存储路径为:\\ml30\\data\\shase\\month,文件扩展名为: .mnt
+    深圳日线存储路径为:\\ml30\\data\\sznse\\day
+    深圳周线存储路径为:\\ml30\\data\\sznse\\week
+    深圳月线存储路径为:\\ml30\\data\\sznse\\month
     以深发展日线为例:
     1A76:0100 D6 CD 2F 01 52 07 01 00-52 07 01 00 52 07 01 00
     1A76:0110 52 07 01 00 86 0F 00 00-4D 02 00 00 00 00 00 00
@@ -177,7 +176,7 @@ import ctypes
     ' Construct the binary value.
     Do
         result = CStr(DecimalValue Mod 2) & result
-        DecimalValue = DecimalValue \ 2
+        DecimalValue = DecimalValue \\ 2
     Loop While DecimalValue > 0
     ' Add leading zeros if needed.
     ExtraDigitsNeeded = MinimumDigits - Len(result)
@@ -205,8 +204,8 @@ import ctypes
     📛通达信数据文件格式
 
     文件名称：sh601318.day(中国平安示例)
-    路径：vipdoc\sh\lday  ---上海
-         vipdoc\sz\lday   ---深圳
+    路径：vipdoc\\sh\\lday  ---上海
+         vipdoc\\sz\\lday   ---深圳
     内容格式：
     每32个字节为一天数据
     每4个字节为一个字段，每个字段内低字节在前
@@ -304,7 +303,7 @@ T0002:个别信息目录,内有公式和自选股,个别设备等信息
 　　[zst_cache] 分时图数据高速缓存
 　　[coolinfo] 体系备忘录目录
 　　[Invest] 个别理财数据目录
-自选股放在通达信软件 \T0002\blocknew/zxg.blk
+自选股放在通达信软件 \\T0002\blocknew/zxg.blk
 
 
 通达信股本变迁文件（gbbq）解密方法
@@ -400,7 +399,7 @@ struct模块的pack、unpack示例
 
 除权数据 （加密，需要解密操作）
 
-在通达信安装目录下的\T0002\hq_cache目录有个gbbq和gbbq.map的文件，是关于所有沪深市场上市证券的股本变动信息的文件。目前没有找到相关资料。
+在通达信安装目录下的\\T0002\\hq_cache目录有个gbbq和gbbq.map的文件，是关于所有沪深市场上市证券的股本变动信息的文件。目前没有找到相关资料。
 --------------------------------------------------------------------------------------------
 
 📛同花顺数据文件格式， 参考 c# 的实现
@@ -478,7 +477,7 @@ class Test_Query_Advance(unittest.TestCase):
         # 写到sqllite
         :return:
         '''
-        if self.check_qilong_dir_exist() == False:
+        if self.check_qilong_dir_exist() is False:
             return
 
         curdir = os.getcwd()
@@ -526,7 +525,7 @@ class Test_Query_Advance(unittest.TestCase):
         :return:
         '''
 
-        if self.check_qilong_dir_exist() == False:
+        if self.check_qilong_dir_exist() is False:
             return
 
         # time.sleep(1)
@@ -562,7 +561,7 @@ class Test_Query_Advance(unittest.TestCase):
         with open(file=weight_file_path, mode='rb') as f:
         #     # 读取每条记录， 然后写到 mysql lite 数据库中
             for i in range(item_len):
-                read_data_section = f.read((9 * 4))
+                read_data_section = f.read(9 * 4)
                 values = struct.unpack('<LLLLLLLLL', read_data_section)
 
                 date_raw = values[0]
@@ -656,7 +655,7 @@ class Test_Query_Advance(unittest.TestCase):
     #读取 钱龙股本变动文件
     def read_all_weight_file_directory_to_sql_lite(self):
 
-        if self.check_qilong_dir_exist() == False:
+        if self.check_qilong_dir_exist() is False:
             return
 
         curdir = os.getcwd()
@@ -1068,8 +1067,8 @@ if __name__ == '__main__':
     BUY_ACTION_DUAL = BUY_ACTION & BUY_ACTION2
     SELL_ACTION_DUAL = SELL_ACTION & SELL_ACTION2 | SELL_ACTION2 & ((MAX_FACTOR_jx_count[0] - ma20_jx_count[0]) < 0)
     #BUY_ACTION_DUAL = BUY_ACTION2
-    BUY_ACTION_DUAL = BUY_ACTION_DUAL[BUY_ACTION_DUAL.apply(lambda x: x == True)]
-    SELL_ACTION_DUAL = SELL_ACTION_DUAL[SELL_ACTION_DUAL.apply(lambda x: x == True)]
+    BUY_ACTION_DUAL = BUY_ACTION_DUAL[BUY_ACTION_DUAL.apply(lambda x: x is True)]
+    SELL_ACTION_DUAL = SELL_ACTION_DUAL[SELL_ACTION_DUAL.apply(lambda x: x is True)]
 
     # 画图看看
     data_4h_boll_cross = data_4h.add_func(boll_cross)
@@ -1103,12 +1102,12 @@ if __name__ == '__main__':
                                         pd.Timestamp('2020-02-16 20:00:00'), pd.Timestamp('2020-02-16 21:00:00'), pd.Timestamp('2020-02-16 22:00:00'), pd.Timestamp('2020-02-16 23:00:00'), 
                                         pd.Timestamp('2020-02-17 00:00:00'), pd.Timestamp('2020-02-17 01:00:00'), pd.Timestamp('2020-02-17 02:00:00'), pd.Timestamp('2020-02-17 03:00:00'), ]])
     
-    data_4h_boll_CROSS_to_1h_action = data_4h_boll_CROSS_to_1h[data_4h_boll_CROSS_to_1h.apply(lambda x: x['ACTION'] == True, axis=1)]  # 去掉 False
+    data_4h_boll_CROSS_to_1h_action = data_4h_boll_CROSS_to_1h[data_4h_boll_CROSS_to_1h.apply(lambda x: x['ACTION'] is True, axis=1)]  # 去掉 False
     print(data_4h_boll_CROSS_to_1h_action)
-    BOLL_CROSS_ACTION = ((hb10_boll_cross['BOLL_CROSS_JX'] > 0) & (data_4h_boll_CROSS_to_1h_action['ACTION'] == True) & (hb10_ma20_cross['btcusdt'] == True) & (hb10_boll_cross['BOLL_CROSS_JX'] < hb10_boll_cross['BOLL_CROSS_SX']))
+    BOLL_CROSS_ACTION = ((hb10_boll_cross['BOLL_CROSS_JX'] > 0) & (data_4h_boll_CROSS_to_1h_action['ACTION'] is True) & (hb10_ma20_cross['btcusdt'] is True) & (hb10_boll_cross['BOLL_CROSS_JX'] < hb10_boll_cross['BOLL_CROSS_SX']))
     #DUAL_CROSS_ACTION = ((DUAL_CROSS_count > 0) &
     #(hb10_boll_cross['BOLL_CROSS_JX'] > 1))
-    BOLL_CROSS_ACTION = BOLL_CROSS_ACTION[BOLL_CROSS_ACTION.apply(lambda x: x == True)]  # 去掉 False
+    BOLL_CROSS_ACTION = BOLL_CROSS_ACTION[BOLL_CROSS_ACTION.apply(lambda x: x is True)]  # 去掉 False
     #DUAL_CROSS_SX = (DUAL_CROSS_count < 0) & (hb10_ma30_cross['MA30_CROSS_SX']
     #< hb10_ma30_cross['MA30_CROSS_JX']) & (hb10_ma20_cross['btcusdt'] ==
     #False)

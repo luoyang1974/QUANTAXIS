@@ -2,7 +2,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -274,7 +274,7 @@ class QA_Dealer():
             return self.callback_message
 
         except Exception as e:
-            QA_util_log_info('MARKET ENGINE ERROR: {}'.format(e))
+            QA_util_log_info(f'MARKET ENGINE ERROR: {e}')
             self.status = TRADE_STATUS.NO_MARKET_DATA
             return self.callback_message
 

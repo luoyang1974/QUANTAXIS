@@ -34,9 +34,9 @@ class TestOptionData(unittest.TestCase):
         strToday = QA_util_today_str()
         for aRow in rows:
             # print(aRow)
-            print(aRow.code);
+            print(aRow.code)
             result2 = QA.QA_fetch_get_option_min(package='tdx', code=aRow.code, start='2018-01-01', end=strToday)
-            pprint.pprint(result2);
+            pprint.pprint(result2)
         #
 
     def testGetOptionList(self):
@@ -46,9 +46,9 @@ class TestOptionData(unittest.TestCase):
         strToday = QA_util_today_str()
         for aRow in rows:
             #print(aRow)
-            print(aRow.code);
+            print(aRow.code)
             result2 = QA.QA_fetch_get_option_day(package='tdx', code=aRow.code, start='2018-01-01', end=strToday)
-            pprint.pprint(result2);
+            pprint.pprint(result2)
         #
         #pprint.pprint(result)
         #strToday = QA_util_today_str();
@@ -64,7 +64,7 @@ class TestOptionData(unittest.TestCase):
             print(aRow)
             print("-------------")
             result2 = QA.QA_fetch_get_option_day(package='tdx', code=aRow.code, start='2018-01-01', end=strToday)
-            pprint.pprint(result2);
+            pprint.pprint(result2)
 
 
 
@@ -79,7 +79,7 @@ class TestOptionData(unittest.TestCase):
             print(aRow)
             print("-------------")
             result2 = QA.QA_fetch_get_option_day(package='tdx', code=aRow.code, start='2018-01-01', end=strToday)
-            pprint.pprint(result2);
+            pprint.pprint(result2)
 
             print("结束获取 ；-》")
 
@@ -92,7 +92,7 @@ class TestOptionData(unittest.TestCase):
             print(aRow)
             print("-------------")
             result2 = QA.QA_fetch_get_option_day(package='tdx', code=aRow.code, start='2018-01-01', end=strToday)
-            pprint.pprint(result2);
+            pprint.pprint(result2)
             time.sleep(1)
 
             print("结束获取 ；-》")
@@ -106,7 +106,7 @@ class TestOptionData(unittest.TestCase):
             print(aRow)
             print("-------------")
             result2 = QA.QA_fetch_get_option_day(package='tdx', code=aRow.code, start='2018-01-01', end=strToday)
-            pprint.pprint(result2);
+            pprint.pprint(result2)
 
             print("结束获取 ；-》")
 
@@ -120,7 +120,7 @@ class TestOptionData(unittest.TestCase):
             print(aRow)
             print("-------------")
             result2 = QA.QA_fetch_get_option_day(package='tdx', code=aRow.code, start='2018-01-01', end=strToday)
-            pprint.pprint(result2);
+            pprint.pprint(result2)
 
 
 
@@ -137,7 +137,7 @@ class TestOptionData(unittest.TestCase):
             print(aRow)
             print("-------------")
             result2 = QA.QA_fetch_get_option_day(package='tdx', code=aRow.code, start='2018-01-01', end=strToday)
-            pprint.pprint(result2);
+            pprint.pprint(result2)
 
 
 

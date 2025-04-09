@@ -1,4 +1,3 @@
-# coding: utf-8
 # Author: 阿财（Rgveda@github）（11652964@qq.com）
 # Created date: 2020-02-27
 #
@@ -80,13 +79,13 @@ FREQUENCY_SHIFTING = {
 def format_btimex_data_fields(datas, frequency):
     # 归一化数据字段，转换填充必须字段，删除多余字段
     frame = pd.DataFrame(datas)
-    frame['symbol'] = frame['symbol'].apply(lambda x:'BITMEX.{}'.format(x))
+    frame['symbol'] = frame['symbol'].apply(lambda x:f'BITMEX.{x}')
     # UTC时间转换为北京时间，接收到的数据有时候 tz-aware 有时候又是变成 non tz-aware，
     # 改了几次代码，既不能单纯 tz_localize 也不能单纯 tz_convert
     # dt.tz_localize(None) 是 Stackoverflow 的解决方案，先观察效果
     frame['datetime'] = pd.to_datetime(
         frame['timestamp']
-    ).dt.tz_localize(None).dt.tz_localize('Asia/Shanghai')
+    , utc=False)
     frame['date'] = frame['datetime'].dt.strftime('%Y-%m-%d')
     frame['datetime'] = frame['datetime'].dt.strftime('%Y-%m-%d %H:%M:%S')
     # GMT+0 String 转换为 UTC Timestamp
@@ -139,7 +138,7 @@ def QA_fetch_bitmex_symbols(active=True):
             retries = retries + 1
             if (retries % 6 == 0):
                 print(ILOVECHINA)
-            print("Retry instrument/active #{}".format(retries - 1))
+            print(f"Retry instrument/active #{retries - 1}")
             time.sleep(0.5)
 
         if (retries == 0):
@@ -190,7 +189,7 @@ def QA_fetch_bitmex_kline_with_auto_retry(
             retries = retries + 1
             if (retries % 6 == 0):
                 print(ILOVECHINA)
-            print("Retry trade/bucketed #{}".format(retries - 1))
+            print(f"Retry trade/bucketed #{retries - 1}")
             time.sleep(0.5)
 
         if (retries == 0):
@@ -229,8 +228,8 @@ def QA_fetch_bitmex_kline(
     reqParams['to'] = end_time
 
     while (reqParams['to'] > start_time):
-        if ((reqParams['from'] > QA_util_datetime_to_Unix_timestamp())) or \
-            ((reqParams['from'] > reqParams['to'])):
+        if (reqParams['from'] > QA_util_datetime_to_Unix_timestamp()) or \
+            (reqParams['from'] > reqParams['to']):
             # 出现“未来”时间，一般是默认时区设置，或者时间窗口滚动前移错误造成的
             QA_util_log_info(
                 'A unexpected \'Future\' timestamp got, Please check self.missing_data_list_func param \'tzlocalize\' set. More info: {:s}@{:s} at {:s} but current time is {}'
@@ -303,8 +302,8 @@ def QA_fetch_bitmex_kline_min(
     retries = 1
     datas = list()
     while (reqParams['to'] > start_time):
-        if ((reqParams['from'] > QA_util_datetime_to_Unix_timestamp())) or \
-            ((reqParams['from'] > reqParams['to'])):
+        if (reqParams['from'] > QA_util_datetime_to_Unix_timestamp()) or \
+            (reqParams['from'] > reqParams['to']):
             # 出现“未来”时间，一般是默认时区设置，或者时间窗口滚动前移错误造成的
             QA_util_log_info(
                 'A unexpected \'Future\' timestamp got, Please check self.missing_data_list_func param \'tzlocalize\' set. More info: {:s}@{:s} at {:s} but current time is {}'

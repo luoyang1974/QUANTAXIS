@@ -1,4 +1,3 @@
-
 # shibor  
 #http://data.bank.hexun.com/dataprovider/BankOfferedrateFlash.ashx?r=1000000000000000&t=31&ts=1531823886747 # 隔夜
 #http://data.bank.hexun.com/dataprovider/BankOfferedrateFlash.ashx?r=0100000000000000&t=31&ts=1531823650473 # 一周

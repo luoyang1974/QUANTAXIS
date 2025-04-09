@@ -1,8 +1,7 @@
-# coding: utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -189,10 +188,10 @@ def QA_fetch_stock_min_adv(
 
     end = start if end is None else end
     if len(start) == 10:
-        start = '{} 09:30:00'.format(start)
+        start = f'{start} 09:30:00'
 
     if len(end) == 10:
-        end = '{} 15:00:00'.format(end)
+        end = f'{end} 15:00:00'
 
     if start == end:
         # 🛠 todo 如果相等，根据 frequence 获取开始时间的 时间段 QA_fetch_stock_min， 不支持start end是相等的
@@ -319,9 +318,9 @@ def QA_fetch_index_min_adv(
 
     end = start if end is None else end
     if len(start) == 10:
-        start = '{} 09:30:00'.format(start)
+        start = f'{start} 09:30:00'
     if len(end) == 10:
-        end = '{} 15:00:00'.format(end)
+        end = f'{end} 15:00:00'
 
     # 🛠 todo 报告错误 如果开始时间 在 结束时间之后
 
@@ -369,10 +368,10 @@ def QA_fetch_stock_transaction_adv(
     '''
     end = start if end is None else end
     if len(start) == 10:
-        start = '{} 09:30:00'.format(start)
+        start = f'{start} 09:30:00'
 
     if len(end) == 10:
-        end = '{} 15:00:00'.format(end)
+        end = f'{end} 15:00:00'
 
     if start == end:
         # 🛠 todo 如果相等，根据 frequence 获取开始时间的 时间段 QA_fetch_stock_min， 不支持start end是相等的
@@ -436,10 +435,10 @@ def QA_fetch_index_transaction_adv(
     '''
     end = start if end is None else end
     if len(start) == 10:
-        start = '{} 09:30:00'.format(start)
+        start = f'{start} 09:30:00'
 
     if len(end) == 10:
-        end = '{} 15:00:00'.format(end)
+        end = f'{end} 15:00:00'
 
     if start == end:
         # 🛠 todo 如果相等，根据 frequence 获取开始时间的 时间段 QA_fetch_stock_min， 不支持start end是相等的
@@ -586,9 +585,9 @@ def QA_fetch_future_min_adv(
 
     end = start if end is None else end
     if len(start) == 10:
-        start = '{} 00:00:00'.format(start)
+        start = f'{start} 00:00:00'
     if len(end) == 10:
-        end = '{} 15:00:00'.format(end)
+        end = f'{end} 15:00:00'
 
     # 🛠 todo 报告错误 如果开始时间 在 结束时间之后
 
@@ -705,7 +704,7 @@ def QA_fetch_stock_realtime_adv(
     code=None,
     num=1,
     collections=DATABASE.get_collection(
-        'realtime_{}'.format(datetime.date.today())
+        f'realtime_{datetime.date.today()}'
     ),
     verbose=True,
 ):
@@ -778,7 +777,7 @@ def QA_fetch_financial_report_adv(code, start, end=None, ltype='EN'):
     else:
         series = pd.Series(
             data=month_data,
-            index=pd.to_datetime(month_data),
+            index=pd.to_datetime(month_data, utc=False),
             name='date'
         )
         timerange = series.loc[start:end].tolist()
@@ -854,7 +853,7 @@ def QA_fetch_stock_financial_calendar_adv(
     else:
         series = pd.Series(
             data=month_data,
-            index=pd.to_datetime(month_data),
+            index=pd.to_datetime(month_data, utc=False),
             name='date'
         )
         timerange = series.loc[start:end].tolist()
@@ -893,7 +892,7 @@ def QA_fetch_stock_divyield_adv(
     else:
         series = pd.Series(
             data=month_data,
-            index=pd.to_datetime(month_data),
+            index=pd.to_datetime(month_data, utc=False),
             name='date'
         )
         timerange = series.loc[start:end].tolist()
@@ -974,9 +973,9 @@ def QA_fetch_cryptocurrency_min_adv(
 
     end = start if end is None else end
     if len(start) == 10:
-        start = '{} 00:00:00'.format(start)
+        start = f'{start} 00:00:00'
     if len(end) == 10:
-        end = '{} 23:59:59'.format(end)
+        end = f'{end} 23:59:59'
 
     # 🛠 todo 报告错误 如果开始时间 在 结束时间之后
 
@@ -1036,7 +1035,7 @@ if __name__ == '__main__':
     import QUANTAXIS as QA
     codelist = ['BINANCE.BCHUSDT', 'BINANCE.BSVUSDT', 'BINANCE.BTCUSDT', 'BINANCE.EOSUSDT', 'BINANCE.ETHUSDT', 'BINANCE.ETCUSDT', 'BINANCE.DASHUSDT', 'BINANCE.LTCUSDT', 'BINANCE.XMRUSDT', 'BINANCE.XRPUSDT', 'BINANCE.ZECUSDT']
     data1 = QA_fetch_cryptocurrency_day_adv(
-            code=codelist+['HUOBI.{}'.format(code) for code in FIRST_PRIORITY],
+            code=codelist+[f'HUOBI.{code}' for code in FIRST_PRIORITY],
             start='2019-08-21',
             end='2020-05-28 18:10:00',
         )

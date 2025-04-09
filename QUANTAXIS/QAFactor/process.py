@@ -10,15 +10,15 @@ from QUANTAXIS.QAFactor.utils import get_forward_returns_columns
 
 
 def get_clean_factor_and_forward_returns(
-        factor: Union[pd.Series, pd.DataFrame],
-        prices: Union[pd.Series, pd.DataFrame],
-        groupby: Union[dict, pd.Series, pd.DataFrame],
-        stock_start_date: Union[dict, pd.Series, pd.DataFrame],
-        weights: Union[dict, pd.Series, pd.DataFrame],
+        factor: pd.Series | pd.DataFrame,
+        prices: pd.Series | pd.DataFrame,
+        groupby: dict | pd.Series | pd.DataFrame,
+        stock_start_date: dict | pd.Series | pd.DataFrame,
+        weights: dict | pd.Series | pd.DataFrame,
         binning_by_group: bool = False,
-        quantiles: Union[int, Tuple[float], List[float]] = 5,
-        bins: Union[int, Tuple[float], List[float]] = None,
-        periods: Union[int, Tuple[int], List[int]] = (1, 5, 15),
+        quantiles: int | tuple[float] | list[float] = 5,
+        bins: int | tuple[float] | list[float] = None,
+        periods: int | tuple[int] | list[int] = (1, 5, 15),
         max_loss: float = 0.25,
         zero_aware: bool = False,
         frequence: str = "1D",
@@ -95,7 +95,7 @@ def get_clean_factor_and_forward_returns(
 def get_forward_returns(
         factor: pd.DataFrame,
         prices: pd.DataFrame,
-        periods: Union[int, Tuple[int], List[int]] = (1, 5, 10),
+        periods: int | tuple[int] | list[int] = (1, 5, 10),
         frequence: str = "1D",
 ) -> pd.DataFrame:
     """
@@ -112,10 +112,10 @@ def get_forward_returns(
     ---
     :return: 因子远期收益
     """
-    factor_timelist = pd.to_datetime(factor.index).tolist()
+    factor_timelist = pd.to_datetime(factor.index, utc=False).tolist()
     factor_timelist = sorted(
         list(
-            set(factor_timelist) & set(pd.to_datetime(prices.index).tolist())))
+            set(factor_timelist) & set(pd.to_datetime(prices.index, utc=False).tolist())))
 
     if len(factor_timelist) == 0:
         raise ValueError("错误：因子数据的日期索引与价格数据日期索引不匹配")
@@ -155,12 +155,12 @@ def get_forward_returns(
 def get_clean_factor(
         factor: pd.DataFrame,
         forward_returns: pd.DataFrame,
-        groupby: Union[dict, pd.Series, pd.DataFrame],
-        stock_start_date: Union[dict, pd.Series, pd.DataFrame],
-        weights: Union[dict, pd.Series, pd.DataFrame],
+        groupby: dict | pd.Series | pd.DataFrame,
+        stock_start_date: dict | pd.Series | pd.DataFrame,
+        weights: dict | pd.Series | pd.DataFrame,
         binning_by_group: bool = False,
-        quantiles: Union[int, Tuple[float], List[float]] = 5,
-        bins: Union[int, Tuple[float], List[float]] = None,
+        quantiles: int | tuple[float] | list[float] = 5,
+        bins: int | tuple[float] | list[float] = None,
         max_loss: float = 0.25,
         zero_aware: bool = False,
 ) -> pd.DataFrame:
@@ -241,7 +241,7 @@ def get_clean_factor(
             diff = set(factor_copy.index.get_level_values("code")) - set(
                 weights.keys())
             if len(diff) > 0:
-                raise KeyError("股票 {} 不在加权映射中".format(list(diff)))
+                raise KeyError(f"股票 {list(diff)} 不在加权映射中")
             ww = pd.Series(weights)
             weights = pd.Series(
                 index=factor_copy.index,
@@ -291,8 +291,8 @@ def get_clean_factor(
 
 def quantize_data(
         factor_data: pd.DataFrame,
-        quantiles: Union[int, Tuple[float], List[float]] = 5,
-        bins: Union[int, Tuple[float], List[float]] = None,
+        quantiles: int | tuple[float] | list[float] = 5,
+        bins: int | tuple[float] | list[float] = None,
         binning_by_group: bool = False,
         zero_aware: bool = False,
         no_raise: bool = False,

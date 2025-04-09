@@ -1,5 +1,3 @@
-#coding=utf-8
-
 from time import time
 from QUANTAXIS.QAUtil.QASingleton import singleton
 

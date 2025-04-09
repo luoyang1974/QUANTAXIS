@@ -19,7 +19,7 @@ def fetchCodeZjlx(code = None):
         strMsg = 'read:%s'%code
         message = strMsg.encode()
         sock.sendall(message)
-        print('sending {!r}'.format(message))
+        print(f'sending {message!r}')
 
         while True:
             data = sock.recv(512)
@@ -29,7 +29,7 @@ def fetchCodeZjlx(code = None):
 
             # print('received {!r}'.format(data))
 
-            cmdString = data.decode();
+            cmdString = data.decode()
             cmdArry = cmdString.split('@')
 
             print(cmdArry[0])
@@ -53,7 +53,7 @@ def fetchCodeZjlx(code = None):
             if (cmd == 'finished'):
                 print('finish')
                 print(cmdArry[1].encode('utf-8'))
-                break;
+                break
 
     finally:
         print('closing socket')

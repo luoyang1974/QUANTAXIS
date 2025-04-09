@@ -2,7 +2,8 @@
 因子分析主模块，集成数据输入，数据处理，数据分析，画图等功能
 """
 
-from typing import Callable, Iterable, List, Tuple, Union
+from typing import List, Tuple, Union
+from collections.abc import Callable, Iterable
 
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
@@ -24,31 +25,31 @@ class FactorAnalyzer:
 
     def __init__(
             self,
-            factor: Union[pd.Series,
-                          pd.DataFrame],
-            prices: Union[pd.Series,
-                          pd.DataFrame,
-                          Callable],
-            groupby: Union[pd.Series,
-                           pd.DataFrame,
-                           Callable],
-            stock_start_date: Union[pd.Series,
-                                    pd.DataFrame,
-                                    Callable],
-            weights: Union[float,
-                           pd.Series,
-                           pd.DataFrame,
-                           Callable] = 1.0,
+            factor: (pd.Series |
+                          pd.DataFrame),
+            prices: (pd.Series |
+                          pd.DataFrame |
+                          Callable),
+            groupby: (pd.Series |
+                           pd.DataFrame |
+                           Callable),
+            stock_start_date: (pd.Series |
+                                    pd.DataFrame |
+                                    Callable),
+            weights: (float |
+                           pd.Series |
+                           pd.DataFrame |
+                           Callable) = 1.0,
             frequence: str = "DAY",
-            quantiles: Union[int,
-                             Tuple[float],
-                             List[float]] = 5,
-            bins: Union[int,
-                        Tuple[float],
-                        List[float]] = None,
-            periods: Union[int,
-                           Tuple[int],
-                           List[int]] = (1,
+            quantiles: (int |
+                             tuple[float] |
+                             list[float]) = 5,
+            bins: (int |
+                        tuple[float] |
+                        list[float]) = None,
+            periods: (int |
+                           tuple[int] |
+                           list[int]) = (1,
                                          5,
                                          10),
             binning_by_group: bool = False,

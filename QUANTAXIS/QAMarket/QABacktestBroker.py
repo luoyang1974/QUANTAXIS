@@ -2,7 +2,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -272,7 +272,7 @@ class QA_BacktestBroker(QA_Broker):
 
         if status == '':
             return self.dealer.deal_df.query(
-                'account_cookie=="{}"'.format(account)
+                f'account_cookie=="{account}"'
             ).loc[:,
                   self.orderstatus_headers].set_index(
                       ['account_cookie',
@@ -280,7 +280,7 @@ class QA_BacktestBroker(QA_Broker):
                   )
         elif status == 'filled':
             return self.dealer.deal_df.query(
-                'account_cookie=="{}"'.format(account)
+                f'account_cookie=="{account}"'
             ).loc[:,
                   self.dealstatus_headers].set_index(
                       ['account_cookie',
@@ -312,7 +312,7 @@ class QA_BacktestBroker(QA_Broker):
             if order.frequence is FREQUENCE.DAY:
 
                 order.date = order.datetime[0:10]
-                order.datetime = '{} 09:30:00'.format(order.date)
+                order.datetime = f'{order.date} 09:30:00'
             elif order.frequence in [FREQUENCE.ONE_MIN,
                                      FREQUENCE.FIVE_MIN,
                                      FREQUENCE.FIFTEEN_MIN,
@@ -336,7 +336,7 @@ class QA_BacktestBroker(QA_Broker):
                     
             if order.frequence is FREQUENCE.DAY:
                 order.date = order.datetime[0:10]
-                order.datetime = '{} 15:00:00'.format(order.date)
+                order.datetime = f'{order.date} 15:00:00'
             elif order.frequence in [FREQUENCE.ONE_MIN,
                                      FREQUENCE.FIVE_MIN,
                                      FREQUENCE.FIFTEEN_MIN,
@@ -356,7 +356,7 @@ class QA_BacktestBroker(QA_Broker):
                 #     str(order.datetime), '%Y-%m-%d %H-%M-%S') + datetime.timedelta(day=1))
 
                 order.date = order.datetime[0:10]
-                order.datetime = '{} 09:30:00'.format(order.date)
+                order.datetime = f'{order.date} 09:30:00'
             elif order.frequence in [FREQUENCE.ONE_MIN,
                                      FREQUENCE.FIVE_MIN,
                                      FREQUENCE.FIFTEEN_MIN,
@@ -373,7 +373,7 @@ class QA_BacktestBroker(QA_Broker):
                 #     str(order.datetime), '%Y-%m-%d %H-%M-%S') + datetime.timedelta(day=1))
 
                 order.date = order.datetime[0:10]
-                order.datetime = '{} 09:30:00'.format(order.date)
+                order.datetime = f'{order.date} 09:30:00'
             elif order.frequence in [FREQUENCE.ONE_MIN,
                                      FREQUENCE.FIVE_MIN,
                                      FREQUENCE.FIFTEEN_MIN,
@@ -448,5 +448,5 @@ class QA_BacktestBroker(QA_Broker):
                     data['vol'] = data['volume']
                 return data
             except Exception as e:
-                QA_util_log_info('MARKET_ENGING ERROR: {}'.format(e))
+                QA_util_log_info(f'MARKET_ENGING ERROR: {e}')
                 return None

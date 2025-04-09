@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -230,7 +229,7 @@ class QA_Tdx_Executor(QA_Thread):
 
     def save_mongo(self, data, client=DATABASE):
         database = DATABASE.get_collection(
-            'realtime_{}'.format(datetime.date.today()))
+            f'realtime_{datetime.date.today()}')
 
         database.insert_many(QA_util_to_json_from_pandas(data))
 
@@ -239,7 +238,7 @@ class QA_Tdx_Executor(QA_Thread):
         sleep = int(self.sleep_time)
         _time1 = datetime.datetime.now()
         database = DATABASE.get_collection(
-            'realtime_{}'.format(datetime.date.today()))
+            f'realtime_{datetime.date.today()}')
         database.create_index([('code', QA_util_sql_mongo_sort_ASCENDING)])
         database.create_index([('datetime', QA_util_sql_mongo_sort_ASCENDING)])
 
@@ -262,7 +261,7 @@ class QA_Tdx_Executor(QA_Thread):
                 print('Program Last Time {}'.format(
                     (datetime.datetime.now() - _time1).total_seconds()))
             else:
-                print('Not Trading time {}'.format(_time))
+                print(f'Not Trading time {_time}')
                 time.sleep(sleep)
 
 
@@ -291,7 +290,7 @@ def get_bar(timeout=1, sleep=1):
 
             return data
         else:
-            print('Not Trading time {}'.format(_time))
+            print(f'Not Trading time {_time}')
             time.sleep(sleep)
 
 

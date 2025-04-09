@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +37,7 @@ from QUANTAXIS.QAUtil.QASql import (
 # 需要与yutian讨论具体配置文件的放置位置 author:Will 2018.5.19
 
 DEFAULT_MONGO = os.getenv('MONGODB', 'localhost')
-DEFAULT_DB_URI = 'mongodb://{}:27017'.format(DEFAULT_MONGO)
+DEFAULT_DB_URI = f'mongodb://{DEFAULT_MONGO}:27017'
 CONFIGFILE_PATH = '{}{}{}'.format(setting_path, os.sep, 'config.ini')
 INFO_IP_FILE_PATH = '{}{}{}'.format(setting_path, os.sep, 'info_ip.json')
 STOCK_IP_FILE_PATH = '{}{}{}'.format(setting_path, os.sep, 'stock_ip.json')
@@ -243,7 +242,7 @@ def exclude_from_stock_ip_list(exclude_ip_list):
 
 
 if os.path.exists(INFO_IP_FILE_PATH):
-    with open(INFO_IP_FILE_PATH, "r") as f:
+    with open(INFO_IP_FILE_PATH) as f:
         info_ip_list = json.load(f)
 else:
     info_ip_list = [
@@ -286,7 +285,7 @@ else:
         json.dump(info_ip_list, f)
 
 if os.path.exists(STOCK_IP_FILE_PATH):
-    with open(STOCK_IP_FILE_PATH, "r") as f:
+    with open(STOCK_IP_FILE_PATH) as f:
         stock_ip_list = json.load(f)
 else:
     stock_ip_list = [
@@ -358,7 +357,7 @@ else:
         json.dump(stock_ip_list, f)
 
 if os.path.exists(FUTURE_IP_FILE_PATH):
-    with open(FUTURE_IP_FILE_PATH, "r") as f:
+    with open(FUTURE_IP_FILE_PATH) as f:
         future_ip_list = json.load(f)
 else:
     future_ip_list = [

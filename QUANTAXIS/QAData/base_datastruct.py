@@ -1,8 +1,7 @@
-# coding:utf-8
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -62,12 +61,12 @@ class _quotation_base():
 
     # 🛠todo  DataFrame 改成 df 变量名字
     def __init__(
-            self,
-            DataFrame,
-            dtype='undefined',
-            if_fq='bfq',
-            marketdata_type='None',
-            frequence=None
+        self,
+        DataFrame,
+        dtype='undefined',
+        if_fq='bfq',
+        marketdata_type='None',
+        frequence=None
     ):
         '''
         :param df: DataFrame 类型
@@ -220,14 +219,14 @@ class _quotation_base():
         :return:
         '''
         data_to_init = self.data.__getitem__(key)
-        if isinstance(data_to_init, pd.DataFrame) == True:
+        if isinstance(data_to_init, pd.DataFrame) is True:
             # 重新构建一个 QA_DataStruct_XXXX，
             return self.new(
                 data=data_to_init,
                 dtype=self.type,
                 if_fq=self.if_fq
             )
-        elif isinstance(data_to_init, pd.Series) == True:
+        elif isinstance(data_to_init, pd.Series) is True:
             # 返回 QA_DataStruct_XXXX DataFrame 中的一个 序列Series
             return data_to_init
 
@@ -241,7 +240,7 @@ class _quotation_base():
         #     self.new(data=self.data.__getattr__(attr), dtype=self.type, if_fq=self.if_fq)
         # except:
         raise AttributeError(
-            'QA_DataStruct_* Class Currently has no attribute {}'.format(attr)
+            f'QA_DataStruct_* Class Currently has no attribute {attr}'
         )
 
     '''
@@ -277,31 +276,31 @@ class _quotation_base():
     '''
 
     @property
-    @lru_cache()
+    @lru_cache
     def open(self):
         'return open price series'
         return self.data.open
 
     @property
-    @lru_cache()
+    @lru_cache
     def high(self):
         'return high price series'
         return self.data.high
 
     @property
-    @lru_cache()
+    @lru_cache
     def low(self):
         'return low price series'
         return self.data.low
 
     @property
-    @lru_cache()
+    @lru_cache
     def close(self):
         'return close price series'
         return self.data.close
 
     @property
-    @lru_cache()
+    @lru_cache
     def volume(self):
         if 'volume' in self.data.columns:
             return self.data.volume
@@ -315,7 +314,7 @@ class _quotation_base():
     vol = volume
 
     @property
-    @lru_cache()
+    @lru_cache
     def amount(self):
         if 'amount' in self.data.columns:
             return self.data.amount
@@ -339,18 +338,18 @@ class _quotation_base():
     #OPEN = open
     #Open = open
     @property
-    @lru_cache()
+    @lru_cache
     def OPEN(self):
         return self.open
 
     @property
-    @lru_cache()
+    @lru_cache
     def Open(self):
         return self.open
 
     # 开盘 收盘 最高 最低 的 平均价
     @property
-    @lru_cache()
+    @lru_cache
     def price(self):
 
         res = (self.open + self.high + self.low + self.close) / 4
@@ -359,7 +358,7 @@ class _quotation_base():
 
     # ？？
     @property
-    @lru_cache()
+    @lru_cache
     def trade(self):
         """
         期货中
@@ -372,7 +371,7 @@ class _quotation_base():
     # ？？
 
     @property
-    @lru_cache()
+    @lru_cache
     def position(self):
         if 'position' in self.data.columns:
             return self.data.position
@@ -381,32 +380,35 @@ class _quotation_base():
 
     # 交易日期
     @property
-    @lru_cache()
+    @lru_cache
     def date(self):
         index = self.data.index.remove_unused_levels()
         try:
-            return index.levels[0] if 'date' in self.data.index.names else sorted(
-                list(set(self.datetime.date))
-            )
+            return index.levels[0
+                               ] if 'date' in self.data.index.names else sorted(
+                                   list(set(self.datetime.date))
+                               )
         except:
             return None
 
     @property
-    @lru_cache()
+    @lru_cache
     def datetime(self):
         '分钟线结构返回datetime 日线结构返回date'
         index = self.data.index.remove_unused_levels()
-        return pd.to_datetime(index.levels[0])
+        return pd.to_datetime(
+            index.levels[0]
+        , utc=False)
 
     @property
-    @lru_cache()
+    @lru_cache
     def money(self):
         res = self.data.amount
         res.name = 'money'
         return res
 
     @property
-    @lru_cache()
+    @lru_cache
     def avg(self):
         try:
             res = self.amount / self.volume
@@ -416,7 +418,7 @@ class _quotation_base():
             return None
 
     @property
-    @lru_cache()
+    @lru_cache
     def ndarray(self):
         return self.to_numpy()
 
@@ -426,21 +428,21 @@ class _quotation_base():
     '''
 
     @property
-    @lru_cache()
+    @lru_cache
     def max(self):
         res = self.price.groupby(level=1).apply(lambda x: x.max())
         res.name = 'max'
         return res
 
     @property
-    @lru_cache()
+    @lru_cache
     def min(self):
         res = self.price.groupby(level=1).apply(lambda x: x.min())
         res.name = 'min'
         return res
 
     @property
-    @lru_cache()
+    @lru_cache
     def mean(self):
         res = self.price.groupby(level=1).apply(lambda x: x.mean())
         res.name = 'mean'
@@ -449,7 +451,7 @@ class _quotation_base():
     # 一阶差分序列
 
     @property
-    @lru_cache()
+    @lru_cache
     def price_diff(self):
         '返回DataStruct.price的一阶差分'
         res = self.price.groupby(level=1).apply(lambda x: x.diff(1))
@@ -459,28 +461,28 @@ class _quotation_base():
     # 样本方差(无偏估计) population variance
 
     @property
-    @lru_cache()
+    @lru_cache
     def pvariance(self):
         '返回DataStruct.price的方差 variance'
         res = self.price.groupby(level=1
-                                 ).apply(lambda x: statistics.pvariance(x))
+                                ).apply(lambda x: statistics.pvariance(x))
         res.name = 'pvariance'
         return res
 
     # 方差
     @property
-    @lru_cache()
+    @lru_cache
     def variance(self):
         '返回DataStruct.price的方差 variance'
         res = self.price.groupby(level=1
-                                 ).apply(lambda x: statistics.variance(x))
+                                ).apply(lambda x: statistics.variance(x))
         res.name = 'variance'
         return res
 
     # 标准差
 
     @property
-    @lru_cache()
+    @lru_cache
     def bar_pct_change(self):
         '返回bar的涨跌幅'
         res = (self.close - self.open) / self.open
@@ -488,7 +490,7 @@ class _quotation_base():
         return res
 
     @property
-    @lru_cache()
+    @lru_cache
     def bar_amplitude(self):
         "返回bar振幅"
         res = (self.high - self.low) / self.low
@@ -496,7 +498,7 @@ class _quotation_base():
         return res
 
     @property
-    @lru_cache()
+    @lru_cache
     def stdev(self):
         '返回DataStruct.price的样本标准差 Sample standard deviation'
         res = self.price.groupby(level=1).apply(lambda x: statistics.stdev(x))
@@ -506,7 +508,7 @@ class _quotation_base():
     # 总体标准差
 
     @property
-    @lru_cache()
+    @lru_cache
     def pstdev(self):
         '返回DataStruct.price的总体标准差 Population standard deviation'
         res = self.price.groupby(level=1).apply(lambda x: statistics.pstdev(x))
@@ -515,22 +517,22 @@ class _quotation_base():
 
     # 调和平均数
     @property
-    @lru_cache()
+    @lru_cache
     def mean_harmonic(self):
         '返回DataStruct.price的调和平均数'
         res = self.price.groupby(level=1
-                                 ).apply(lambda x: statistics.harmonic_mean(x))
+                                ).apply(lambda x: statistics.harmonic_mean(x))
         res.name = 'mean_harmonic'
         return res
 
     # 众数
     @property
-    @lru_cache()
+    @lru_cache
     def mode(self):
         '返回DataStruct.price的众数'
         try:
             res = self.price.groupby(level=1
-                                     ).apply(lambda x: statistics.mode(x))
+                                    ).apply(lambda x: statistics.mode(x))
             res.name = 'mode'
             return res
         except:
@@ -538,7 +540,7 @@ class _quotation_base():
 
     # 振幅
     @property
-    @lru_cache()
+    @lru_cache
     def amplitude(self):
         '返回DataStruct.price的百分比变化'
         res = self.price.groupby(
@@ -550,7 +552,7 @@ class _quotation_base():
     # 偏度 Skewness
 
     @property
-    @lru_cache()
+    @lru_cache
     def skew(self):
         '返回DataStruct.price的偏度'
         res = self.price.groupby(level=1).apply(lambda x: x.skew())
@@ -560,7 +562,7 @@ class _quotation_base():
     # 峰度Kurtosis
 
     @property
-    @lru_cache()
+    @lru_cache
     def kurt(self):
         '返回DataStruct.price的峰度'
         res = self.price.groupby(level=1).apply(lambda x: x.kurt())
@@ -570,14 +572,14 @@ class _quotation_base():
     # 百分数变化
 
     @property
-    @lru_cache()
+    @lru_cache
     def pct_change(self):
         '返回DataStruct.price的百分比变化'
         res = self.price.groupby(level=1).apply(lambda x: x.pct_change())
         res.name = 'pct_change'
         return res
 
-    @lru_cache()
+    @lru_cache
     def close_pct_change(self):
         '返回DataStruct.close的百分比变化'
         res = self.close.groupby(level=1).apply(lambda x: x.pct_change())
@@ -586,7 +588,7 @@ class _quotation_base():
 
     # 平均绝对偏差
     @property
-    @lru_cache()
+    @lru_cache
     def mad(self):
         '平均绝对偏差'
         res = self.price.groupby(level=1).apply(lambda x: x.mad())
@@ -595,7 +597,7 @@ class _quotation_base():
 
     # 归一化(此处的归一化不能使用 MinMax方法, 会引入未来数据)
     @property
-    @lru_cache()
+    @lru_cache
     def normalized(self):
         '归一化'
         res = self.groupby('code').apply(lambda x: x / x.iloc[0])
@@ -633,31 +635,31 @@ class _quotation_base():
             )
 
     @property
-    @lru_cache()
+    @lru_cache
     def index(self):
         '返回结构体的索引'
         return self.data.index.remove_unused_levels()
 
     @property
-    @lru_cache()
+    @lru_cache
     def code(self):
         '返回结构体中的代码'
-        return self.index.levels[1]
+        return self.index.levels[1].map(lambda x: x[0:6])
 
     @property
-    @lru_cache()
+    @lru_cache
     def dicts(self):
         '返回dict形式数据'
         return self.to_dict('index')
 
     @property
-    @lru_cache()
+    @lru_cache
     def len(self):
         '返回结构的长度'
         return len(self.data)
 
     @property
-    @lru_cache()
+    @lru_cache
     def split_dicts(self):
         """
         拆分成dict code:datastruct模式,方便快速选择.
@@ -673,7 +675,10 @@ class _quotation_base():
         :return:  字典dict 类型
         '''
         try:
-            return self.dicts[(QA_util_to_datetime(time), str(code))]
+            return self.dicts[(
+                QA_util_to_datetime(time),
+                str(code)
+            )]
         except Exception as e:
             raise e
 
@@ -784,13 +789,13 @@ class _quotation_base():
         self.kline_echarts(code).render(path_name)
         webbrowser.open(path_name)
         QA_util_log_info(
-            'The Pic has been saved to your path: {}'.format(path_name)
+            f'The Pic has been saved to your path: {path_name}'
         )
 
     def get(self, name):
 
         if name in self.data.__dir__():
-            return eval('self.{}'.format(name))
+            return eval(f'self.{name}')
         else:
             raise ValueError('QADATASTRUCT CANNOT GET THIS PROPERTY')
 
@@ -802,19 +807,19 @@ class _quotation_base():
             return self.data.query(context)
 
         except pd.core.computation.ops.UndefinedVariableError:
-            print('QA CANNOT QUERY THIS {}'.format(context))
+            print(f'QA CANNOT QUERY THIS {context}')
             pass
 
     def groupby(
-            self,
-            by=None,
-            axis=0,
-            level=None,
-            as_index=True,
-            sort=False,
-            group_keys=False,
-            squeeze=False,
-            **kwargs
+        self,
+        by=None,
+        axis=0,
+        level=None,
+        as_index=True,
+        sort=False,
+        group_keys=False,
+        squeeze=False,
+        **kwargs
     ):
         """仿dataframe的groupby写法,但控制了by的code和datetime
 
@@ -838,15 +843,27 @@ class _quotation_base():
         elif by == self.index.names[0]:
             by = None
             level = 0
-        return self.data.groupby(
-            by=by,
-            axis=axis,
-            level=level,
-            as_index=as_index,
-            sort=sort,
-            group_keys=group_keys,
-            squeeze=squeeze
-        )
+        # 适配 pandas 1.0+，避免出现 FutureWarning:
+        # Paramter 'squeeze' is deprecated 提示
+        if (squeeze):
+            return self.data.groupby(
+                by=by,
+                axis=axis,
+                level=level,
+                as_index=as_index,
+                sort=sort,
+                group_keys=group_keys,
+                squeeze=squeeze
+            ).squeeze()
+        else:
+            return self.data.groupby(
+                by=by,
+                axis=axis,
+                level=level,
+                as_index=as_index,
+                sort=sort,
+                group_keys=group_keys,
+            )
 
     def new(self, data=None, dtype=None, if_fq=None):
         """
@@ -1052,7 +1069,13 @@ class _quotation_base():
         add_funcx 会先 reset_index 变成单索引(pd.DatetimeIndex)
         """
 
-        return self.groupby(level=1, sort=False).apply(lambda x: func(x.reset_index(1), *arg, **kwargs))
+        return self.groupby(
+            level=1,
+            sort=False
+        ).apply(lambda x: func(x.reset_index(1),
+                               *arg,
+                               **kwargs))
+
     # def add_func_adv(self, func, *arg, **kwargs):
     #     """QADATASTRUCT的指标/函数apply入口
 
@@ -1211,7 +1234,7 @@ class _quotation_base():
         try:
             return self.new(_select_day(day), self.type, self.if_fq)
         except:
-            raise ValueError('QA CANNOT GET THIS Day {} '.format(day))
+            raise ValueError(f'QA CANNOT GET THIS Day {day} ')
 
     def select_month(self, month):
         """
@@ -1236,7 +1259,7 @@ class _quotation_base():
         try:
             return self.new(_select_month(month), self.type, self.if_fq)
         except:
-            raise ValueError('QA CANNOT GET THIS Month {} '.format(month))
+            raise ValueError(f'QA CANNOT GET THIS Month {month} ')
 
     def select_code(self, code):
         """
@@ -1261,7 +1284,7 @@ class _quotation_base():
         try:
             return self.new(_select_code(code), self.type, self.if_fq)
         except:
-            raise ValueError('QA CANNOT FIND THIS CODE {}'.format(code))
+            raise ValueError(f'QA CANNOT FIND THIS CODE {code}')
 
     def select_columns(self, columns):
         if isinstance(columns, list):
@@ -1280,7 +1303,11 @@ class _quotation_base():
         """
         选择一个特定的时间点
         """
-        return self.data.loc[self.datetime.map(lambda x: x.minute==minute and x.hour==hour and x.second==second), slice(None)]
+        return self.data.loc[self.datetime.map(
+            lambda x: x.minute == minute and x.hour == hour and x.second ==
+            second
+        ),
+                             slice(None)]
 
     def get_bar(self, code, time):
         """
@@ -1333,7 +1360,7 @@ class _quotation_base():
             return self.new(eq(self.data), self.type, self.if_fq)
         else:
             raise ValueError(
-                'QA CURRENTLY DONOT HAVE THIS METHODS {}'.format(method)
+                f'QA CURRENTLY DONOT HAVE THIS METHODS {method}'
             )
 
     def find_bar(self, code, time):

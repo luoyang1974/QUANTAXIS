@@ -1,10 +1,9 @@
-# coding:utf-8
 # Author: 阿财（Rgveda@github）（11652964@qq.com）
 # Created date: 2020-02-27
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2020 yutiansut/QUANTAXIS
+# Copyright (c) 2016-2021 yutiansut/QUANTAXIS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +34,7 @@ from QUANTAXIS.QAData.base_datastruct import *
 try:
     import peakutils
 except:
-    print('PLEASE run "pip install peakutils" to call these modules')
+    #print('PLEASE run "pip install peakutils" to call these modules')
     pass
 try:
     from QUANTAXIS.QAIndicator.talib_numpy import *
@@ -47,7 +46,7 @@ try:
         QA_util_print_timestamp
     )
 except:
-    print('PLEASE run "pip install QUANTAXIS" to call these modules')
+    print('PLEASE run "pip install QUANTAXIS" before call QUANTAXIS.QAAnalysis.QAAnalysis_signal modules')
     pass
 
 """
@@ -404,8 +403,8 @@ def price_predict_with_macd_trend_func(data):
     x_tp_min, x_tp_max = find_peak_vextors_eagerly(data.close.values)
     macd_up_trend_PEAKPOINT_MIN = (PRICE_PREDICT.iloc[x_tp_min, PRICE_PREDICT.columns.get_loc('MACD_CROSS_JX')] < PRICE_PREDICT.iloc[x_tp_min, PRICE_PREDICT.columns.get_loc('MACD_CROSS_SX')])
     macd_up_trend_PEAKPOINT_MAX = (PRICE_PREDICT.iloc[x_tp_max, PRICE_PREDICT.columns.get_loc('MACD_CROSS_JX')] < PRICE_PREDICT.iloc[x_tp_max, PRICE_PREDICT.columns.get_loc('MACD_CROSS_SX')])
-    macd_up_trend_PEAKPOINT_MIN = macd_up_trend_PEAKPOINT_MIN[macd_up_trend_PEAKPOINT_MIN.apply(lambda x: x == True)]  # eqv.  Trim(x == False)
-    macd_up_trend_PEAKPOINT_MAX = macd_up_trend_PEAKPOINT_MAX[macd_up_trend_PEAKPOINT_MAX.apply(lambda x: x == True)]  # eqv.  Trim(x == False)
+    macd_up_trend_PEAKPOINT_MIN = macd_up_trend_PEAKPOINT_MIN[macd_up_trend_PEAKPOINT_MIN.apply(lambda x: x is True)]  # eqv.  Trim(x == False)
+    macd_up_trend_PEAKPOINT_MAX = macd_up_trend_PEAKPOINT_MAX[macd_up_trend_PEAKPOINT_MAX.apply(lambda x: x is True)]  # eqv.  Trim(x == False)
     PRICE_PREDICT.loc[macd_up_trend_PEAKPOINT_MIN.index, 'PRICE_PRED_CROSS_JX'] = 1
     PRICE_PREDICT.loc[macd_up_trend_PEAKPOINT_MAX.index, 'PRICE_PRED_CROSS_SX'] = 1
     PRICE_PREDICT.loc[macd_up_trend_PEAKPOINT_MIN.index, 'PRICE_PRED_CROSS'] = PRICE_PREDICT.loc[macd_up_trend_PEAKPOINT_MIN.index].apply(lambda x: PRICE_PREDICT.index.get_level_values(level=0).get_loc(x.name[0]), axis=1)

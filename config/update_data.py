@@ -30,7 +30,7 @@ from QUANTAXIS import (QA_SU_save_etf_day, QA_SU_save_index_day, QA_SU_save_stoc
                        QA_SU_save_stock_list, QA_SU_save_stock_xdxr,
                        QA_util_log_info)
 
-print('SAVE/UPDATE {}'.format(datetime.datetime.now()))
+print(f'SAVE/UPDATE {datetime.datetime.now()}')
 
 QA_SU_save_stock_day('tdx')
 QA_SU_save_stock_xdxr('tdx')

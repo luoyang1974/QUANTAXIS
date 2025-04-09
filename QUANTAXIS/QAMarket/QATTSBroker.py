@@ -1,5 +1,3 @@
-# coding:utf-8
-
 import os
 import requests
 import json
@@ -124,7 +122,7 @@ class QA_TTSBroker(QA_Broker):
         self.name = BROKER_TYPE.TTS
         self.config = TTSConfig()
         self.order_handler = QA_OrderHandler()
-        self._endpoint = 'http://%s:%s/api' % (
+        self._endpoint = 'http://{}:{}/api'.format(
             self.config.values['trade_server_ip'],
             self.config.values['trade_server_port']
         )
@@ -400,7 +398,7 @@ class QA_TTSBroker(QA_Broker):
         )
         try:
             event.order.queued(res.realorder_id[0])
-            print('success receive order {}'.format(event.order.realorder_id))
+            print(f'success receive order {event.order.realorder_id}')
         except Exception as e:
             print(res.realorder_id[0])
             print(event.order)
@@ -458,7 +456,7 @@ class QA_TTSBroker(QA_Broker):
                 data['vol'] = data['volume']
             return data
         except Exception as e:
-            QA_util_log_info('MARKET_ENGING ERROR: {}'.format(e))
+            QA_util_log_info(f'MARKET_ENGING ERROR: {e}')
             return None
 
     def query_orders(self, account_cookie, status='filled'):

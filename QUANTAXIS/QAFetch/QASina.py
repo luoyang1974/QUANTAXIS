@@ -1,5 +1,3 @@
-
-
 uri="http://mdfm.eastmoney.com/EM_UBG_MinuteApi/Js/Get\
 ?dtype=all&token=44c9d251add88e27b65ed86506f6e5da&rows=\
 4000&cb=&page=1&id=6000121&gtvolume=&sort=asc&_=1534862271461"

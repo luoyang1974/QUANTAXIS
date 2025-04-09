@@ -35,7 +35,7 @@ class QA_AsyncScheduler(*bases):
         info = ' '.join(info)
         if info:
             info += ' '
-        return '<Scheduler {}jobs={}>'.format(info, len(self))
+        return f'<Scheduler {info}jobs={len(self)}>'
 
     @property
     def limit(self):

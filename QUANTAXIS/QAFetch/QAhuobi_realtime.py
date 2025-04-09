@@ -1,4 +1,3 @@
-# coding: utf-8
 # Author: 阿财（Rgveda@github）（11652964@qq.com）
 # Created date: 2018-06-08
 #
@@ -100,7 +99,7 @@ FREQUENCY_SHIFTING = {
 }
 huobi_SYMBOL = 'HUOBI.{}'
 
-class QA_Fetch_Job_Status(object):
+class QA_Fetch_Job_Status:
     """
     行情数据获取批处理任务状态
     """
@@ -127,7 +126,7 @@ def format_huobi_data_fields(datas, symbol, frequency):
     # 归一化数据字段，转换填充必须字段，删除多余字段
     frame = pd.DataFrame(datas)
     frame['id'] = frame.apply(lambda x: int(x.loc['id']), axis=1)
-    frame['symbol'] = 'HUOBI.{}'.format(symbol)
+    frame['symbol'] = f'HUOBI.{symbol}'
     # UTC时间转换为北京时间
     frame['date'] = pd.to_datetime(
         frame['id'],
@@ -151,7 +150,7 @@ def format_huobi_data_fields(datas, symbol, frequency):
     return frame
 
 
-class QA_Fetch_Job_Type(object):
+class QA_Fetch_Job_Type:
     """
     行情数据获取批处理任务类型
     """
@@ -159,7 +158,7 @@ class QA_Fetch_Job_Type(object):
     SUBSCRIBE = 'SUBSCRIBE'
 
 
-class QA_Fetch_Job(object):
+class QA_Fetch_Job:
     """
     行情数据获取批处理任务，此为公共抽象类
     """
@@ -267,7 +266,7 @@ class QA_Fetch_Job(object):
         return self.__period_time
 
 
-class QA_Tick_Summary(object):
+class QA_Tick_Summary:
     """
     行情数据获取统计类，负责统计和输出日志
     """
@@ -305,7 +304,7 @@ class QA_Tick_Summary(object):
             self.__next = datetime.now() + timedelta(seconds=self.__countdown)
 
 
-class QA_Fetch_Huobi(object):
+class QA_Fetch_Huobi:
     """
     火币Pro行情数据 WebSocket 接口，基础类
     """
@@ -360,7 +359,7 @@ class QA_Fetch_Huobi(object):
         """
         生成id标识符，用来匹配数据块
         """
-        req_id = """%s.%s""" % (symbol, period)
+        req_id = """{}.{}""".format(symbol, period)
         return req_id
 
     def send_message(self, message_dict, message_txt=''):
@@ -368,7 +367,7 @@ class QA_Fetch_Huobi(object):
         发送消息请求
         """
         data = json.dumps(message_dict).encode()
-        QA_util_log_info("Sending Message: {:s}".format(message_txt))
+        QA_util_log_info(f"Sending Message: {message_txt:s}")
 
         self.__ws.send(data)
 
@@ -548,7 +547,7 @@ class QA_Fetch_Huobi(object):
                     continue
 
                 QA_util_log_info(
-                    'Fetch %s missing kline：%s 到 %s' % (
+                    'Fetch {} missing kline：{} 到 {}'.format(
                         initalParams['req'],
                         QA_util_timestamp_to_str(
                             missing_data_list[i][expected]
@@ -677,7 +676,7 @@ class QA_Fetch_Huobi(object):
 
         # QUANTAXIS 系统定义的时间跟火币网WebSocket 接口的有一点偏差 day 火币叫 1day，hour 火币定义为
         # 60min，需要查表映射转换。
-        requestStr = "market.%s.kline.%s" % (
+        requestStr = "market.{}.kline.{}".format(
             symbol,
             period
         )
@@ -784,7 +783,7 @@ class QA_Fetch_Huobi(object):
         # QUANTAXIS 系统定义的时间跟火币网WebSocket 接口的有一点偏差 day 火币叫 1day，hour 火币定义为
         # 60min，需要查表映射转换。
         reqParams = {}
-        reqParams['req'] = requestStr = "market.%s.kline.%s" % (
+        reqParams['req'] = requestStr = "market.{}.kline.{}".format(
             symbol,
             period
         )
