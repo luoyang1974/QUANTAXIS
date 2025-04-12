@@ -11,10 +11,9 @@ authors = [
 description = "QUANTAXIS:Quantitative Financial Strategy Framework"
 readme = "README.md"
 requires-python = ">=3.12"
-license = { text = "MIT" }
+license = "MIT"
 keywords = ["quantaxis", "quant", "finance", "Backtest", "Framework"]
 classifiers = [
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
