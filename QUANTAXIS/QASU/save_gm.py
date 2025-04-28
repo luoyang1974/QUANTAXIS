@@ -40,8 +40,8 @@ def QA_SU_save_stock_min(client=DATABASE, ui_log=None, ui_progress=None):
     """
     # 导入掘金模块且进行登录
     try:
-        from gm.api import set_token
-        from gm.api import history
+        from gm.api import set_token # type: ignore
+        from gm.api import history # type: ignore
         # 请自行将掘金量化的 TOKEN 替换掉 GMTOKEN
         set_token("9c5601171e97994686b47b5cbfe7b2fc8bb25b09")
     except:

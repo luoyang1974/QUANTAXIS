@@ -27,7 +27,6 @@ import configparser
 import json
 import os
 import urllib
-import future
 import asyncio
 import pandas as pd
 import requests

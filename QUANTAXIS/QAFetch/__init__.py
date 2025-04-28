@@ -30,7 +30,7 @@ QAFetch is Under [QAStandard#0.0.2@10x] Protocol
 
 
 """
-from QUANTAXIS.QAFetch import QAWind as QAWind
+from QUANTAXIS.QAFetch import QAWind as QAWind  # type: ignore[attr-defined]
 from QUANTAXIS.QAFetch import QATushare as QATushare
 from QUANTAXIS.QAFetch import QATdx as QATdx
 from QUANTAXIS.QAFetch import QAThs as QAThs
@@ -45,7 +45,7 @@ from QUANTAXIS.QAFetch import QAKQ as QAKQ
 def use(package):
     if package in ['wind']:
         try:
-            from WindPy import w
+            from WindPy import w  # type: ignore[import-not-found]
             # w.start()
             return QAWind
         except ModuleNotFoundError:

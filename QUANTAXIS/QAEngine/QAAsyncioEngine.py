@@ -4,8 +4,6 @@ import threading
 import time
 import traceback
 
-import future
-
 from QUANTAXIS.QAFetch.QAQuery_Async import QA_fetch_stock_day
 
 

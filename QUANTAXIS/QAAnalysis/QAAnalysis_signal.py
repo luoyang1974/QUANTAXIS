@@ -32,11 +32,6 @@ from scipy.signal import lfilter, lfilter_zi, filtfilt, butter, savgol_filter
 from QUANTAXIS.QAIndicator.base import *
 from QUANTAXIS.QAData.base_datastruct import *
 try:
-    import peakutils
-except:
-    #print('PLEASE run "pip install peakutils" to call these modules')
-    pass
-try:
     from QUANTAXIS.QAIndicator.talib_numpy import *
     import QUANTAXIS as QA
     from QUANTAXIS.QAIndicator.base import *
@@ -64,6 +59,7 @@ def time_series_momemtum(price, n=24, rf=0.02):
 def find_peak_vextors_eagerly(price, offest=0):
     """
     （饥渴的）在 MACD 上坡的时候查找更多的极值点
+    （使用 scipy.signal.find_peaks 替代 peakutils.indexes）
     """
     xn = price
 
@@ -72,15 +68,21 @@ def find_peak_vextors_eagerly(price, offest=0):
     yy_sg = savgol_filter(xn, window_size, poly_order)
 
     # pass 1
+    # 这部分沿用原 signal.argrelextrema 查找粗略极值
     x_tp_min, x_tp_max = signal.argrelextrema(yy_sg, np.less)[0], signal.argrelextrema(yy_sg, np.greater)[0]
     n = int(len(price) / (len(x_tp_min) + len(x_tp_max))) * 2
 
-    # peakutils 似乎一根筋只能查最大极值，通过曲线反相的方式查找极小点
-    mirrors = (yy_sg * -1) + np.mean(price) * 2
+    # pass 2
+    # ★★【重写开始】使用 scipy.signal.find_peaks 替代 peakutils.indexes ★★
 
-    # pass 2 使用 peakutils 查找
-    x_tp_max = peakutils.indexes(yy_sg, thres=0.01 / max(price), min_dist=n)
-    x_tp_min = peakutils.indexes(mirrors, thres=0.01 / max(price), min_dist=n)
+    # 查找局部极大值
+    x_tp_max, _ = signal.find_peaks(yy_sg, distance=n, height=np.max(price) * 0.01)
+
+    # 查找局部极小值（通过曲线反转）
+    x_tp_min, _ = signal.find_peaks(-yy_sg, distance=n, height=np.max(price) * 0.01)
+
+
+    # ★★【重写结束】★★
 
     return x_tp_min + offest, x_tp_max + offest
 
@@ -135,12 +137,15 @@ def find_peak_vextors(price, return_ref=False, offest=0):
     x_tp_min, x_tp_max = signal.argrelextrema(y, np.less)[0], signal.argrelextrema(y, np.greater)[0]
     n = int(len(price) / (len(x_tp_min) + len(x_tp_max))) * 2
 
-    # peakutils 似乎一根筋只能查最大极值，通过曲线反相的方式查找极小点
-    mirrors = (price * -1) + np.mean(price) * 2
+    # ★★【重写开始】使用 scipy.signal.find_peaks 替代 peakutils.indexes ★★
 
-    # pass 2 使用 peakutils 查找
-    x_tp_max = peakutils.indexes(price, thres=0.01 / max(price), min_dist=n)
-    x_tp_min = peakutils.indexes(mirrors, thres=0.01 / max(price), min_dist=n)
+    # 查找局部极大值（直接在原信号 y 上）
+    x_tp_max, _ = signal.find_peaks(y, distance=n, height=np.max(price) * 0.01)
+
+    # 查找局部极小值（曲线取负）
+    x_tp_min, _ = signal.find_peaks(-y, distance=n, height=np.max(price) * 0.01)
+
+    # ★★【重写结束】★★
 
     if (return_ref):
         return x_tp_min + offest, x_tp_max + offest, y
