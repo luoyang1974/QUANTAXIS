@@ -35,7 +35,7 @@ DEFAULT_SHIPANE_URL = 'http://127.0.0.1:8888'
 DEFAULT_SHIPANE_KEY = ''
 
 
-class SPE_CONFIG():
+class SPE_CONFIG:
 
     def __init__(self, uri=DEFAULT_SHIPANE_URL, key=DEFAULT_SHIPANE_KEY):
         self.key = key
@@ -336,8 +336,7 @@ class QA_SPEBroker(QA_Broker):
                     if 'order_date' not in order_headers:
                         order_all.order_time = order_all.order_time.apply(
                             lambda x: QA_util_get_order_datetime(
-                                dt='{} {}'.format(datetime.date.today(),
-                                                  x)
+                                dt=f'{datetime.date.today()} {x}'
                             )
                         )
                     else:
@@ -350,8 +349,7 @@ class QA_SPEBroker(QA_Broker):
                 if 'trade_time' in order_headers:
 
                     order_all.trade_time = order_all.trade_time.apply(
-                        lambda x: '{} {}'.format(datetime.date.today(),
-                                                 x)
+                        lambda x: f'{datetime.date.today()} {x}'
                     )
 
                 if status == 'filled':
@@ -468,10 +466,7 @@ class QA_SPEBroker(QA_Broker):
             order.failed(text)
 
             print(
-                'FAILED FOR CREATE ORDER {} {}'.format(
-                    order.account_cookie,
-                    order.status
-                )
+                f'FAILED FOR CREATE ORDER {order.account_cookie} {order.status}'
             )
             print(res)
             return order

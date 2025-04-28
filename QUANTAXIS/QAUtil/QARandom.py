@@ -50,27 +50,27 @@ def QA_util_random_with_zh_stock_code(stockNumber=10):
         if pt == 0:
             #print("random 60XXXX")
             iCode = random.randint(600000, 609999)
-            aCode = "%06d" % iCode
+            aCode = f"{iCode:06d}"
 
         elif pt == 1:
             #print("random 00XXXX")
             iCode = random.randint(600000, 600999)
-            aCode = "%06d" % iCode
+            aCode = f"{iCode:06d}"
 
         elif pt == 2:
             #print("random 00XXXX")
             iCode = random.randint(2000, 9999)
-            aCode = "%06d" % iCode
+            aCode = f"{iCode:06d}"
 
         elif pt == 3:
             #print("random 300XXX")
             iCode = random.randint(300000, 300999)
-            aCode = "%06d" % iCode
+            aCode = f"{iCode:06d}"
 
         else:
             #print("random 00XXXX")
             iCode = random.randint(2000, 2999)
-            aCode = "%06d" % iCode
+            aCode = f"{iCode:06d}"
         pt = (pt + 1) % 5
         codeList.append(aCode)
     return codeList

@@ -1,5 +1,5 @@
 import re
-from typing import List, Tuple, Union
+from typing import Union, Optional
 
 import numpy as np
 import pandas as pd
@@ -17,7 +17,7 @@ def get_clean_factor_and_forward_returns(
         weights: dict | pd.Series | pd.DataFrame,
         binning_by_group: bool = False,
         quantiles: int | tuple[float] | list[float] = 5,
-        bins: int | tuple[float] | list[float] = None,
+        bins: int | tuple[float] | list[float] | None = None,
         periods: int | tuple[int] | list[int] = (1, 5, 15),
         max_loss: float = 0.25,
         zero_aware: bool = False,
@@ -160,7 +160,7 @@ def get_clean_factor(
         weights: dict | pd.Series | pd.DataFrame,
         binning_by_group: bool = False,
         quantiles: int | tuple[float] | list[float] = 5,
-        bins: int | tuple[float] | list[float] = None,
+        bins: int | tuple[float] | list[float] | None = None,
         max_loss: float = 0.25,
         zero_aware: bool = False,
 ) -> pd.DataFrame:
@@ -291,8 +291,8 @@ def get_clean_factor(
 
 def quantize_data(
         factor_data: pd.DataFrame,
-        quantiles: int | tuple[float] | list[float] = 5,
-        bins: int | tuple[float] | list[float] = None,
+        quantiles: int | tuple[float] | list[float] | None = 5,
+        bins: int | tuple[float] | list[float] | None = None,
         binning_by_group: bool = False,
         zero_aware: bool = False,
         no_raise: bool = False,

@@ -64,7 +64,7 @@ def plot_datastruct(_quotation_base, code=None):
                       "max", "min"], is_datazoom_show=True, datazoom_orient='horizontal')
         kline.render(path_name)
         webbrowser.open(path_name)
-        QA_util_log_info('The Pic has been saved to your path: %s' % path_name)
+        QA_util_log_info(f'The Pic has been saved to your path: {path_name}')
     else:
         data = []
         axis = []
@@ -82,7 +82,7 @@ def plot_datastruct(_quotation_base, code=None):
                   "max", "min"], is_datazoom_show=True, datazoom_orient='horizontal')
         kline.render(path_name)
         webbrowser.open(path_name)
-        QA_util_log_info('The Pic has been saved to your path: %s' % path_name)
+        QA_util_log_info(f'The Pic has been saved to your path: {path_name}')
 
 
 def QA_plot_save_html(pic_handle, path, if_open_web):
@@ -119,4 +119,4 @@ def QA_plot_save_html(pic_handle, path, if_open_web):
         webbrowser.open(path)
     else:
         pass
-    QA_util_log_info('The Pic has been saved to your path: %s' % path)
+    QA_util_log_info(f'The Pic has been saved to your path: {path}')

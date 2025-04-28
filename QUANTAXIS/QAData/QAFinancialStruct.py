@@ -30,7 +30,7 @@ import pandas as pd
 from QUANTAXIS.QAData.financial_mean import financial_dict
 
 
-class QA_DataStruct_Financial():
+class QA_DataStruct_Financial:
 
     def __init__(self, data):
         self.data = data

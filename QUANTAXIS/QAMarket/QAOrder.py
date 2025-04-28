@@ -64,7 +64,7 @@ order_frame 是一个管理性面板  但是还是需要一个缓存dict？
 """
 
 
-class QA_Order():
+class QA_Order:
     '''
         记录order
     '''
@@ -258,18 +258,7 @@ class QA_Order():
         输出格式化对象
         :return:  字符串
         '''
-        return '< QA_Order realorder_id {} datetime:{} code:{} amount:{} price:{} towards:{} btype:{} order_id:{} account:{} status:{} >'.format(
-            self.realorder_id,
-            self.datetime,
-            self.code,
-            self.amount,
-            self.price,
-            self.towards,
-            self.type,
-            self.order_id,
-            self.account_cookie,
-            self.status
-        )
+        return f'< QA_Order realorder_id {self.realorder_id} datetime:{self.datetime} code:{self.code} amount:{self.amount} price:{self.price} towards:{self.towards} btype:{self.type} order_id:{self.order_id} account:{self.account_cookie} status:{self.status} >'
 
     def transform_dt(self, times):
         if isinstance(times, str):
@@ -618,8 +607,7 @@ class QA_Order():
         self.offset = otgOrder.get('offset')
         self.direction = otgOrder.get('direction')
         self.towards = eval(
-            'ORDER_DIRECTION.{}_{}'.format(self.direction,
-                                           self.offset)
+            f'ORDER_DIRECTION.{self.direction}_{self.offset}'
         )
         self.amount = otgOrder.get('volume_orign')
         self.trade_amount = self.amount - otgOrder.get('volume_left')
@@ -692,7 +680,7 @@ class QA_Order():
             QA_util_log_info(f'Failed to tran from dict {e}')
 
 
-class QA_OrderQueue():  # also the order tree ？？ what's the tree means?
+class QA_OrderQueue:  # also the order tree ？？ what's the tree means?
     """
     一个待成交队列
     queue是一个dataframe

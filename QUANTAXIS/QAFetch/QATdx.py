@@ -710,7 +710,7 @@ def QA_fetch_get_stock_list(type_='stock', ip=None, port=None):
         # data.code = data.code.apply(int)
 
         data = data.loc[:,['code','volunit','decimal_point','name','pre_close','sse']].set_index(
-                ['code', 'sse'], drop=False)
+                pd.Index(['code', 'sse']), drop=False)
         sz = data.query('sse=="sz"')
         sh = data.query('sse=="sh"')
 
@@ -1169,12 +1169,10 @@ def QA_fetch_get_stock_transaction(code, start, end, retry=2, ip=None,
                     return None
             except:
                 QA_util_log_info(
-                    'Wrong in Getting {} history transaction data in day {}'.format(
-                        code, trade_date_sse[index_]))
+                    f'Wrong in Getting {code} history transaction data in day {trade_date_sse[index_]}')
             else:
                 QA_util_log_info(
-                    'Successfully Getting {} history transaction data in day {}'.format(
-                        code, trade_date_sse[index_]))
+                    f'Successfully Getting {code} history transaction data in day {trade_date_sse[index_]}')
                 data = data.append(data_)
         if len(data) > 0:
 
@@ -1216,12 +1214,10 @@ def QA_fetch_get_index_transaction(code, start, end, retry=2, ip=None,
                     return None
             except:
                 QA_util_log_info(
-                    'Wrong in Getting {} history transaction data in day {}'.format(
-                        code, trade_date_sse[index_]))
+                    f'Wrong in Getting {code} history transaction data in day {trade_date_sse[index_]}')
             else:
                 QA_util_log_info(
-                    'Successfully Getting {} history transaction data in day {}'.format(
-                        code, trade_date_sse[index_]))
+                    f'Successfully Getting {code} history transaction data in day {trade_date_sse[index_]}')
                 data = data.append(data_)
         if len(data) > 0:
 
@@ -1335,7 +1331,22 @@ def QA_fetch_get_stock_block(ip=None, port=None):
         QA_util_log_info('Wrong with fetch block ')
 
 
-def QA_fetch_get_tdx_industry(incon) -> pd.DataFrame:
+def QA_fetch_get_tdx_industry(incon: str) -> pd.DataFrame:
+    """
+    下载通达信（TDX）基础数据，提取行业分类文件，
+    并结合提供的配置数据（`incon`）进行处理，
+    生成一个包含股票代码及其行业分类的合并 DataFrame。
+
+    Args:
+        incon: 包含行业分类配置数据的字符串。
+               预期格式：以 '#' 开头的行是章节标题（行业类型），
+               其后直到下一个 '#' 或空行的内容是 代码|名称 对。
+
+    Returns:
+        一个 pandas DataFrame，包含股票代码、名称（来自 incon）
+        以及它们的通达信和申万行业分类。
+    """
+    
     import os
     import random
     import shutil
@@ -1343,72 +1354,100 @@ def QA_fetch_get_tdx_industry(incon) -> pd.DataFrame:
     from urllib.request import urlopen
 
     def download_tdx_file() -> str:
+        """
+        从 tdx.com.cn 下载 base.zip 文件，将其解压到临时目录，
+        并清理下载的 zip 文件。
+
+        Returns:
+            包含解压文件的临时目录路径。
+        """
         url = 'http://www.tdx.com.cn/products/data/data/dbf/base.zip'
         tmpdir_root = tempfile.gettempdir()
-        subdir_name = 'tdx_' + str(random.randint(0, 1000000))
+        subdir_name = f'tdx_{random.randint(0, 1_000_000)}'  # 改为 f-string 并使用下划线分隔大数
         tmpdir = os.path.join(tmpdir_root, subdir_name)
         shutil.rmtree(tmpdir, ignore_errors=True)
-        os.makedirs(tmpdir)
+        os.makedirs(tmpdir, exist_ok=True)  # 添加 exist_ok 参数保证安全性
 
         try:
-            file = tmpdir + '/' + 'base.zip'
-            f = urlopen(url)
-            data = f.read()
+            file = os.path.join(tmpdir, 'base.zip')  # 改用 os.path.join 保证路径安全
+            with urlopen(url) as f:  # 使用上下文管理器处理 urlopen
+                data = f.read()
             with open(file, 'wb') as code:
                 code.write(data)
-            f.close()
             shutil.unpack_archive(file, extract_dir=tmpdir)
             os.remove(file)
-        except:
-            pass
+        except Exception as e:  # 从裸 except 改为捕获具体异常
+            print(f"下载 TDX 文件出错: {e}")  # 添加错误日志
         return tmpdir
 
-    def read_industry(folder:str,incon0) -> pd.DataFrame:
-        # incon = folder + '/incon.dat' # tdx industry file
-        hy = folder + '/tdxhy.cfg' # tdx stock file
+    def read_industry(folder: str, incon0: str) -> pd.DataFrame:
+        hy = os.path.join(folder, 'tdxhy.cfg')  # tdx股票文件
 
-        # tdx industry file
-        #with open(incon0, encoding='GB18030', mode='r') as f:
-        #    incon = f.readlines()
-        incon=[i.replace('\r','\n') for i in incon0.strip('\r\n').split('\n')] 
-        incon_dict = {}
-        for i in incon:
-            if not len(i.strip()):
+        # 处理 incon 数据
+        incon_lines = [i.replace('\r', '\n') for i in incon0.strip('\r\n').split('\n')]
+        incon_dict: dict[str, list[list[str]]] = {}  # 修改：使用新的类型注解语法
+        current_key = ''
+        
+        for i in incon_lines:
+            if not i.strip():
                 continue
-            if i[0] == '#' and i[1] != '#':
-                j = i.replace('\n', '').replace('#', '')
-                incon_dict[j] = []
+            if i.startswith('#') and not i.startswith('##'):  #  更清晰的判断
+                current_key = i.strip().lstrip('#')  #  更安全地去除#
+                incon_dict[current_key] = []
             else:
-                if i[1] != '#':
-                    incon_dict[j].append(i.replace('\n', '').split(' ')[0].split('|'))
+                if not i.startswith('##'):  #  简洁判断
+                    incon_dict[current_key].append(i.strip().split(' ')[0].split('|'))
 
-        incon = pd.concat([pd.DataFrame.from_dict(v).assign(type=k) for k,v in incon_dict.items()]) \
-            .rename({0: 'code', 1: 'name'}, axis=1).reset_index(drop=True)
+        # 从incon_dict创建DataFrame
+        dfs = [pd.DataFrame(v, columns=[0, 1]).assign(type=k) for k, v in incon_dict.items()]
+        incon_df = pd.concat(dfs, ignore_index=True).rename(columns={0: 'code', 1: 'name'})
 
+        # 读取并处理hy文件
         with open(hy, encoding='GB18030') as f:
-            hy = f.readlines()
-        hy = [line.replace('\n', '') for line in hy]
-        hy = pd.DataFrame(line.split('|') for line in hy)
-        # filter codes
-        hy = hy[~hy[1].str.startswith('9')]
-        hy = hy[~hy[1].str.startswith('2')]
+            hy_lines = f.readlines()
+        
+        hy_cleaned = [line.replace('\n', '') for line in hy_lines]
+        hy_df = pd.DataFrame([line.split('|') for line in hy_cleaned])
+        
+        # 过滤代码
+        hy_df = hy_df[~hy_df[1].str.startswith(('9', '2'))]  #  使用 tuple 更简洁
 
-        hy1 = hy[[1, 2]].set_index(2).join(incon.set_index('code')).set_index(1)[['name', 'type']]
-        hy2 = hy[[1, 5]].set_index(5).join(incon.set_index('code')).set_index(1)[['name', 'type']]
-        # join tdxhy and swhy
-        df = hy.set_index(1) \
-            .join(hy1.rename({'name': hy1.dropna()['type'].values[0], 'type': hy1.dropna()['type'].values[0]+'_type'}, axis=1)) \
-            .join(hy2.rename({'name': hy2.dropna()['type'].values[0], 'type': hy2.dropna()['type'].values[0]+'_type'}, axis=1)).reset_index()
+        # 创建连接
+        hy1 = hy_df[[1, 2]].set_index(2).join(incon_df.set_index('code')).set_index(1)[['name', 'type']]
+        hy2 = hy_df[[1, 5]].set_index(5).join(incon_df.set_index('code')).set_index(1)[['name', 'type']]
+        
+        # 连接tdxhy和swhy
+        result_df = hy_df.set_index(1) \
+            .join(hy1.rename(columns={
+                'name': hy1.dropna()['type'].values[0], 
+                'type': hy1.dropna()['type'].values[0]+'_type'
+            })) \
+            .join(hy2.rename(columns={
+                'name': hy2.dropna()['type'].values[0], 
+                'type': hy2.dropna()['type'].values[0]+'_type'
+            })).reset_index()
 
-        df.rename({0: 'sse', 1: 'code', 2: 'TDX_code', 5: 'SW_code','TDXRSHY':'swhy'}, axis=1, inplace=True)
-        df = df[[i for i in df.columns if not isinstance(i, int) and  '_type' not in str(i)]]
-        df.columns = [i.lower() for i in df.columns]
+        # 重命名列名
+        result_df.rename(columns={
+            0: 'sse', 
+            1: 'code', 
+            2: 'TDX_code', 
+            5: 'SW_code',
+            'TDXRSHY': 'swhy'
+        }, inplace=True)
+        
+        # 清理列名并统一为小写
+        result_df = (
+            result_df[[col for col in result_df.columns 
+                      if not isinstance(col, int) and '_type' not in str(col)]]
+            .rename(columns=lambda x: x.lower())  # 修复：使用rename方法避免类型错误
+        )
 
-        shutil.rmtree(folder, ignore_errors=True)
-        return df
+        shutil.rmtree(folder, ignore_errors=True)  #  清理临时目录
+        return result_df
 
     folder = download_tdx_file()
-    df = read_industry(folder,incon)
+    df = read_industry(folder, incon)
     return df
 
 
@@ -1777,8 +1816,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 adjust = " 第10次以上的调整，调整代码 %s" + strName[8:9]
 
             executePrice = strName[9:]
-            result.loc[idx, 'meaningful_name'] = '{},到期月份:{},{},行权价:{}'.format(
-                putcall, expireMonth, adjust, executePrice)
+            result.loc[idx, 'meaningful_name'] = f'{putcall},到期月份:{expireMonth},{adjust},行权价:{executePrice}'
 
             row = result.loc[idx]
             rows.append(row)
@@ -1832,8 +1870,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 adjust = " 第10次以上的调整，调整代码 %s" + strName[8:9]
 
             executePrice = strName[9:]
-            result.loc[idx, 'meaningful_name'] = '{},到期月份:{},{},行权价:{}'.format(
-                putcall, expireMonth, adjust, executePrice)
+            result.loc[idx, 'meaningful_name'] = f'{putcall},到期月份:{expireMonth},{adjust},行权价:{executePrice}'
 
             row = result.loc[idx]
             rows.append(row)
@@ -1853,8 +1890,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 putcall = "Unkown code name ： " + strName
 
             executePrice = strName[9:]
-            result.loc[idx, 'meaningful_name'] = '{},到期年月份:{}{},行权价:{}'.format(
-                putcall, expireYear, expireMonth, executePrice)
+            result.loc[idx, 'meaningful_name'] = f'{putcall},到期年月份:{expireYear}{expireMonth},行权价:{executePrice}'
 
             row = result.loc[idx]
             rows.append(row)
@@ -1877,8 +1913,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 putcall = "Unkown code name ： " + strName
 
             executePrice = strName[9:]
-            result.loc[idx, 'meaningful_name'] = '{},到期年月份:{}{},行权价:{}'.format(
-                putcall, expireYear, expireMonth, executePrice)
+            result.loc[idx, 'meaningful_name'] = f'{putcall},到期年月份:{expireYear}{expireMonth},行权价:{executePrice}'
 
             row = result.loc[idx]
             rows.append(row)
@@ -1901,8 +1936,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 putcall = "Unkown code name ： " + strName
 
             executePrice = strName[9:]
-            result.loc[idx, 'meaningful_name'] = '{},到期年月份:{}{},行权价:{}'.format(
-                putcall, expireYear, expireMonth, executePrice)
+            result.loc[idx, 'meaningful_name'] = f'{putcall},到期年月份:{expireYear}{expireMonth},行权价:{executePrice}'
 
             row = result.loc[idx]
             rows.append(row)
@@ -1925,8 +1959,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 putcall = "Unkown code name ： " + strName
 
             executePrice = strName[9:]
-            result.loc[idx, 'meaningful_name'] = '{},到期年月份:{}{},行权价:{}'.format(
-                putcall, expireYear, expireMonth, executePrice)
+            result.loc[idx, 'meaningful_name'] = f'{putcall},到期年月份:{expireYear}{expireMonth},行权价:{executePrice}'
 
             row = result.loc[idx]
             rows.append(row)
@@ -1949,8 +1982,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 putcall = "Unkown code name ： " + strName
 
             executePrice = strName[8:]
-            result.loc[idx, 'meaningful_name'] = '{},到期年月份:{}{},行权价:{}'.format(
-                putcall, expireYear, expireMonth, executePrice)
+            result.loc[idx, 'meaningful_name'] = f'{putcall},到期年月份:{expireYear}{expireMonth},行权价:{executePrice}'
 
             row = result.loc[idx]
             rows.append(row)
@@ -1973,8 +2005,7 @@ def QA_fetch_get_option_all_contract_time_to_market():
                 putcall = "Unkown code name ： " + strName
 
             executePrice = strName[8:]
-            result.loc[idx, 'meaningful_name'] = '{},到期年月份:{}{},行权价:{}'.format(
-                putcall, expireYear, expireMonth, executePrice)
+            result.loc[idx, 'meaningful_name'] = f'{putcall},到期年月份:{expireYear}{expireMonth},行权价:{executePrice}'
 
             row = result.loc[idx]
             rows.append(row)
@@ -2040,7 +2071,7 @@ def QA_fetch_get_option_50etf_list():
     def __meaningful_name(df):
         putcall = {'C':'认购期权', 'P':'认沽期权'}
         adjust={'M':'未调整','A':'第1次调整','B':'第2次调整','C':'第3次调整','D':'第4次调整','E':'第5次调整','F':'第6次调整','G':'第7次调整','H':'第8次调整','I':'第9次调整','J':'第10次调整'}
-        return '{},{},到期月份:{}月,{},行权价:{}'.format('50ETF', putcall.get(df.putcall, '错误编码'), df.expireMonth, adjust.get(df.adjust, '第10次以上的调整，调整代码 %s' % df.adjust), df.price)
+        return '{},{},到期月份:{}月,{},行权价:{}'.format('50ETF', putcall.get(df.putcall, '错误编码'), df.expireMonth, adjust.get(df.adjust, f'第10次以上的调整，调整代码 {df.adjust}'), df.price)
     result = result.assign(meaningful_name=result.apply(__meaningful_name, axis=1))
     return result
 
@@ -2131,8 +2162,7 @@ def QA_fetch_get_option_300etf_contract_time_to_market():
                 adjust = " 第10次以上的调整，调整代码 %s" + strName[8:9]
 
             executePrice = strName[9:]
-            result.loc[idx, 'meaningful_name'] = '{},到期月份:{},{},行权价:{}'.format(
-                putcall, expireMonth, adjust, executePrice)
+            result.loc[idx, 'meaningful_name'] = f'{putcall},到期月份:{expireMonth},{adjust},行权价:{executePrice}'
 
             row = result.loc[idx]
             rows.append(row)
@@ -2613,12 +2643,10 @@ def QA_fetch_get_future_transaction(code, start, end, retry=4, ip=None,
             except Exception as e:
                 print(e)
                 QA_util_log_info(
-                    'Wrong in Getting {} history transaction data in day {}'.format(
-                        code, trade_date_sse[index_]))
+                    f'Wrong in Getting {code} history transaction data in day {trade_date_sse[index_]}')
             else:
                 QA_util_log_info(
-                    'Successfully Getting {} history transaction data in day {}'.format(
-                        code, trade_date_sse[index_]))
+                    f'Successfully Getting {code} history transaction data in day {trade_date_sse[index_]}')
                 data = data.append(data_)
         if len(data) > 0:
 
@@ -2671,6 +2699,8 @@ def QA_fetch_get_future_realtime(code, ip=None, port=None):
         #                'ask_vol4', 'bid4', 'bid_vol4', 'ask5', 'ask_vol5', 'bid5', 'bid_vol5']]
         return __data.set_index(['datetime', 'code'])
 
+'''
+# 重复定义，不确定哪个有用，先删除这个
 ###############################################################
 # HKSTOCK
 ###############################################################
@@ -2686,6 +2716,7 @@ def QA_fetch_get_hkstock_list(ip=None, port=None):
     ) if extension_market_list is None else extension_market_list
 
     return extension_market_list.query('category==2 and market==31')
+'''
 
 QA_fetch_get_option_day = QA_fetch_get_future_day
 QA_fetch_get_option_min = QA_fetch_get_future_min

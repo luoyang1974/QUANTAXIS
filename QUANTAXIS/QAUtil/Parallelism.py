@@ -55,8 +55,7 @@ class Parallelism_abs(metaclass=ABCMeta):
     def complete(self, result):
         self.results.extend(result)
         self.completed_processes += 1
-        print('Progress: {:.2f}%'.format(
-            (self.completed_processes / self.total_processes) * 100))
+        print(f'Progress: {(self.completed_processes / self.total_processes) * 100:.2f}%')
 
 
 class Parallelism(Parallelism_abs):

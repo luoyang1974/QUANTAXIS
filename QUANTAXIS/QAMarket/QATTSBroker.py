@@ -63,7 +63,7 @@ class TTSConfig(configparser.ConfigParser):
                         self.values[key] = self.get(self.__config_section, key)
         if self.values['user_name'] == '' or self.values['user_pass'] == '':
             raise Exception(
-                'user_name 和 user_pass不能为空，请在%s中配置' % self.__config_path
+                f'user_name 和 user_pass不能为空，请在{self.__config_path}中配置'
             )
         self.values['user_tx_pass'] = self.values['user_pass'] if self.values[
             'user_tx_pass'] == '' else self.values['user_tx_pass']
@@ -330,10 +330,10 @@ class QA_TTSBroker(QA_Broker):
         if market is None:
             market = QAFetch.base.get_stock_market(code)
         if not isinstance(market, str):
-            raise Exception('%s不正确，请检查code和market参数' % market)
+            raise Exception(f'{market}不正确，请检查code和market参数')
         market = market.lower()
         if market not in ['sh', 'sz']:
-            raise Exception('%s不支持，请检查code和market参数' % market)
+            raise Exception(f'{market}不支持，请检查code和market参数')
 
         return self.data_to_df(
             self.call(
@@ -406,10 +406,7 @@ class QA_TTSBroker(QA_Broker):
 
             event.order.failed()
             print(
-                'FAILED FOR CREATE ORDER {} {}'.format(
-                    event.order.account_cookie,
-                    event.order.status
-                )
+                f'FAILED FOR CREATE ORDER {event.order.account_cookie} {event.order.status}'
             )
         return event.order
 
@@ -517,7 +514,7 @@ if __name__ == "__main__":
 
     if result["success"]:
         for i in (0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 13, 14, 15):
-            print("---查询信息 cate=%d--" % i)
+            print(f"---查询信息 cate={i}--")
             print(api.data_to_df(api.query_data(i)))
 
         print('==============================下面是下单部分========================')

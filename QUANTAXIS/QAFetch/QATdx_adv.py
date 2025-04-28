@@ -155,7 +155,7 @@ class QA_Tdx_Executor(QA_Thread):
             Timer(0, self.api_worker).start()
         Timer(300, self.api_worker).start()
 
-    def _singal_job(self, context, id_, time_out=0.7):
+    def _singal_job(self, context, id_, code, time_out=0.7):
         try:
             _api = self.get_available()
 
@@ -165,15 +165,15 @@ class QA_Tdx_Executor(QA_Thread):
             self._queue.put(_api)  # 加入注销
             return __data
         except:
-            return self.singal_job(context, id_)
+            return self._singal_job(context, id_, code)
 
     def get_realtime(self, code):
         context = pd.DataFrame()
 
-        code = [code] if isinstance(code, str) is str else code
+        code = [code] if isinstance(code, str) else code  # 修正isinstance判断
         try:
             for id_ in range(int(len(code) / 80) + 1):
-                context = self._singal_job(context, id_)
+                context = self._singal_job(context, id_, code)    # 修正为增加传递code参数
 
             data = context[['datetime', 'last_close', 'code', 'open', 'high', 'low', 'price', 'cur_vol',
                             's_vol', 'b_vol', 'vol', 'ask1', 'ask_vol1', 'bid1', 'bid_vol1', 'ask2', 'ask_vol2',
@@ -253,13 +253,10 @@ class QA_Tdx_Executor(QA_Thread):
                 data[0]['datetime'] = data[1]
                 self.save_mongo(data[0])
 
-                print('Time {}'.format(
-                    (datetime.datetime.now() - _time).total_seconds()))
+                print(f'Time {(datetime.datetime.now() - _time).total_seconds()}')
                 time.sleep(sleep)
-                print('Connection Pool NOW LEFT {} Available IP'.format(
-                    self._queue.qsize()))
-                print('Program Last Time {}'.format(
-                    (datetime.datetime.now() - _time1).total_seconds()))
+                print(f'Connection Pool NOW LEFT {self._queue.qsize()} Available IP')
+                print(f'Program Last Time {(datetime.datetime.now() - _time1).total_seconds()}')
             else:
                 print(f'Not Trading time {_time}')
                 time.sleep(sleep)
@@ -280,13 +277,10 @@ def get_bar(timeout=1, sleep=1):
         if QA_util_if_tradetime(_time):  # 如果在交易时间
             data = x.get_security_bar_concurrent(code, 'day', 1)
 
-            print('Time {}'.format(
-                (datetime.datetime.now() - _time).total_seconds()))
+            print(f'Time {(datetime.datetime.now() - _time).total_seconds()}')
             time.sleep(sleep)
-            print('Connection Pool NOW LEFT {} Available IP'.format(
-                x._queue.qsize()))
-            print('Program Last Time {}'.format(
-                (datetime.datetime.now() - _time1).total_seconds()))
+            print(f'Connection Pool NOW LEFT {x._queue.qsize()} Available IP')
+            print(f'Program Last Time {(datetime.datetime.now() - _time1).total_seconds()}')
 
             return data
         else:

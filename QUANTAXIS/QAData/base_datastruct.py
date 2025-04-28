@@ -48,7 +48,7 @@ from QUANTAXIS.QAUtil.QADate import QA_util_to_datetime
 # todo 🛠基类名字 _quotation_base 小写是因为 不直接初始化， 建议改成抽象类
 
 
-class _quotation_base():
+class _quotation_base:
     '''
     一个自适应股票/期货/指数的基础类 , 抽象类， 不能直接初始化，必须通过下面的类继承实现
     🥑index_day  字符串 初始化  👤👥QA_DataStruct_Index_day继承
@@ -104,7 +104,7 @@ class _quotation_base():
         pass
 
     def __repr__(self):
-        return '< QA_Base_DataStruct with %d securities >' % len(self.code)
+        return f'< QA_Base_DataStruct with {len(self.code)} securities >'
 
     def __call__(self):
         '''
@@ -747,9 +747,7 @@ class _quotation_base():
             ohlc = np.array(ds.data.loc[:, ['open', 'close', 'low', 'high']])
             vol = np.array(ds.volume)
             kline = Kline(
-                '{}__{}__{}'.format(code,
-                                    self.if_fq,
-                                    self.type),
+                f'{code}__{self.if_fq}__{self.type}',
                 width=1360,
                 height=700,
                 page_title='QUANTAXIS'
@@ -780,12 +778,7 @@ class _quotation_base():
             return grid
 
     def plot(self, code=None):
-        path_name = '.{}QA_{}_{}_{}.html'.format(
-            os.sep,
-            self.type,
-            code,
-            self.if_fq
-        )
+        path_name = f'.{os.sep}QA_{self.type}_{code}_{self.if_fq}.html'
         self.kline_echarts(code).render(path_name)
         webbrowser.open(path_name)
         QA_util_log_info(
@@ -1176,11 +1169,7 @@ class _quotation_base():
             return self.new(_selects(code, start, end), self.type, self.if_fq)
         except:
             raise ValueError(
-                'QA CANNOT GET THIS CODE {}/START {}/END{} '.format(
-                    code,
-                    start,
-                    end
-                )
+                f'QA CANNOT GET THIS CODE {code}/START {start}/END{end} '
             )
 
     def select_time(self, start, end=None):
@@ -1211,8 +1200,7 @@ class _quotation_base():
             return self.new(_select_time(start, end), self.type, self.if_fq)
         except:
             raise ValueError(
-                'QA CANNOT GET THIS START {}/END{} '.format(start,
-                                                            end)
+                f'QA CANNOT GET THIS START {start}/END{end} '
             )
 
     def select_day(self, day):
@@ -1319,10 +1307,7 @@ class _quotation_base():
             return self.data.loc[(pd.Timestamp(time), code)]
         except:
             raise ValueError(
-                'DATASTRUCT CURRENTLY CANNOT FIND THIS BAR WITH {} {}'.format(
-                    code,
-                    time
-                )
+                f'DATASTRUCT CURRENTLY CANNOT FIND THIS BAR WITH {code} {time}'
             )
 
     def select_time_with_gap(self, time, gap, method):

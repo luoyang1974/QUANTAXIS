@@ -44,7 +44,7 @@ from QUANTAXIS.QAUtil.QAParameter import (
 from QUANTAXIS.QAUtil import QA_util_log_info, QA_Setting, QA_util_mongo_initial
 
 
-class QA_Backtest():
+class QA_Backtest:
     """BACKTEST
 
     BACKTEST的主要目的:

@@ -1,7 +1,6 @@
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 import pandas as pd
-from typing import Union, Tuple, List
 
 from QUANTAXIS.QAFactor import plotting
 from QUANTAXIS.QAFactor import performance as perf

@@ -29,7 +29,7 @@
 import pandas as pd
 
 
-class QA_DataStruct_Indicators():
+class QA_DataStruct_Indicators:
     """
     指标的结构
     """

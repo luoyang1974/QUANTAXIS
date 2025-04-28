@@ -25,7 +25,7 @@ def get_gap_trade(gap):
 
 
 #from QUANTAXIS.QAAnalysis.QAAnalysis_dataframe import QAAnalysis_stock
-class QAAnalysis_block():
+class QAAnalysis_block:
     def __init__(self, code=[], name=None, start=None, end=None, frequence=FREQUENCE.DAY,  *args, **kwargs):
 
         self.code = code
@@ -102,8 +102,7 @@ class QAAnalysis_block():
         ax = fig.add_subplot(1, 1, 1)
         plt.style.use('ggplot')
 
-        plt.title('QUANTAXIS BLOCK ANA {}'.format(
-            self.name), fontproperties="SimHei")
+        plt.title(f'QUANTAXIS BLOCK ANA {self.name}', fontproperties="SimHei")
         N = len(block_index)
         block_index.reset_index()[0].plot()
         self.block_index('lv').reset_index()[0].plot()

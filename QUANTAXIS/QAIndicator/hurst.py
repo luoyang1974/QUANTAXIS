@@ -20,7 +20,7 @@ class RSanalysis:
         try:
             return self.calculateHurst(series, exponent)
         except Exception as e:
-            print("   Error: %s" % e)
+            print(f"   Error: {e}")
 
     def bestExponent(self, seriesLenght):
         '''

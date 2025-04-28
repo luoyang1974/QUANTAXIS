@@ -39,7 +39,7 @@ from QUANTAXIS.QAUtil.QAParameter import (AMOUNT_MODEL, ORDER_DIRECTION,
                                           ORDER_MODEL)
 
 
-class QAAnalysis_trade():
+class QAAnalysis_trade:
 
     """
     Account/Portfolio是一个标准单元,所有成交记录分析 都会被加载到该单元中进行分析

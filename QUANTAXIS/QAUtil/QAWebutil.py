@@ -63,7 +63,7 @@ def QA_util_web_ping(url):
     return ms_list[-1]
 
 
-class QA_Util_web_pool():
+class QA_Util_web_pool:
     def __init__(self):
         pass
 

@@ -219,10 +219,7 @@ class QA_AccountPRO(QA_Worker):
         print(self.positions)
 
     def __repr__(self):
-        return '< QA_AccountPRO {} market: {}>'.format(
-            self.account_cookie,
-            self.market_type
-        )
+        return f'< QA_AccountPRO {self.account_cookie} market: {self.market_type}>'
 
     def get_position(self, code: str) -> QA_Position:
         """Get
@@ -242,8 +239,7 @@ class QA_AccountPRO(QA_Worker):
             self.positions[code] = pos
             return pos
         else:
-            print('Current AccountPro {} is {} doesnot support {}'.format(
-                self.account_cookie, self.market_type, pos.market_type))
+            print(f'Current AccountPro {self.account_cookie} is {self.market_type} doesnot support {pos.market_type}')
 
     @property
     def hold_available(self):
@@ -863,9 +859,7 @@ class QA_AccountPRO(QA_Worker):
             return order_list
         else:
             raise RuntimeError(
-                'QAACCOUNT with {} environments cannot use this methods'.format(
-                    self.running_environment
-                )
+                f'QAACCOUNT with {self.running_environment} environments cannot use this methods'
             )
 
     def send_order(
@@ -887,9 +881,7 @@ class QA_AccountPRO(QA_Worker):
         wrong_reason = None
         assert code is not None and time is not None and towards is not None and order_model is not None and amount_model is not None
         date = str(time)[0:10] if len(str(time)) == 19 else str(time)
-        time = str(time) if len(str(time)) == 19 else '{} 09:31:00'.format(
-            str(time)[0:10]
-        )
+        time = str(time) if len(str(time)) == 19 else f'{str(time)[0:10]} 09:31:00'
         if self.allow_margin:
             amount = amount if amount_model is AMOUNT_MODEL.BY_AMOUNT else int(
                 money / (
@@ -960,13 +952,7 @@ class QA_AccountPRO(QA_Worker):
                         self.cash_available -= money
                         flag = True
             else:
-                wrong_reason = 'QAACCOUNT: 可用资金不足 cash_available {}  code {} time {} amount {} towards {}'.format(
-                    self.cash_available,
-                    code,
-                    time,
-                    amount,
-                    towards
-                )
+                wrong_reason = f'QAACCOUNT: 可用资金不足 cash_available {self.cash_available}  code {code} time {time} amount {amount} towards {towards}'
         elif int(towards) in [-1, -2, -3]:
             # 是卖出的情况(包括卖出，卖出开仓allow_sellopen如果允许. 卖出平仓)
             # print(self.sell_available[code])
@@ -1035,12 +1021,7 @@ class QA_AccountPRO(QA_Worker):
             return _order
         else:
             print(
-                'ERROR : CODE {} TIME {}  AMOUNT {} TOWARDS {}'.format(
-                    code,
-                    time,
-                    amount,
-                    towards
-                )
+                f'ERROR : CODE {code} TIME {time}  AMOUNT {amount} TOWARDS {towards}'
             )
             print(wrong_reason)
             return False
@@ -1403,9 +1384,7 @@ class QA_AccountPRO(QA_Worker):
         if self.running_environment == RUNNING_ENVIRONMENT.TZERO and self.hold_available.sum(
         ) != 0:
             raise RuntimeError(
-                'QAACCOUNT: 该T0账户未当日仓位,请平仓 {}'.format(
-                    self.hold_available.to_dict()
-                )
+                f'QAACCOUNT: 该T0账户未当日仓位,请平仓 {self.hold_available.to_dict()}'
             )
         if self.market_type == MARKET_TYPE.FUTURE_CN:
             # 增加逐日盯市制度
@@ -1439,9 +1418,7 @@ class QA_AccountPRO(QA_Worker):
         self.sell_available = self.hold
         self.buy_available = self.hold
         self.cash_available = self.cash[-1]
-        self.datetime = '{} 09:30:00'.format(
-            QA_util_get_next_day(self.date)
-        ) if self.date is not None else None
+        self.datetime = f'{QA_util_get_next_day(self.date)} 09:30:00' if self.date is not None else None
         for item in self.positions.values():
             item.settle()
 

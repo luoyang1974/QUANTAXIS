@@ -24,7 +24,7 @@
 from QUANTAXIS.QAUtil.QAParameter import FREQUENCE
 
 
-class QA_MultiLevel(self):
+class QA_MultiLevel:
     def __ini__(self, data):
         self.data = data
         self.level_data = {

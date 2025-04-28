@@ -33,8 +33,8 @@ def QA_util_save_raw_symbols(fetch_symnol_func, exchange):
     col = QASETTING.client[exchange].symbols
     if col.find().count() == len(symbols):
         QA_util_log_info(
-            "{} SYMBOLS are already existed and no more to update"
-            .format(exchange)
+            f"{exchange} SYMBOLS are already existed and no more to update"
+            
         )
     else:
         #if ('_id' in symbols):
@@ -212,8 +212,7 @@ def QA_util_find_missing_kline(
                 [
                     int(time.mktime(start_epoch.utctimetuple())),
                     int(_data.iloc[0].time_stamp),
-                    '{} to {}'.format(start_epoch,
-                                     _data.iloc[0].date)
+                    f'{start_epoch} to {_data.iloc[0].date}'
                 ]
             ],
             columns=['expected',
@@ -260,10 +259,7 @@ def QA_util_find_missing_kline(
                 'between':
                     int(QA_util_datetime_to_Unix_timestamp()),
                 'missing':
-                    '{} to {}'.format(
-                        int(_data.iloc[0].time_stamp) + 1,
-                        QA_util_datetime_to_Unix_timestamp()
-                    )
+                    f'{int(_data.iloc[0].time_stamp) + 1} to {QA_util_datetime_to_Unix_timestamp()}'
             },
             ignore_index=True
         )

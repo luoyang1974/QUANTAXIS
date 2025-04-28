@@ -10,7 +10,7 @@ from QUANTAXIS.QAIndicator.indicators import QA_indicator_BOLL, QA_indicator_MAC
 """
 
 
-class QA_Selector():
+class QA_Selector:
     def __init__(self, code=None, start=None, end=None, if_whole_market=True):
         """选股器
         

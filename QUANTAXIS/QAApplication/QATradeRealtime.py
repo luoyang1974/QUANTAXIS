@@ -43,7 +43,7 @@ from QUANTAXIS.QAUtil.QAParameter import (AMOUNT_MODEL, BROKER_EVENT,
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_if_tradetime
 
 
-class QA_RealTrade():
+class QA_RealTrade:
     def __init__(self, code, market_type, frequence, broker_name=BROKER_TYPE.SHIPANE, broker=None,):
         self.user = QA_User()
         self.if_settled = False

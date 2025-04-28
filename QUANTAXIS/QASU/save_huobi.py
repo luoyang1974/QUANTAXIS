@@ -170,8 +170,7 @@ def QA_SU_save_huobi_day(frequency='1day',
                     [
                         int(QA_util_datetime_to_Unix_timestamp(start_time)),
                         int(QA_util_datetime_to_Unix_timestamp(end)),
-                        '{} to {}'.format(start_time,
-                                         end)
+                        f'{start_time} to {end}'
                     ]
                 ],
                 columns=['expected',
@@ -361,8 +360,7 @@ def QA_SU_save_huobi_min(
                     [
                         int(QA_util_datetime_to_Unix_timestamp(start_time)),
                         int(QA_util_datetime_to_Unix_timestamp(end)),
-                        '{} to {}'.format(start_time,
-                                         end)
+                        f'{start_time} to {end}'
                     ]
                 ],
                 columns=['expected',
@@ -559,8 +557,8 @@ def QA_SU_save_huobi_symbol(market=huobi_EXCHANGE, client=DATABASE,):
             return symbol_lists
         except:
             QA_util_log_expection(
-                'QA_SU_save_huobi_symbol(): Insert_many(symbol) to "cryptocurrency_list" got Exception with {} klines'
-                .format(len(symbol_lists))
+                f'QA_SU_save_huobi_symbol(): Insert_many(symbol) to "cryptocurrency_list" got Exception with {len(symbol_lists)} klines'
+                
             )
             pass
         return []

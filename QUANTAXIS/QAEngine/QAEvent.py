@@ -75,9 +75,4 @@ class QA_Event:
 
     #for debug purpose
     def __repr__(self):
-        return "< QA_Event {} {} {} , id = {} >".format(
-            self.event_type,
-            self.message,
-            self.callback,
-            id(self)
-        )
+        return f"< QA_Event {self.event_type} {self.message} {self.callback} , id = {id(self)} >"

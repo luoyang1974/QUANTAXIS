@@ -62,11 +62,7 @@ class QA_Thread(threading.Thread):
         self.daemon = daemon
 
     def __repr__(self):
-        return '<QA_Thread: {}  id={} ident {}>'.format(
-            self.name,
-            id(self),
-            self.ident
-        )
+        return f'<QA_Thread: {self.name}  id={id(self)} ident {self.ident}>'
 
     def run(self):
         while self.__running.isSet():
@@ -146,10 +142,7 @@ class QA_Engine(QA_Thread):
         self.__running.set()               # 将running设置为True
 
     def __repr__(self):
-        return ' <QA_ENGINE with {} kernels ident {}>'.format(
-            list(self.kernels_dict.keys()),
-            self.ident
-        )
+        return f' <QA_ENGINE with {list(self.kernels_dict.keys())} kernels ident {self.ident}>'
 
     @property
     def kernel_num(self):
@@ -260,4 +253,4 @@ class QA_Engine(QA_Thread):
 
 if __name__ == '__main__':
     import queue
-    q = queue.Queue()
+    q: queue.Queue = queue.Queue()

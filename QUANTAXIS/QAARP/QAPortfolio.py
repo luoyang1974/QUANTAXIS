@@ -119,10 +119,7 @@ class QA_Portfolio(QA_Account):
         self.reload()
 
     def __repr__(self):
-        return '< QA_Portfolio {} with {} Accounts >'.format(
-            self.portfolio_cookie,
-            len(self.account_list)
-        )
+        return f'< QA_Portfolio {self.portfolio_cookie} with {len(self.account_list)} Accounts >'
 
     def __getitem__(self, account_cookie):
         """类似 DICT的形式取account
@@ -439,8 +436,7 @@ class QA_Portfolio(QA_Account):
             return self.get_account_by_cookie(account.account_cookie)
         except:
             QA_util_log_info(
-                'Can not find this account with cookies %s' %
-                account.account_cookie
+                f'Can not find this account with cookies {account.account_cookie}'
             )
             return None
 
@@ -707,7 +703,7 @@ class QA_Portfolio(QA_Account):
         #     account.save()
 
 
-class QA_PortfolioView():
+class QA_PortfolioView:
     """
     对于Portfolio而言,一切都是基于内部的account的信息的变更而变更的
 
@@ -740,10 +736,7 @@ class QA_PortfolioView():
         self.allow_margin = account_list[0].allow_margin
 
     def __repr__(self):
-        return '< QA_PortfolioVIEW {} with {} Accounts >'.format(
-            self.account_cookie,
-            len(self.accounts)
-        )
+        return f'< QA_PortfolioVIEW {self.account_cookie} with {len(self.accounts)} Accounts >'
 
     def set_end_date(self, date):
         for item in self.accounts:

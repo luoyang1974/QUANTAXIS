@@ -139,9 +139,7 @@ class CLI(cmd.Cmd):
             code.write(data.content)
 
         QA_util_log_info(
-            "Successfully generate QADEMO in : {}, for more examples, please visit https://github.com/quantaxis/qademo".format(
-                now_path
-            )
+            f"Successfully generate QADEMO in : {now_path}, for more examples, please visit https://github.com/quantaxis/qademo"
         )
         self.lastcmd = ""
 
@@ -671,7 +669,7 @@ class CLI(cmd.Cmd):
                             )
                     else:
                         try:
-                            eval("QA_SU_save_%s('tdx')" % (i))
+                            eval(f"QA_SU_save_{i}('tdx')")
                         except:
                             print("❌命令格式不正确！")
                             self.print_save_usage()

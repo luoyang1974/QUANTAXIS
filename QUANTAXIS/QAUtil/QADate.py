@@ -151,7 +151,7 @@ def QA_util_datetime_to_strdate(dt):
     return:
         str
     """
-    strdate = "%04d-%02d-%02d" % (dt.year, dt.month, dt.day)
+    strdate = f"{dt.year:04d}-{dt.month:02d}-{dt.day:02d}"
     return strdate
 
 
@@ -170,14 +170,7 @@ def QA_util_datetime_to_strdatetime(dt):
         datetime
 
     """
-    strdatetime = "%04d-%02d-%02d %02d:%02d:%02d" % (
-        dt.year,
-        dt.month,
-        dt.day,
-        dt.hour,
-        dt.minute,
-        dt.second
-    )
+    strdatetime = f"{dt.year:04d}-{dt.month:02d}-{dt.day:02d} {dt.hour:02d}:{dt.minute:02d}:{dt.second:02d}"
     return strdatetime
 
 
@@ -246,14 +239,12 @@ def QA_util_tdxtimestamp(time_stamp):
         time_stamp = str(time_stamp)
         time = time_stamp[:-6] + ':'
         if int(time_stamp[-6:-4]) < 60:
-            time += '%s:' % time_stamp[-6:-4]
+            time += f'{time_stamp[-6:-4]}:'
             time += '%06.3f' % (
                 int(time_stamp[-4:]) * 60 / 10000.0
             )
         else:
-            time += '%02d:' % (
-                int(time_stamp[-6:]) * 60 / 1000000
-            )
+            time += f"{int(time_stamp[-6:]) * 60 / 1000000:02d}:"
             time += '%06.3f' % (
                 (int(time_stamp[-6:]) * 60 % 1000000) * 60 / 1000000.0
             )

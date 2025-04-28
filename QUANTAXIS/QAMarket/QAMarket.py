@@ -183,8 +183,8 @@ class QA_Market(QA_Trade):
             return self.session[account_cookie]
         except KeyError:
             print(
-                'QAMARKET: this account {} is logoff, please login and retry'
-                .format(account_cookie)
+                f'QAMARKET: this account {account_cookie} is logoff, please login and retry'
+                
             )
 
     def login(self, broker_name, account_cookie, account=None):
@@ -328,12 +328,8 @@ class QA_Market(QA_Trade):
                         'MARKET WARING: SOMEING WRONG WITH ORDER \n '
                     )
                     QA_util_log_info(
-                        'code {} date {} price {} order_model {} amount_model {}'
-                        .format(code,
-                                time,
-                                price,
-                                order_model,
-                                amount_model)
+                        f'code {code} date {time} price {price} order_model {order_model} amount_model {amount_model}'
+                        
                     )
             elif isinstance(price_slice, dict):
                 if price_slice is not None:
@@ -344,12 +340,8 @@ class QA_Market(QA_Trade):
                         'MARKET WARING: SOMEING WRONG WITH ORDER \n '
                     )
                     QA_util_log_info(
-                        'code {} date {} price {} order_model {} amount_model {}'
-                        .format(code,
-                                time,
-                                price,
-                                order_model,
-                                amount_model)
+                        f'code {code} date {time} price {price} order_model {order_model} amount_model {amount_model}'
+                        
                     )
             elif isinstance(price_slice, list):
                 if price_slice is not None:
@@ -360,12 +352,8 @@ class QA_Market(QA_Trade):
                         'MARKET WARING: SOMEING WRONG WITH ORDER \n '
                     )
                     QA_util_log_info(
-                        'code {} date {} price {} order_model {} amount_model {}'
-                        .format(code,
-                                time,
-                                price,
-                                order_model,
-                                amount_model)
+                        f'code {code} date {time} price {price} order_model {order_model} amount_model {amount_model}'
+                        
                     )
 
         elif order_model is ORDER_MODEL.MARKET:
@@ -378,12 +366,8 @@ class QA_Market(QA_Trade):
                         'MARKET WARING: SOMEING WRONG WITH ORDER \n '
                     )
                     QA_util_log_info(
-                        'code {} date {} price {} order_model {} amount_model {}'
-                        .format(code,
-                                time,
-                                price,
-                                order_model,
-                                amount_model)
+                        f'code {code} date {time} price {price} order_model {order_model} amount_model {amount_model}'
+                        
                     )
             elif isinstance(price_slice, dict):
 
@@ -395,12 +379,8 @@ class QA_Market(QA_Trade):
                         'MARKET WARING: SOMEING WRONG WITH ORDER \n '
                     )
                     QA_util_log_info(
-                        'code {} date {} price {} order_model {} amount_model {}'
-                        .format(code,
-                                time,
-                                price,
-                                order_model,
-                                amount_model)
+                        f'code {code} date {time} price {price} order_model {order_model} amount_model {amount_model}'
+                        
                     )
         elif order_model is ORDER_MODEL.LIMIT:
             flag = True

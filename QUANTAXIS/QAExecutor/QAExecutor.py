@@ -1,2 +1,2 @@
-class QA_Executor():
+class QA_Executor:
     pass

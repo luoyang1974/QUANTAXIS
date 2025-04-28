@@ -42,7 +42,7 @@ def get_cache(config_file=None):
     return CACHE
 
 
-class Cache():
+class Cache:
     """This object is used to interface with the job cache.  It uses a SQLite3
     database to store the information.
     :param str cache_file: The path to the cache file.  This will be created if

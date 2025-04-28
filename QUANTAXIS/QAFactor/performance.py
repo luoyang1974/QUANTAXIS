@@ -3,7 +3,6 @@
 """
 
 import warnings
-from typing import Tuple, Union
 import re
 
 import numpy as np

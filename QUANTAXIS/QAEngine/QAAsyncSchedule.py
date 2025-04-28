@@ -3,10 +3,11 @@ from collections.abc import Collection
 
 from QUANTAXIS.QAEngine.QAAsyncTask import QA_AsyncTask
 
-bases = (Collection,)
+#bases = (Collection,)
 
 
-class QA_AsyncScheduler(*bases):
+#class QA_AsyncScheduler(*bases):
+class QA_AsyncScheduler(Collection):
     def __init__(self, *, close_timeout, limit, pending_limit,
                  exception_handler, loop):
         self._loop = loop
@@ -136,7 +137,7 @@ async def create_QAAsyncScheduler(*, close_timeout=0.1, limit=100,
                            pending_limit=10000, exception_handler=None):
     if exception_handler is not None and not callable(exception_handler):
         raise TypeError('A callable object or None is expected, '
-                        'got {!r}'.format(exception_handler))
+                        f'got {exception_handler!r}')
     loop = asyncio.get_event_loop()
     return QA_AsyncScheduler(loop=loop, close_timeout=close_timeout,
                      limit=limit, pending_limit=pending_limit,

@@ -28,6 +28,7 @@ import pandas as pd
 from QUANTAXIS.QAIndicator.base import *
 try:
     import talib
+    from talib import MA_Type
 except:
     pass
     #print('PLEASE install TALIB to call these methods')
@@ -83,7 +84,7 @@ def TA_BBANDS(prices:np.ndarray,
               timeperiod:int=5, 
               nbdevup:int=2, 
               nbdevdn:int=2, 
-              matype:int=0) -> np.ndarray:
+              matype:MA_Type=MA_Type.SMA) -> np.ndarray:
     '''
     参数设置:
         timeperiod = 5
@@ -106,7 +107,7 @@ def TA_KDJ(high:np.ndarray,
            low:np.ndarray, 
            close:np.ndarray, 
            fastk_period:int=9, 
-           slowk_matype:int=0, 
+           slowk_matype:MA_Type=MA_Type.SMA,
            slowk_period:int=3, 
            slowd_period:int=3) -> np.ndarray:
     '''
@@ -358,4 +359,4 @@ def Volume_HMA(klines, period=5):
 
     lineDirection = np.where((vhma > vhma_s.shift(1).values), 1, -1)
     hu = np.where((vhma > vhma_s.shift(2).values), 1, -1)
-    return vhma, lineDirection + hu 
+    return vhma, lineDirection + hu

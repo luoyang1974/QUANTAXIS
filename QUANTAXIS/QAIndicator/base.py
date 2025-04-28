@@ -46,11 +46,15 @@ def MA(Series, N):
 # 威廉SMA  参考https://www.joinquant.com/post/867
 
 
-def SMA(Series, N, M=1):
+def SMA(Series: pd.Series, N: int, M: int = 1) -> pd.Series:
     """
     威廉SMA算法
-
-    本次修正主要是对于返回值的优化,现在的返回值会带上原先输入的索引index
+    参数:
+        Series: 输入序列
+        N: 计算周期
+        M: 权重因子(默认为1)
+    返回:
+        pd.Series: 计算结果
     2018/5/3
     @yutiansut
     """

@@ -23,7 +23,7 @@
 from QUANTAXIS.QAIndicator.indicators import *
 from QUANTAXIS.QAIndicator.base import *
 try:
-    from QUANTAXIS.QAIndicator.talib_series import *
+    from QUANTAXIS.QAIndicator.talib_series import *  # type: ignore[assignment, no-redef]
     from QUANTAXIS.QAIndicator.talib_numpy import *
     from QUANTAXIS.QAIndicator import talib_indicators as talib_qa
 except:

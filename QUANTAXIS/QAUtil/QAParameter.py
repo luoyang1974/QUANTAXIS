@@ -27,7 +27,7 @@
 """
 
 
-class ORDER_DIRECTION():
+class ORDER_DIRECTION:
     """订单的买卖方向
 
     BUY 股票 买入
@@ -53,7 +53,7 @@ class ORDER_DIRECTION():
     OTHER = 6
 
 
-class TIME_CONDITION():
+class TIME_CONDITION:
     IOC = 'IOC'  # 立即完成，否则撤销
     GFS = 'GFS'  # 本节有效
     GFD = 'GFD'  # 当日有效
@@ -62,13 +62,13 @@ class TIME_CONDITION():
     GFA = 'GFA'  # 集合竞价有效
 
 
-class VOLUME_CONDITION():
+class VOLUME_CONDITION:
     ANY = 'ANY'  # 任意数量
     MIN = 'MIN'  # 最小数量
     ALL = 'ALL'  # 全部数量
 
 
-class EXCHANGE_ID():
+class EXCHANGE_ID:
     SSE = 'sse'  # 上交所
     SZSE = 'szse'  # 深交所
     SHFE = 'SHFE'  # 上期所
@@ -83,7 +83,7 @@ class EXCHANGE_ID():
     OKEX = 'OKEx' # OKEx
 
 
-class OFFSET():
+class OFFSET:
     """订单的开平仓属性
     OPEN 股票/期货 开仓
     CLOSE 股票 卖出
@@ -98,7 +98,7 @@ class OFFSET():
     REVERSE = 'REVERSE'
 
 
-class ORDER_MODEL():
+class ORDER_MODEL:
     """订单的成交模式
 
     LIMIT 限价模式
@@ -120,7 +120,7 @@ class ORDER_MODEL():
     FIVELEVEL = 'FIVELEVEL'
 
 
-class ORDER_STATUS():
+class ORDER_STATUS:
     """订单状态
 
     status1xx 订单待生成
@@ -156,7 +156,7 @@ class ORDER_STATUS():
     NEXT = 'next'  # 当前bar未成交,下一个bar继续等待
 
 
-class AMOUNT_MODEL():
+class AMOUNT_MODEL:
     """订单的成交量
 
     by_money是按固定成交总额下单,动态计算成交量
@@ -167,7 +167,7 @@ class AMOUNT_MODEL():
     BY_AMOUNT = 'by_amount'
 
 
-class RUNNING_ENVIRONMENT():
+class RUNNING_ENVIRONMENT:
     """执行环境
 
     回测
@@ -185,7 +185,7 @@ class RUNNING_ENVIRONMENT():
     TTS = 'tts'
 
 
-class TRADE_STATUS():
+class TRADE_STATUS:
     """交易状态返回值
 
     涨跌停限制: 202
@@ -200,7 +200,7 @@ class TRADE_STATUS():
     FAILED = 'trade_failed'
 
 
-class MARKET_ERROR():
+class MARKET_ERROR:
     """市场类的错误
 
     1. 账户以及存在(不能重复注册)
@@ -215,7 +215,7 @@ class MARKET_ERROR():
     VALUE_NOT_FOUND = 'VALUE_NOT_FOUND'
 
 
-class MARKET_TYPE():
+class MARKET_TYPE:
     """市场种类
 
     日线 尾数01
@@ -245,7 +245,7 @@ class MARKET_TYPE():
     BOND_CN = 'bond_cn'  # 中国债券
 
 
-class BROKER_TYPE():
+class BROKER_TYPE:
     """执行环境
 
     回测
@@ -262,7 +262,7 @@ class BROKER_TYPE():
     TTS = 'tts'
 
 
-class EVENT_TYPE():
+class EVENT_TYPE:
     """[summary]
     """
 
@@ -274,7 +274,7 @@ class EVENT_TYPE():
     ORDER_EVENT = 'order_event'
 
 
-class MARKET_EVENT():
+class MARKET_EVENT:
     """交易前置事件
     query_order 查询订单
     query_assets 查询账户资产
@@ -294,7 +294,7 @@ class MARKET_EVENT():
     QUERY_POSITION = 'query_position'
 
 
-class ENGINE_EVENT():
+class ENGINE_EVENT:
     """引擎事件"""
     MARKET_INIT = 'market_init'
     UPCOMING_DATA = 'upcoming_data'
@@ -307,14 +307,14 @@ class ENGINE_EVENT():
     ORDER = 'order'
 
 
-class ACCOUNT_EVENT():
+class ACCOUNT_EVENT:
     """账户事件"""
     UPDATE = 'account_update'
     SETTLE = 'account_settle'
     MAKE_ORDER = 'account_make_order'
 
 
-class BROKER_EVENT():
+class BROKER_EVENT:
     """BROKER事件
     BROKER 
     有加载数据的任务 load data
@@ -332,7 +332,7 @@ class BROKER_EVENT():
     NEXT_TRADEDAY = 'next_tradeday'
 
 
-class ORDER_EVENT():
+class ORDER_EVENT:
     """订单事件
 
     创建订单 create
@@ -346,7 +346,7 @@ class ORDER_EVENT():
     FAIL = 'fail'
 
 
-class FREQUENCE():
+class FREQUENCE:
     """查询的级别
 
     YEAR = 'year'  # 年bar
@@ -385,7 +385,7 @@ class FREQUENCE():
     LATEST = 'latest'  # 当前bar/latest
 
 
-class CURRENCY_TYPE():
+class CURRENCY_TYPE:
     """货币种类"""
     RMB = 'rmb'  # 人民币
     USD = 'usd'  # 美元
@@ -398,7 +398,7 @@ class CURRENCY_TYPE():
     CAD = 'cad'  # 加拿大元
 
 
-class DATASOURCE():
+class DATASOURCE:
     """数据来源
     """
 
@@ -415,7 +415,7 @@ class DATASOURCE():
     AUTO = 'auto'  # 优先从Mongodb中读取数据，不足的数据从tdx下载
 
 
-class OUTPUT_FORMAT():
+class OUTPUT_FORMAT:
     """输出格式
     """
 
@@ -427,7 +427,7 @@ class OUTPUT_FORMAT():
     JSON = 'json'
 
 
-class RUNNING_STATUS():
+class RUNNING_STATUS:
     """运行状态
 
     starting 是一个占用状态

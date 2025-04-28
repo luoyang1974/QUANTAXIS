@@ -26,7 +26,7 @@ from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_stock_transaction, QA_fetch_get
 from QUANTAXIS.QAFetch.QAQuery import QA_fetch_stock_info
 
 
-class QAAnalysis_Transaction():
+class QAAnalysis_Transaction:
     def __init__(self):
         self.data = None
         self.code = None

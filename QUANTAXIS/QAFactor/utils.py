@@ -6,7 +6,6 @@ import math
 import re
 import warnings
 from functools import partial
-from typing import List, Tuple, Union
 
 # import jqdatasdk
 import numpy as np
@@ -18,7 +17,7 @@ from QUANTAXIS.QAFactor.parameters import (DAYS_PER_MONTH, DAYS_PER_QUARTER,
                                            FREQUENCE_TYPE)
 
 
-def get_frequence(frequence: str = None):
+def get_frequence(frequence: str | None = None):
     """
     对于输入的 frequence 进行格式化，以符合 pandas 的 resample 需求
 
@@ -62,7 +61,7 @@ def QA_fmt_quarter(cursor_date: datetime.datetime):
         return pd.Timestamp(cursor_date.year, cursor_date.month, 30)
 
 
-def QA_fmt_code(code: str, style: str = None):
+def QA_fmt_code(code: str, style: str | None = None):
     """
     对股票代码格式化处理
 
@@ -86,25 +85,27 @@ def QA_fmt_code(code: str, style: str = None):
         return code
 
 
-def QA_fmt_code_list(code_list: str | tuple[str] | list[str], style: str = None):
+def QA_fmt_code_list(code_list: str | tuple[str] | list[str], style: str | None = None) -> list[str]:
     """
-    为了适应不同行情源股票代码，加入对股票代码格式化的操作, 目前支持 “聚宽” “掘金” “万得” “天软”
+    为了适应不同行情源股票代码，加入对股票代码格式化的操作, 目前支持 "聚宽" "掘金" "万得" "天软"
     股票代码格式格式化
 
     参数
     ---
     :param code_list: 股票代码或列表
     :param style: 行情源
+    :return: 格式化后的股票代码列表
     """
-
     if isinstance(code_list, str):
         return [QA_fmt_code(code_list, style)]
-    else:
+    elif isinstance(code_list, tuple | list):
         fmt_code = partial(QA_fmt_code, style=style)
         return list(map(fmt_code, code_list))
+    else:
+        raise TypeError("code_list must be str, tuple[str] or list[str]")
 
 
-def get_period(period: str):
+def get_period(period: str) -> str:
     """
     根据频率获取 pandas 的 time interval
 
@@ -112,8 +113,10 @@ def get_period(period: str):
     ---
     :param period: 指定的时间间隔，'1H1min', '2D3H', '1Q3min' 等
     """
+    # 确保period是字符串类型
+    period_str = str(period)
+    period = period_str  # 使用新变量名避免混淆
     origin_period = period
-    assert isinstance(period, str)
     pattern = re.compile(r"\d+")
     freqs = pattern.split(period)
     flag = np.all(
@@ -125,16 +128,21 @@ def get_period(period: str):
     if "min" in period:
         min_interval = re.findall(r"\d+min", period.lower())[0]
         period = period.lower().replace(min_interval, "")
-    hour_interval = re.findall(r"\d+h", period)
-    day_interval = re.findall(r"\d+d", period)
-    week_interval = re.findall(r"\d+w", period)
-    month_interval = re.findall(r"\d+m", period)
-    quarter_interval = re.findall(r"\d+q", period)
-    year_interval = re.findall(r"\d+y", period)
+    
+    # 修复点 1: 将初始的列表类型结果命名为 *_intervals
+    day_intervals = re.findall(r"\d+d", str(period))  # 列表类型
+    hour_interval = re.findall(r"\d+h", str(period))   # 列表类型
+    week_interval = re.findall(r"\d+w", str(period))
+    month_interval = re.findall(r"\d+m", str(period))
+    quarter_interval = re.findall(r"\d+q", str(period))
+    year_interval = re.findall(r"\d+y", str(period))
+    
     day_count = 0
     hour_count = 0
-    if day_interval:
-        day_count += int(re.findall(r"\d+", day_interval[0])[0])
+    
+    # 修复点 2: 使用 day_intervals 替代原 day_interval
+    if day_intervals:
+        day_count += int(re.findall(r"\d+", day_intervals[0])[0])
     if week_interval:
         day_count += DAYS_PER_WEEK * int(re.findall(r"\d+", week_interval[0])[0])
     if month_interval:
@@ -143,13 +151,15 @@ def get_period(period: str):
         day_count += DAYS_PER_QUARTER * int(re.findall(r"\d+", quarter_interval[0])[0])
     if year_interval:
         day_count += DAYS_PER_YEAR * int(re.findall(r"\d+", year_interval[0])[0])
-    day_interval = str(day_count) + "d"
+    
+    # 修复点 3: 使用新变量名 computed_day_interval 存储字符串结果
+    computed_day_interval = str(day_count) + "d"
+    
     if "min" in origin_period:
-        return "".join([day_interval] + hour_interval) + min_interval
+        return "".join([computed_day_interval] + hour_interval) + min_interval
     else:
-        return "".join([day_interval] + hour_interval)
-
-
+        return "".join([computed_day_interval] + hour_interval)
+    
 def get_forward_returns_columns(columns: pd.Index) -> pd.Index:
     """
     从输入的列索引中取出相应的远期收益的列
@@ -162,8 +172,10 @@ def get_forward_returns_columns(columns: pd.Index) -> pd.Index:
     ---
     :return: 相应远期收益对应列
     """
-    syntax = re.compile(r"^period_\d+")
-    return columns[columns.astype("str").str.contains(syntax, regex=True)]
+    syntax: re.Pattern = re.compile(r"^period_\d+")
+    mask: pd.Series[bool] = columns.astype("str").str.contains(syntax, regex=True)
+    result: pd.Index = columns[mask]
+    return result
 
 
 def rate_of_return(period_ret: pd.Series, base_period: str) -> pd.Series:
@@ -178,7 +190,7 @@ def rate_of_return(period_ret: pd.Series, base_period: str) -> pd.Series:
     :param period_ret: 包含远期收益的数据，名称应该包括相应周期
     :param base_period: 转换中使用的基准周期，譬如 ('1 days', '1D', '30m', '3h', '1D1h', etc)
     """
-    period_len = get_period(period_ret.name.replace("period_", ""))
+    period_len = get_period(str(period_ret.name).replace("period_", ""))
     base_period = get_period(base_period.replace("period_", ""))
     # pattern = re.compile(r"\d+")
     # interval = pattern.findall(period_len)[0]
@@ -214,7 +226,8 @@ def std_conversion(period_std: pd.Series, base_period: str) -> pd.Series:
     ---
     转换后的收益标准差
     """
-    period_len = get_period(period_std.name.replace("period_", ""))
+    period_name = str(period_std.name)  # 强制转换为字符串
+    period_len = get_period(period_name.replace("period_", ""))
     base_period = get_period(base_period.replace("period_", ""))
     conversion_factor = pd.Timedelta(period_len) / pd.Timedelta(base_period)
     return period_std / np.sqrt(conversion_factor)

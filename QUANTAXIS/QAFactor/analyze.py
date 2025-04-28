@@ -2,7 +2,6 @@
 因子分析主模块，集成数据输入，数据处理，数据分析，画图等功能
 """
 
-from typing import List, Tuple, Union
 from collections.abc import Callable, Iterable
 
 import matplotlib.gridspec as gridspec

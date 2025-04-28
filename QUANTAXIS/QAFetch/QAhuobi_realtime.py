@@ -291,13 +291,11 @@ class QA_Tick_Summary:
 
         if (datetime.now() - self.__next).total_seconds() > 0:
             QA_util_log_info(
-                "Tick message counter @ %s" %
-                datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                f"Tick message counter @ {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
             )
             for symbol in self.__summary:
                 QA_util_log_info(
-                    "on %s got %d ticks" % (symbol,
-                                            self.__summary[symbol])
+                    f"on {symbol} got {self.__summary[symbol]} ticks"
                 )
 
             self.__summary.clear()
@@ -359,7 +357,7 @@ class QA_Fetch_Huobi:
         """
         生成id标识符，用来匹配数据块
         """
-        req_id = """{}.{}""".format(symbol, period)
+        req_id = f"""{symbol}.{period}"""
         return req_id
 
     def send_message(self, message_dict, message_txt=''):
@@ -402,8 +400,7 @@ class QA_Fetch_Huobi:
                 if (len(msg_dict['data']) == 0):
                     # 没有缺漏数据，神完气足，当前时间分段的K线数据全部获取完毕，转入实时K线数据获取模式。
                     QA_util_log_info(
-                        "'%s' 时间的K线数据全部获取完毕，转入实时K线数据获取模式。" %
-                        self.__batchReqJobs[msg_dict['rep']].Params['req']
+                        f"'{self.__batchReqJobs[msg_dict['rep']].Params['req']}' 时间的K线数据全部获取完毕，转入实时K线数据获取模式。"
                     )
                     self.__batchReqJobs[msg_dict['rep']].setStatus(
                         QA_Fetch_Job_Status.FINISHED
@@ -413,10 +410,7 @@ class QA_Fetch_Huobi:
                     ohlcvData = format_huobi_data_fields(msg_dict['data'], symbol=self.__batchReqJobs[msg_dict['rep']].Symbol, frequency=self.__batchReqJobs[msg_dict['rep']].Period)
 
                     QA_util_log_info(
-                        "rep: %s, id: %s, return %d records." %
-                        (msg_dict['rep'],
-                         msg_dict['id'],
-                         len(ohlcvData))
+                        f"rep: {msg_dict['rep']}, id: {msg_dict['id']}, return {len(ohlcvData)} records."
                     )
                     self.callback_save_data_func(
                         ohlcvData,
@@ -454,7 +448,7 @@ class QA_Fetch_Huobi:
                 QA_util_log_expection('No Match Found! Unhandle this messgae:')
                 QA_util_log_expection(pprint.pformat(msg_dict, indent=4))
         elif (('subbed' in msg_dict) and (msg_dict['status'] == 'ok')):
-            QA_util_log_info('订阅 Tick 数据成功 %s' % msg_dict['subbed'])
+            QA_util_log_info(f"订阅 Tick 数据成功 {msg_dict['subbed']}")
         else:
             # 不知道如何处理的返回数据
             QA_util_log_expection('Unhandle this messgae:')
@@ -564,10 +558,7 @@ class QA_Fetch_Huobi:
 
                     if (self.__batchReqJobs[initalParams['req']].Status ==
                             QA_Fetch_Job_Status.READY):
-                        reqParams['id'] = "%s_#%d" % (
-                            initalParams['id'],
-                            requested_counter
-                        )
+                        reqParams['id'] = f"{initalParams['id']}_#{requested_counter}"
                         if (reqParams['from'] >
                             (QA_util_datetime_to_Unix_timestamp() + 120)):
                             # 出现“未来”时间，一般是默认时区设置错误造成的
@@ -657,8 +648,7 @@ class QA_Fetch_Huobi:
             else:
                 # 没有缺漏数据，神完气足，当前时间分段的K线数据全部获取完毕，转入实时K线数据获取模式。
                 QA_util_log_info(
-                    "'%s' 时间的K线数据全部获取完毕，转入实时K线数据获取模式。" %
-                    currentJob.Params['req']
+                    f"'{currentJob.Params['req']}' 时间的K线数据全部获取完毕，转入实时K线数据获取模式。"
                 )
 
     def add_subscription(
@@ -676,10 +666,7 @@ class QA_Fetch_Huobi:
 
         # QUANTAXIS 系统定义的时间跟火币网WebSocket 接口的有一点偏差 day 火币叫 1day，hour 火币定义为
         # 60min，需要查表映射转换。
-        requestStr = "market.{}.kline.{}".format(
-            symbol,
-            period
-        )
+        requestStr = f"market.{symbol}.kline.{period}"
 
         # 订阅K线记录
         self.__batchSubJobs[requestStr] = QA_Fetch_Job(symbol, period)
@@ -783,17 +770,10 @@ class QA_Fetch_Huobi:
         # QUANTAXIS 系统定义的时间跟火币网WebSocket 接口的有一点偏差 day 火币叫 1day，hour 火币定义为
         # 60min，需要查表映射转换。
         reqParams = {}
-        reqParams['req'] = requestStr = "market.{}.kline.{}".format(
-            symbol,
-            period
-        )
+        reqParams['req'] = requestStr = f"market.{symbol}.kline.{period}"
         reqParams['from'] = int(start_epoch)
         reqParams['to'] = int(end_epoch)
-        reqParams['id'] = requestIdx = "%s_#%d" % (
-            self.gen_ws_id(symbol,
-                           period),
-            int(random() * 100)
-        )
+        reqParams['id'] = requestIdx = f"{self.gen_ws_id(symbol, period)}_#{int(random() * 100)}"
 
         self.__batchReqJobs[requestStr] = QA_Fetch_Job(symbol, period)
         self.__batchReqJobs[requestStr].withParams(
@@ -843,10 +823,7 @@ class QA_Fetch_Huobi:
                 ohlcvData = format_huobi_data_fields(msg_dict['data'], symbol=symbol, frequency=period)
 
                 QA_util_log_info(
-                    "rep: %s, id: %s, return %d kiline bar(s)." %
-                    (msg_dict['rep'],
-                     msg_dict['id'],
-                     len(ohlcvData))
+                    f"rep: {msg_dict['rep']}, id: {msg_dict['id']}, return {len(ohlcvData)} kiline bar(s)."
                 )
                 return ohlcvData
 

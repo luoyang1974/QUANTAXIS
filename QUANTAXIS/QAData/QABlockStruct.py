@@ -27,7 +27,7 @@ import pandas as pd
 from QUANTAXIS.QAFetch.QATdx import QA_fetch_get_stock_realtime
 
 
-class QA_DataStruct_Stock_block():
+class QA_DataStruct_Stock_block:
 
     def __init__(self, DataFrame):
         self.data = DataFrame

@@ -44,7 +44,7 @@ STOCK_IP_FILE_PATH = '{}{}{}'.format(setting_path, os.sep, 'stock_ip.json')
 FUTURE_IP_FILE_PATH = '{}{}{}'.format(setting_path, os.sep, 'future_ip.json')
 
 
-class QA_Setting():
+class QA_Setting:
 
     def __init__(self, uri=None):
         self.lock = Lock()

@@ -112,7 +112,7 @@ finally:
     import seaborn as sns
 
 
-class QA_Risk():
+class QA_Risk:
     """QARISK 是一个风险插件
 
     需要加载一个account/portfolio类进来:
@@ -402,8 +402,8 @@ class QA_Risk():
             'alpha': self.alpha,
             'sharpe': self.sharpe,
             'sortino': self.sortino,
-            'init_cash': "%0.2f" % (float(self.assets[0])),
-            'last_assets': "%0.2f" % (float(self.assets.iloc[-1])),
+            'init_cash': f"{float(self.assets[0]):0.2f}",
+            'last_assets': f"{float(self.assets.iloc[-1]):0.2f}",
             'total_tax': self.total_tax,
             'total_commission': self.total_commission,
             'profit_money': self.profit_money,
@@ -726,8 +726,7 @@ class QA_Risk():
             plt.text(
                 i,
                 0.5,
-                '{} : {}'.format(item,
-                                 self.message[item]),
+                f'{item} : {self.message[item]}',
                 fontsize=10,
                 rotation=0,
                 wrap=True
@@ -738,8 +737,7 @@ class QA_Risk():
             plt.text(
                 i,
                 0.4,
-                '{} : {}'.format(item,
-                                 self.message[item]),
+                f'{item} : {self.message[item]}',
                 fontsize=10,
                 ha='left',
                 rotation=0,
@@ -765,8 +763,7 @@ class QA_Risk():
             plt.text(
                 i,
                 0.2,
-                '{} : {} '.format(item,
-                                  self.message[item]),
+                f'{item} : {self.message[item]} ',
                 fontsize=10,
                 ha='left',
                 rotation=0,
@@ -778,8 +775,7 @@ class QA_Risk():
             plt.text(
                 i,
                 0.1,
-                '{} : {}'.format(item,
-                                 self.message[item]),
+                f'{item} : {self.message[item]}',
                 ha='left',
                 fontsize=10,
                 rotation=0,
@@ -875,7 +871,7 @@ class QA_Risk():
         self.plot_signal()
 
 
-class QA_Performance():
+class QA_Performance:
     """
     QA_Performance是一个绩效分析插件
 

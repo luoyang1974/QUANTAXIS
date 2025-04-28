@@ -522,7 +522,7 @@ def QA_data_stockmin_resample(min_data, period=5):
         period = period.replace('min', '')
     elif isinstance(period, int):
         pass
-    _period = '%sT' % period
+    _period = f'{period}T'
     min_data = min_data.reset_index()
     if 'datetime' not in min_data.columns:
         return None

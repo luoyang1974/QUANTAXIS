@@ -1,7 +1,7 @@
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 import seaborn as sns
-from typing import Union
+from typing import Any, Literal
 import pandas as pd
 from IPython.display import display
 from functools import wraps
@@ -61,7 +61,9 @@ def customize(func):
 
 
 def plotting_context(
-    context: str = "notebook", font_scale: float = 1.5, rc: dict = None
+    context: Literal["paper", "notebook", "talk", "poster"] | dict[str, Any] | None = "notebook",
+    font_scale: float = 1.5,
+    rc: dict[str, Any] | None = None
 ):
     """
     创建默认画图板样式
@@ -84,7 +86,10 @@ def plotting_context(
     return sns.plotting_context(context=context, font_scale=font_scale, rc=rc)
 
 
-def axes_style(style: str = "darkgrid", rc: dict = None):
+def axes_style(
+    style: Literal["white", "dark", "whitegrid", "darkgrid", "ticks"] | dict[str, Any] | None = "darkgrid",
+    rc: dict[str, Any] | None = None
+):
     """
     创建默认轴域风格
 
@@ -96,16 +101,18 @@ def axes_style(style: str = "darkgrid", rc: dict = None):
     if rc is None:
         rc = {}
 
-    rc_default = {}
+    rc_default: dict[str, Any] = {}
 
     for name, val in rc_default.items():
-        rc.set_default(name, val)
+        rc[name] = val  # 直接设置rc字典值
 
     return sns.axes_style(style=style, rc=rc)
 
 
 def print_table(
-    table: pd.Series | pd.DataFrame, name: str = None, fmt: str = None
+    table: pd.Series | pd.DataFrame, 
+    name: str | None = None, 
+    fmt: str | None = None
 ):
     """
     设置输出的 pandas DataFrame 格式

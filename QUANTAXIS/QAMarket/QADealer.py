@@ -45,13 +45,13 @@ standard message
 """
 
 
-class commission():
+class commission:
     if_buyside_commission = False
     if_sellside_commission = True
     if_commission = if_buyside_commission and if_sellside_commission
 
 
-class QA_Dealer():
+class QA_Dealer:
     """[summary]
 
 
@@ -139,7 +139,7 @@ class QA_Dealer():
             self.order.code,
             None,
             self.order.towards,
-            float("%.2f" % float(self.deal_price)),
+            float(f"{float(self.deal_price):.2f}"),
             self.order.price,
             self.status,
             self.order.amount,

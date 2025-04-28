@@ -134,10 +134,7 @@ def QA_fetch_stock_day_adv(
     if res is None:
         # 🛠 todo 报告是代码不合法，还是日期不合法
         print(
-            "QA Error QA_fetch_stock_day_adv parameter code=%s , start=%s, end=%s call QA_fetch_stock_day return None"
-            % (code,
-               start,
-               end)
+            f"QA Error QA_fetch_stock_day_adv parameter code={code} , start={start}, end={end} call QA_fetch_stock_day return None"
         )
         return None
     else:
@@ -179,8 +176,7 @@ def QA_fetch_stock_min_adv(
         frequence = '60min'
     else:
         print(
-            "QA Error QA_fetch_stock_min_adv parameter frequence=%s is none of 1min 1m 5min 5m 15min 15m 30min 30m 60min 60m"
-            % frequence
+            f"QA Error QA_fetch_stock_min_adv parameter frequence={frequence} is none of 1min 1m 5min 5m 15min 15m 30min 30m 60min 60m"
         )
         return None
 
@@ -196,10 +192,7 @@ def QA_fetch_stock_min_adv(
     if start == end:
         # 🛠 todo 如果相等，根据 frequence 获取开始时间的 时间段 QA_fetch_stock_min， 不支持start end是相等的
         print(
-            "QA Error QA_fetch_stock_min_adv parameter code=%s , start=%s, end=%s is equal, should have time span! "
-            % (code,
-               start,
-               end)
+            f"QA Error QA_fetch_stock_min_adv parameter code={code} , start={start}, end={end} is equal, should have time span! "
         )
         return None
 
@@ -208,11 +201,7 @@ def QA_fetch_stock_min_adv(
     res = QA_fetch_stock_min(code, start, end, format='pd', frequence=frequence, collections= collections)
     if res is None:
         print(
-            "QA Error QA_fetch_stock_min_adv parameter code=%s , start=%s, end=%s frequence=%s call QA_fetch_stock_min return None"
-            % (code,
-               start,
-               end,
-               frequence)
+            f"QA Error QA_fetch_stock_min_adv parameter code={code} , start={start}, end={end} frequence={frequence} call QA_fetch_stock_min return None"
         )
         return None
     else:
@@ -233,8 +222,7 @@ def QA_fetch_stock_day_full_adv(date):
     res = QA_fetch_stock_full(date, 'pd')
     if res is None:
         print(
-            "QA Error QA_fetch_stock_day_full_adv parameter date=%s call QA_fetch_stock_full return None"
-            % (date)
+            f"QA Error QA_fetch_stock_day_full_adv parameter date={date} call QA_fetch_stock_full return None"
         )
         return None
     else:
@@ -271,10 +259,7 @@ def QA_fetch_index_day_adv(
     res = QA_fetch_index_day(code, start, end, format='pd', collections= collections)
     if res is None:
         print(
-            "QA Error QA_fetch_index_day_adv parameter code=%s start=%s end=%s call QA_fetch_index_day return None"
-            % (code,
-               start,
-               end)
+            f"QA Error QA_fetch_index_day_adv parameter code={code} start={start} end={end} call QA_fetch_index_day return None"
         )
         return None
     else:
@@ -332,11 +317,7 @@ def QA_fetch_index_min_adv(
     res = QA_fetch_index_min(code, start, end, format='pd', frequence=frequence, collections= collections)
     if res is None:
         print(
-            "QA Error QA_fetch_index_min_adv parameter code=%s start=%s end=%s frequence=%s call QA_fetch_index_min return None"
-            % (code,
-               start,
-               end,
-               frequence)
+            f"QA Error QA_fetch_index_min_adv parameter code={code} start={start} end={end} frequence={frequence} call QA_fetch_index_min return None"
         )
     else:
         res_reset_index = res.set_index(
@@ -376,10 +357,7 @@ def QA_fetch_stock_transaction_adv(
     if start == end:
         # 🛠 todo 如果相等，根据 frequence 获取开始时间的 时间段 QA_fetch_stock_min， 不支持start end是相等的
         print(
-            "QA Error QA_fetch_stock_transaction_adv parameter code=%s , start=%s, end=%s is equal, should have time span! "
-            % (code,
-               start,
-               end)
+            f"QA Error QA_fetch_stock_transaction_adv parameter code={code} , start={start}, end={end} is equal, should have time span! "
         )
         return None
 
@@ -395,11 +373,7 @@ def QA_fetch_stock_transaction_adv(
     )
     if res is None:
         print(
-            "QA Error QA_fetch_stock_transaction_adv parameter code=%s , start=%s, end=%s frequence=%s call QA_fetch_stock_transaction return None"
-            % (code,
-               start,
-               end,
-               frequence)
+            f"QA Error QA_fetch_stock_transaction_adv parameter code={code} , start={start}, end={end} frequence={frequence} call QA_fetch_stock_transaction return None"
         )
         return None
     else:
@@ -443,10 +417,7 @@ def QA_fetch_index_transaction_adv(
     if start == end:
         # 🛠 todo 如果相等，根据 frequence 获取开始时间的 时间段 QA_fetch_stock_min， 不支持start end是相等的
         print(
-            "QA Error QA_fetch_stock_min_adv parameter code=%s , start=%s, end=%s is equal, should have time span! "
-            % (code,
-               start,
-               end)
+            f"QA Error QA_fetch_stock_min_adv parameter code={code} , start={start}, end={end} is equal, should have time span! "
         )
         return None
 
@@ -461,11 +432,7 @@ def QA_fetch_index_transaction_adv(
     )
     if res is None:
         print(
-            "QA Error QA_fetch_index_transaction_adv parameter code=%s , start=%s, end=%s frequence=%s call QA_fetch_index_transaction return None"
-            % (code,
-               start,
-               end,
-               frequence)
+            f"QA Error QA_fetch_index_transaction_adv parameter code={code} , start={start}, end={end} frequence={frequence} call QA_fetch_index_transaction return None"
         )
         return None
     else:
@@ -539,10 +506,7 @@ def QA_fetch_future_day_adv(
     res = QA_fetch_future_day(code, start, end, format='pd', collections= collections)
     if res is None:
         print(
-            "QA Error QA_fetch_future_day_adv parameter code=%s start=%s end=%s call QA_fetch_future_day return None"
-            % (code,
-               start,
-               end)
+            f"QA Error QA_fetch_future_day_adv parameter code={code} start={start} end={end} call QA_fetch_future_day return None"
         )
     else:
         res_set_index = res.set_index(['date', 'code'])
@@ -605,11 +569,7 @@ def QA_fetch_future_min_adv(
     )
     if res is None:
         print(
-            "QA Error QA_fetch_future_min_adv parameter code=%s start=%s end=%s frequence=%s call QA_fetch_future_min return None"
-            % (code,
-               start,
-               end,
-               frequence)
+            f"QA Error QA_fetch_future_min_adv parameter code={code} start={start} end={end} frequence={frequence} call QA_fetch_future_min return None"
         )
     else:
         res_reset_index = res.set_index(
@@ -649,7 +609,7 @@ def QA_fetch_stock_block_adv(
     :param collections: 默认数据库 stock_block
     :return: QA_DataStruct_Stock_block
     '''
-    if isinstance(blockname, (list,)) and len(blockname) > 0:
+    if isinstance(blockname, list) and len(blockname) > 0:
         reg_join = "|".join(blockname)
         df = DataFrame([i for i in collections.aggregate([ \
             {"$match": {"blockname": {"$regex": reg_join}}}, \
@@ -740,10 +700,8 @@ def QA_fetch_stock_realtime_adv(
             (len(items_from_collections) == 0):
             if verbose:
                 print(
-                    "QA Error QA_fetch_stock_realtime_adv find parameter code={} num={} collection={} return NOne"
-                    .format(code,
-                            num,
-                            collections)
+                    f"QA Error QA_fetch_stock_realtime_adv find parameter code={code} num={num} collection={collections} return NOne"
+                    
                 )
             return
 
@@ -930,10 +888,7 @@ def QA_fetch_cryptocurrency_day_adv(
     res = QA_fetch_cryptocurrency_day(code, start, end, format='pd', collections=collections)
     if res is None:
         print(
-            "QA Error QA_fetch_cryptocurrency_day_adv parameter symbol=%s start=%s end=%s call QA_fetch_cryptocurrency_day return None"
-            % (code,
-               start,
-               end)
+            f"QA Error QA_fetch_cryptocurrency_day_adv parameter symbol={code} start={start} end={end} call QA_fetch_cryptocurrency_day return None"
         )
     else:
         res_set_index = res.set_index(['date', 'code'])
@@ -993,11 +948,7 @@ def QA_fetch_cryptocurrency_min_adv(
     )
     if res is None:
         print(
-            "QA Error QA_fetch_cryptocurrency_min_adv parameter symbol=%s start=%s end=%s frequence=%s call QA_fetch_cryptocurrency_min return None"
-            % (code,
-               start,
-               end,
-               frequence)
+            f"QA Error QA_fetch_cryptocurrency_min_adv parameter symbol={code} start={start} end={end} frequence={frequence} call QA_fetch_cryptocurrency_min return None"
         )
     else:
         res_reset_index = res.set_index(

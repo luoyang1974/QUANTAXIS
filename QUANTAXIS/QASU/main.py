@@ -594,8 +594,7 @@ def QA_SU_crawl_eastmoney(action="zjlx", stockCode=None):
 
     if stockCode == "all":
         # 读取tushare股票列表代码
-        print("💪 一共需要获取 %d 个股票的 资金流向 , 需要大概 %d 小时" %
-              (len(stockItems), (len(stockItems) * 5) / 60 / 60))
+        print(f"💪 一共需要获取 {len(stockItems)} 个股票的 资金流向 , 需要大概 {(len(stockItems) * 5) / 60 / 60} 小时")
 
         code_list = []
         for stock in stockItems:

@@ -32,7 +32,7 @@ from QUANTAXIS.QAFetch.QAQuery_Advance import QA_fetch_stock_day_adv
 from QUANTAXIS.QAUtil.QADate_trade import QA_util_date_gap
 
 
-class backtest_result_analyzer():
+class backtest_result_analyzer:
     def __init__(self, cookie_id, *args, **kwargs):
         self.cookie = cookie_id
         self.backtest_history = QA_fetch_backtest_history(cookie=self.cookie)

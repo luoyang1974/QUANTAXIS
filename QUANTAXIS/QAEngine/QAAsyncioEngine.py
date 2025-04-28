@@ -15,7 +15,7 @@ from QUANTAXIS.QAFetch.QAQuery_Async import QA_fetch_stock_day
 """
 
 
-class QAAsync():
+class QAAsync:
     def __init__(self):
         self.event_loop = asyncio.new_event_loop()
         self.elthread = threading.Thread(target=self.event_loop.run_forever)

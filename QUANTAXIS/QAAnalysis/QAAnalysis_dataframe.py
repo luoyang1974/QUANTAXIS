@@ -33,7 +33,7 @@ from functools import lru_cache
 #from QUANTAXIS.QAData.QADataStruct import QA_DataStruct_Index_day,QA_DataStruct_Index_min,QA_DataStruct_Stock_day,QA_DataStruct_Stock_min
 
 
-class QAAnalysis_stock():
+class QAAnalysis_stock:
     """
     行情分析器
 
@@ -231,7 +231,7 @@ def shadow_calc(data):
     return up_shadow, down_shadow, entity, data.date, data.code
 
 
-class shadow():
+class shadow:
     def __init__(self, data):
         self.data = data
 

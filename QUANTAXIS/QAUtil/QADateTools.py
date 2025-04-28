@@ -36,9 +36,8 @@ def QA_util_getBetweenMonth(from_date, to_date):
     end_date = datetime.datetime.strptime(to_date, "%Y-%m-%d")
     while begin_date <= end_date:
         date_str = begin_date.strftime("%Y-%m")
-        date_list[date_str] = ['%d-%d-01' % (begin_date.year, begin_date.month),
-                               '%d-%d-%d' % (begin_date.year, begin_date.month,
-                                             calendar.monthrange(begin_date.year, begin_date.month)[1])]
+        date_list[date_str] = [f'{begin_date.year}-{begin_date.month}-01',
+                               f'{begin_date.year}-{begin_date.month}-{calendar.monthrange(begin_date.year, begin_date.month)[1]}']
         begin_date = QA_util_get_1st_of_next_month(begin_date)
     return(date_list)
 
@@ -138,13 +137,13 @@ def QA_util_getBetweenQuarter(begin_date, end_date):
         tempvalue = value.split("-")
         year = tempvalue[0]
         if tempvalue[1] in ['01', '02', '03']:
-            quarter_list[year + "Q1"] = ['%s-01-01' % year, '%s-03-31' % year]
+            quarter_list[year + "Q1"] = [f'{year}-01-01', f'{year}-03-31']
         elif tempvalue[1] in ['04', '05', '06']:
-            quarter_list[year + "Q2"] = ['%s-04-01' % year, '%s-06-30' % year]
+            quarter_list[year + "Q2"] = [f'{year}-04-01', f'{year}-06-30']
         elif tempvalue[1] in ['07', '08', '09']:
-            quarter_list[year + "Q3"] = ['%s-07-31' % year, '%s-09-30' % year]
+            quarter_list[year + "Q3"] = [f'{year}-07-31', f'{year}-09-30']
         elif tempvalue[1] in ['10', '11', '12']:
-            quarter_list[year + "Q4"] = ['%s-10-01' % year, '%s-12-31' % year]
+            quarter_list[year + "Q4"] = [f'{year}-10-01', f'{year}-12-31']
     return(quarter_list)
 
 

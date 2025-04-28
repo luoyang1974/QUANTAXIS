@@ -37,8 +37,7 @@ headers_data['X-Requested-With'] = 'XMLHttpRequest'
 
 def QA_fetch_get_stock_day_in_year(code, year, if_fq='00'):
     data_ = []
-    url = 'http://d.10jqka.com.cn/v2/line/hs_{}/{}/{}.js'.format(
-        str(code), str(if_fq), str(year))
+    url = f'http://d.10jqka.com.cn/v2/line/hs_{str(code)}/{str(if_fq)}/{str(year)}.js'
     try:
         for item in requests.get(url).text.split('\"')[3].split(';'):
             data_.append(item.split(','))

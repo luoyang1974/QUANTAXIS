@@ -184,8 +184,7 @@ def QA_SU_save_stock_min(client=DATABASE, ui_log=None, ui_progress=None):
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(code_list)),
+            f'The {count} of Total {len(code_list)}',
             ui_log=ui_log
         )
 

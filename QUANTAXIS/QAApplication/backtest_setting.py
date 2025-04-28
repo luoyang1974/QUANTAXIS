@@ -25,7 +25,7 @@ import os
 import sys
 
 
-class backtest_setting():
+class backtest_setting:
     def __init__(self, topic, version, backtest_name, sql_setting):
         self.topic = topic
         self.version = version
@@ -39,8 +39,7 @@ class backtest_setting():
 
     @property
     def dirs(self):
-        return '{}{}QUANTAXIS_RESULT{}{}{}{}{}'.format(
-            self.absoult_path, os.sep, os.sep, self.topic, os.sep, self.version, os.sep)
+        return f'{self.absoult_path}{os.sep}QUANTAXIS_RESULT{os.sep}{self.topic}{os.sep}{self.version}{os.sep}'
 
     @property
     def database_uri(self):

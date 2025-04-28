@@ -26,7 +26,7 @@ import numpy as np
 import pandas as pd
 
 
-class QA_DataStruct_Series():
+class QA_DataStruct_Series:
     def __init__(self, series):
         self.series = series.sort_index()
 

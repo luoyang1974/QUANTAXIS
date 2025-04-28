@@ -9,7 +9,7 @@ import datetime
 import re
 import warnings
 from functools import partial
-from typing import List, Tuple, Union
+
 # try:
 #     import jqdatasdk
 # except ImportError:

@@ -59,7 +59,7 @@ def QA_util_timestamp_to_str(ts_epoch = None, local_tz = timezone(timedelta(hour
     elif isinstance(ts_epoch, int) or isinstance(ts_epoch, np.int32) or isinstance(ts_epoch, np.int64) or isinstance(ts_epoch, float):
         return (datetime(1970,1,1, tzinfo=timezone.utc) + timedelta(seconds = int(ts_epoch))).astimezone(local_tz).strftime('%Y-%m-%d %H:%M:%S')
     else:
-        raise Exception('No support type %s.' % type(ts_epoch))
+        raise Exception(f'No support type {type(ts_epoch)}.')
 
 
 def QA_util_str_to_Unix_timestamp(time_, tz_str= ' +0800'):
@@ -123,11 +123,8 @@ def QA_util_print_timestamp(ts_epoch):
     """
     打印合适阅读的时间格式
     """
-    return '{:s}({:d})'.format(
-        QA_util_timestamp_to_str(ts_epoch)[2:16],
-        int(ts_epoch)
-    )
+    return f'{QA_util_timestamp_to_str(ts_epoch)[2:16]:s}({int(ts_epoch):d})'
 
 
 if __name__ == '__main__':
-    print(QA_util_time_stamp('2017-01-01 10:25:08'))
+    print(QA_util_str_to_Unix_timestamp('2017-01-01 10:25:08'))

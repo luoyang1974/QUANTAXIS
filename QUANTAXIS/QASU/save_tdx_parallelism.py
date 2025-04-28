@@ -105,8 +105,7 @@ class QA_SU_save_day_parallelism(Parallelism):
                 str += + self._loginfolist[i] + ' '
             str += code
             QA_util_log_info(
-                '##JOB02 Now Saved STOCK_DAY==== {}'.format(str
-                    ),
+                f'##JOB02 Now Saved STOCK_DAY==== {str}',
                 self.ui_log
             )
             self._loginfolist.clear()
@@ -150,8 +149,7 @@ class QA_SU_save_day_parallelism_thread(Parallelism_Thread):
                 str += + self._loginfolist[i] + ' '
             str += code
             QA_util_log_info(
-                '##JOB02 Now Saved STOCK_DAY==== {}'.format(str
-                    ),
+                f'##JOB02 Now Saved STOCK_DAY==== {str}',
                 self.ui_log
             )
             self._loginfolist.clear()
@@ -181,8 +179,7 @@ class QA_SU_save_stock_day_parallelism(QA_SU_save_day_parallelism):
                 )
                 coll_stock_day.insert_many(QA_util_to_json_from_pandas(df))
                 QA_util_log_info(
-                    '##JOB02 Now Saved STOCK_DAY==== {}'.format(
-                        df.code.unique()[0]),
+                    f'##JOB02 Now Saved STOCK_DAY==== {df.code.unique()[0]}',
                     self.ui_log
                 )
             else:
@@ -245,10 +242,8 @@ def QA_SU_save_stock_day(client=DATABASE, ui_log=None, ui_progress=None):
                     # 当前数据库中没有这个代码的股票数据， 从1990-01-01 开始下载所有的数据
                     start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_STOCK_DAY \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_STOCK_DAY \n Trying updating {code} from {start_date} to {end_date}'
+                        ,
                     ui_log
                 )
                 if start_date != end_date:
@@ -333,11 +328,7 @@ class QA_SU_save_index_day_parallelism(QA_SU_save_day_parallelism_thread):
 
             index_or_etf = self.get_index_or_etf_from_code(code)
             prefix = '##JOB04 Saving {}_DAY ==== Trying updating\n{}'.format(index_or_etf, '{}')
-            loginfo(prefix, ' {} from {} to {}'.format(
-                code,
-                start_time,
-                end_time
-            ))
+            loginfo(prefix, f' {code} from {start_time} to {end_time}')
             # log_info = '##JOB04 Saving {}_DAY====\nTrying updating {} from {} to {}'.format(
             #     index_or_etf,
             #     code,
@@ -408,13 +399,10 @@ class QA_SU_save_index_day_parallelism(QA_SU_save_day_parallelism_thread):
         if self.total_counts > 0:
             self.code_counts += 1
             QA_util_log_info(
-                'The {} of Total {}'.format(self.code_counts,
-                                            self.total_counts),
+                f'The {self.code_counts} of Total {self.total_counts}',
                 ui_log=self.ui_log
             )
-            strLogProgress = 'DOWNLOAD PROGRESS {:.2f}% '.format(
-                self.code_counts / self.total_counts * 100
-            )
+            strLogProgress = f'DOWNLOAD PROGRESS {self.code_counts / self.total_counts * 100:.2f}% '
             intLogProgress = int(
                 float(self.code_counts / self.total_counts * 10000.0))
             QA_util_log_info(
@@ -519,8 +507,7 @@ def QA_SU_save_stock_xdxr(client=DATABASE, ui_log=None, ui_progress=None):
 
     for i_ in range(len(stock_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(i_,
-                                        len(stock_list)),
+            f'The {i_} of Total {len(stock_list)}',
             ui_log=ui_log
         )
         strLogInfo = 'DOWNLOAD PROGRESS {} '.format(

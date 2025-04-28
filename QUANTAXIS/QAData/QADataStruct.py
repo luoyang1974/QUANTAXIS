@@ -134,9 +134,7 @@ class QA_DataStruct_Stock_day(_quotation_base):
         self.mongo_coll = DATABASE.stock_day
 
     def __repr__(self):
-        return '< QA_DataStruct_Stock_day with {} securities >'.format(
-            len(self.code)
-        )
+        return f'< QA_DataStruct_Stock_day with {len(self.code)} securities >'
 
     __str__ = __repr__
 
@@ -182,7 +180,7 @@ class QA_DataStruct_Stock_day(_quotation_base):
                     )
         else:
             QA_util_log_info(
-                'none support type for qfq Current type is: %s' % self.if_fq
+                f'none support type for qfq Current type is: {self.if_fq}'
             )
             return self
 
@@ -203,7 +201,7 @@ class QA_DataStruct_Stock_day(_quotation_base):
                 #     self.data[self.data['code'] == x], 'hfq'), self.code))), self.type, 'hfq')
         else:
             QA_util_log_info(
-                'none support type for qfq Current type is: %s' % self.if_fq
+                f'none support type for qfq Current type is: {self.if_fq}'
             )
             return self
 
@@ -334,9 +332,7 @@ class QA_DataStruct_Stock_min(_quotation_base):
         self.mongo_coll = DATABASE.stock_min
 
     def __repr__(self):
-        return '< QA_DataStruct_Stock_Min with {} securities >'.format(
-            len(self.code)
-        )
+        return f'< QA_DataStruct_Stock_Min with {len(self.code)} securities >'
 
     __str__ = __repr__
 
@@ -388,7 +384,7 @@ class QA_DataStruct_Stock_min(_quotation_base):
 
         else:
             QA_util_log_info(
-                'none support type for qfq Current type is:%s' % self.if_fq
+                f'none support type for qfq Current type is:{self.if_fq}'
             )
             return self
 
@@ -410,7 +406,7 @@ class QA_DataStruct_Stock_min(_quotation_base):
                 # return data
         else:
             QA_util_log_info(
-                'none support type for qfq Current type is:%s' % self.if_fq
+                f'none support type for qfq Current type is:{self.if_fq}'
             )
             return self
 
@@ -495,9 +491,7 @@ class QA_DataStruct_Index_min(_quotation_base):
         self.mongo_coll = DATABASE.index_min
 
     def __repr__(self):
-        return '< QA_DataStruct_Index_Min with {} instruments>'.format(
-            len(self.code)
-        )
+        return f'< QA_DataStruct_Index_Min with {len(self.code)} instruments>'
 
     @property
     @lru_cache
@@ -551,9 +545,7 @@ class QA_DataStruct_Future_day(_quotation_base):
         self.mongo_coll = DATABASE.future_day
 
     def __repr__(self):
-        return '< QA_DataStruct_Future_day with {} securities >'.format(
-            len(self.code)
-        )
+        return f'< QA_DataStruct_Future_day with {len(self.code)} securities >'
 
     __str__ = __repr__
 
@@ -694,9 +686,7 @@ class QA_DataStruct_Future_min(_quotation_base):
         return self.resample('60min')
 
     def __repr__(self):
-        return '< QA_DataStruct_Future_min with {} securities >'.format(
-            len(self.code)
-        )
+        return f'< QA_DataStruct_Future_min with {len(self.code)} securities >'
 
     __str__ = __repr__
 
@@ -733,9 +723,7 @@ class QA_DataStruct_Index_day(_quotation_base):
         self.mongo_coll = DATABASE.index_day
 
     def __repr__(self):
-        return '< QA_DataStruct_Index_day with {} securities >'.format(
-            len(self.code)
-        )
+        return f'< QA_DataStruct_Index_day with {len(self.code)} securities >'
 
     __str__ = __repr__
 
@@ -772,7 +760,7 @@ class QA_DataStruct_Index_day(_quotation_base):
             return None
 
 
-class QA_DataStruct_Stock_transaction():
+class QA_DataStruct_Stock_transaction:
 
     def __init__(self, DataFrame):
         """Stock Transaction
@@ -1023,7 +1011,7 @@ class QA_DataStruct_Stock_transaction():
             return self.data.loc[start:end]
 
 
-class QA_DataStruct_Index_transaction():
+class QA_DataStruct_Index_transaction:
 
     def __init__(self, DataFrame):
         """Index Transaction
@@ -1295,7 +1283,7 @@ class QA_DataStruct_Min(_quotation_base):
         super().__init__(data, dtype, if_fq)
 
 
-class _realtime_base():
+class _realtime_base:
     """
     realtime 基类
 
@@ -1486,7 +1474,7 @@ class QA_DataStruct_Stock_realtime(_realtime_base):
 QA_DataStruct_Future_realtime = QA_DataStruct_Stock_realtime
 
 
-class QA_DataStruct_Stock_realtime_series():
+class QA_DataStruct_Stock_realtime_series:
 
     def __init__(self, sr_series):
 
@@ -1499,7 +1487,7 @@ class QA_DataStruct_Stock_realtime_series():
         self.table = pd.concat([sr._data for sr in self.sr_series])
 
 
-class QA_DataStruct_Security_list():
+class QA_DataStruct_Security_list:
 
     def __init__(self, DataFrame):
         self.data = DataFrame.loc[:,
@@ -1528,7 +1516,7 @@ class QA_DataStruct_Security_list():
         return self.data
 
 
-class QA_DataStruct_Future_tick():
+class QA_DataStruct_Future_tick:
     """
     CTP FORMAT
     {'TradingDay': '20181115',
@@ -1602,9 +1590,7 @@ class QA_DataStruct_CryptoCurrency_day(_quotation_base):
         self.mongo_coll = DATABASE.cryptocurrency_day
 
     def __repr__(self):
-        return '< QA_DataStruct_CryptoCurrency_day with {} securities >'.format(
-            len(self.code)
-        )
+        return f'< QA_DataStruct_CryptoCurrency_day with {len(self.code)} securities >'
 
     __str__ = __repr__
 
@@ -1700,9 +1686,7 @@ class QA_DataStruct_CryptoCurrency_min(_quotation_base):
         return self.resample('60min')
 
     def __repr__(self):
-        return '< QA_DataStruct_CryptoCurrency_min with {} securities >'.format(
-            len(self.code)
-        )
+        return f'< QA_DataStruct_CryptoCurrency_min with {len(self.code)} securities >'
 
     __str__ = __repr__
 

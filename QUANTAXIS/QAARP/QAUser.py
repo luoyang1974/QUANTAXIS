@@ -32,7 +32,7 @@ from QUANTAXIS.QAUtil.QADate_trade import QA_util_get_next_day, QA_util_get_real
 from QUANTAXIS.QAUtil.QAParameter import MARKET_TYPE, FREQUENCE
 
 
-class QA_User():
+class QA_User:
     """QA_User 
     User-->Portfolio-->Account/Strategy
 
@@ -189,11 +189,7 @@ class QA_User():
         self.sync()
 
     def __repr__(self):
-        return '< QA_USER {} with {} portfolio: {} >'.format(
-            self.user_cookie,
-            len(self.portfolio_list),
-            self.portfolio_list
-        )
+        return f'< QA_USER {self.user_cookie} with {len(self.portfolio_list)} portfolio: {self.portfolio_list} >'
 
     def __getitem__(self, portfolio_cookie: str):
         """获取user下的portfolio

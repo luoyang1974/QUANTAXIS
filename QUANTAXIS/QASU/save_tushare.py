@@ -26,6 +26,8 @@ import json
 import re
 import time
 import pymongo
+from pymongo import MongoClient
+from pymongo.database import Database
 
 import tushare as ts
 
@@ -53,11 +55,7 @@ import tushare as QATs
 
 def date_conver_to_new_format(date_str):
     time_now = time.strptime(date_str[0:10], '%Y-%m-%d')
-    return '{:0004}{:02}{:02}'.format(
-        int(time_now.tm_year),
-        int(time_now.tm_mon),
-        int(time_now.tm_mday)
-    )
+    return f'{int(time_now.tm_year):0004}{int(time_now.tm_mon):02}{int(time_now.tm_mday):02}'
 
 
 # TODO: 和sav_tdx.py中的now_time一起提取成公共函数
@@ -72,26 +70,25 @@ def now_time():
     return date_conver_to_new_format(str_now)
 
 
-def QA_save_stock_day_all(client=DATABASE):
+def QA_save_stock_day_all(client: MongoClient | Database = DATABASE):
     df = ts.get_stock_basics()
     __coll = client.stock_day
     __coll.ensure_index('code')
 
     def saving_work(i):
-        QA_util_log_info('Now Saving ==== %s' % (i))
+        QA_util_log_info(f'Now Saving ==== {i}')
         try:
             data_json = QA_fetch_get_stock_day(i, start='1990-01-01')
 
             __coll.insert_many(data_json)
         except Exception as e:
             print(e)
-            QA_util_log_info('error in saving ==== %s' % str(i))
+            QA_util_log_info(f'error in saving ==== {str(i)}')
 
     for i_ in range(len(df.index)):
-        QA_util_log_info('The {} of Total {}'.format(i_, len(df.index)))
+        QA_util_log_info(f'The {i_} of Total {len(df.index)}')
         QA_util_log_info(
-            'DOWNLOAD PROGRESS %s ' %
-            str(float(i_ / len(df.index) * 100))[0:4] + '%'
+            f'DOWNLOAD PROGRESS {str(float(i_ / len(df.index) * 100))[0:4]} ' + '%'
         )
         saving_work(df.index[i_])
 
@@ -99,7 +96,7 @@ def QA_save_stock_day_all(client=DATABASE):
     saving_work('sz50')
 
 
-def QA_SU_save_stock_list(client=DATABASE):
+def QA_SU_save_stock_list(client: MongoClient | Database = DATABASE):
     data = QA_fetch_get_stock_list()
     date = str(datetime.date.today())
     date_stamp = QA_util_date_stamp(date)
@@ -115,7 +112,7 @@ def QA_SU_save_stock_list(client=DATABASE):
     )
 
 
-def QA_SU_save_stock_terminated(client=DATABASE):
+def QA_SU_save_stock_terminated(client: MongoClient | Database = DATABASE):
     '''
     获取已经被终止上市的股票列表，数据从上交所获取，目前只有在上海证券交易所交易被终止的股票。
     collection：
@@ -129,10 +126,7 @@ def QA_SU_save_stock_terminated(client=DATABASE):
     print("！！！ tushare 这个函数已经失效！！！")
     df = QATs.get_terminated()
     #df = QATs.get_suspended()
-    print(
-        " Get stock terminated from tushare,stock count is %d  (终止上市股票列表)" %
-        len(df)
-    )
+    print(f" Get stock terminated from tushare,stock count is {len(df)}  (终止上市股票列表)")
     coll = client.stock_terminated
     client.drop_collection(coll)
     json_data = json.loads(df.reset_index().to_json(orient='records'))
@@ -140,7 +134,7 @@ def QA_SU_save_stock_terminated(client=DATABASE):
     print(" 保存终止上市股票列表 到 stock_terminated collection， OK")
 
 
-def QA_SU_save_stock_info_tushare(client=DATABASE):
+def QA_SU_save_stock_info_tushare(client: MongoClient | Database = DATABASE):
     '''
         获取 股票的 基本信息，包含股票的如下信息
 
@@ -175,7 +169,7 @@ def QA_SU_save_stock_info_tushare(client=DATABASE):
     :return:
     '''
     df = QATs.get_stock_basics()
-    print(" Get stock info from tushare,stock count is %d" % len(df))
+    print(f" Get stock info from tushare,stock count is {len(df)}")
     coll = client.stock_info_tushare
     client.drop_collection(coll)
     json_data = json.loads(df.reset_index().to_json(orient='records'))
@@ -183,13 +177,13 @@ def QA_SU_save_stock_info_tushare(client=DATABASE):
     print(" Save data to stock_info_tushare collection， OK")
 
 
-def QA_SU_save_trade_date_all(client=DATABASE):
+def QA_SU_save_trade_date_all(client: MongoClient | Database = DATABASE):
     data = QA_fetch_get_trade_date('', '')
     coll = client.trade_date
     coll.insert_many(data)
 
 
-def QA_SU_save_stock_info(client=DATABASE):
+def QA_SU_save_stock_info(client: MongoClient | Database = DATABASE):
     data = QA_fetch_get_stock_info('')
     client.drop_collection('stock_info')
     coll = client.stock_info
@@ -197,27 +191,26 @@ def QA_SU_save_stock_info(client=DATABASE):
     coll.insert_many(QA_util_to_json_from_pandas(data.reset_index()))
 
 
-def QA_save_stock_day_all_bfq(client=DATABASE):
+def QA_save_stock_day_all_bfq(client: MongoClient | Database = DATABASE):
     df = ts.get_stock_basics()
 
     __coll = client.stock_day_bfq
     __coll.ensure_index('code')
 
     def saving_work(i):
-        QA_util_log_info('Now Saving ==== %s' % (i))
+        QA_util_log_info(f'Now Saving ==== {i}')
         try:
             df = QA_fetch_get_stock_day(i, start='1990-01-01', if_fq='bfq')
 
             __coll.insert_many(json.loads(df.to_json(orient='records')))
         except Exception as e:
             print(e)
-            QA_util_log_info('error in saving ==== %s' % str(i))
+            QA_util_log_info(f'error in saving ==== {str(i)}')
 
     for i_ in range(len(df.index)):
-        QA_util_log_info('The {} of Total {}'.format(i_, len(df.index)))
+        QA_util_log_info(f'The {i_} of Total {len(df.index)}')
         QA_util_log_info(
-            'DOWNLOAD PROGRESS %s ' %
-            str(float(i_ / len(df.index) * 100))[0:4] + '%'
+            f'DOWNLOAD PROGRESS {str(float(i_ / len(df.index) * 100))[0:4]} ' + '%'
         )
         saving_work(df.index[i_])
 
@@ -225,14 +218,14 @@ def QA_save_stock_day_all_bfq(client=DATABASE):
     saving_work('sz50')
 
 
-def QA_save_stock_day_with_fqfactor(client=DATABASE):
+def QA_save_stock_day_with_fqfactor(client: MongoClient | Database = DATABASE):
     df = ts.get_stock_basics()
 
     __coll = client.stock_day
     __coll.ensure_index('code')
 
     def saving_work(i):
-        QA_util_log_info('Now Saving ==== %s' % (i))
+        QA_util_log_info(f'Now Saving ==== {i}')
         try:
             data_hfq = QA_fetch_get_stock_day(
                 i,
@@ -244,13 +237,12 @@ def QA_save_stock_day_with_fqfactor(client=DATABASE):
             __coll.insert_many(data_json)
         except Exception as e:
             print(e)
-            QA_util_log_info('error in saving ==== %s' % str(i))
+            QA_util_log_info(f'error in saving ==== {str(i)}')
 
     for i_ in range(len(df.index)):
-        QA_util_log_info('The {} of Total {}'.format(i_, len(df.index)))
+        QA_util_log_info(f'The {i_} of Total {len(df.index)}')
         QA_util_log_info(
-            'DOWNLOAD PROGRESS %s ' %
-            str(float(i_ / len(df.index) * 100))[0:4] + '%'
+            f'DOWNLOAD PROGRESS {str(float(i_ / len(df.index) * 100))[0:4]} ' + '%'
         )
         saving_work(df.index[i_])
 
@@ -261,7 +253,7 @@ def QA_save_stock_day_with_fqfactor(client=DATABASE):
     return 0
 
 
-def QA_save_lhb(client=DATABASE):
+def QA_save_lhb(client: MongoClient | Database = DATABASE):
     __coll = client.lhb
     __coll.ensure_index('code')
 
@@ -321,10 +313,8 @@ def _saving_work(code, coll_stock_day, ui_log=None, err=[]):
             start_date = ref[ref.count() - 1]['date']
 
             QA_util_log_info(
-                'UPDATE_STOCK_DAY \n Trying updating {} from {} to {}'
-                .format(code,
-                        start_date_new_format,
-                        end_date),
+                f'UPDATE_STOCK_DAY \n Trying updating {code} from {start_date_new_format} to {end_date}'
+                ,
                 ui_log
             )
             if start_date_new_format != end_date:
@@ -345,10 +335,8 @@ def _saving_work(code, coll_stock_day, ui_log=None, err=[]):
         else:
             start_date = '19900101'
             QA_util_log_info(
-                'UPDATE_STOCK_DAY \n Trying updating {} from {} to {}'
-                .format(code,
-                        start_date,
-                        end_date),
+                f'UPDATE_STOCK_DAY \n Trying updating {code} from {start_date} to {end_date}'
+                ,
                 ui_log
             )
             if start_date != end_date:
@@ -367,7 +355,7 @@ def _saving_work(code, coll_stock_day, ui_log=None, err=[]):
         err.append(str(code))
 
 
-def QA_SU_save_stock_day(client=DATABASE, ui_log=None, ui_progress=None):
+def QA_SU_save_stock_day(client: MongoClient | Database = DATABASE, ui_log=None, ui_progress=None):
     '''
      save stock_day
     保存日线数据
@@ -416,7 +404,7 @@ def QA_SU_save_stock_day(client=DATABASE, ui_log=None, ui_progress=None):
         QA_util_log_info(err, ui_log)
 
 
-def QA_SU_save_stock_block(client=DATABASE, ui_log=None, ui_progress=None):
+def QA_SU_save_stock_block(client: MongoClient | Database = DATABASE, ui_log=None, ui_progress=None):
     """
     Tushare的版块数据
     

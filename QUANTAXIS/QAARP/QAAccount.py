@@ -429,10 +429,7 @@ class QA_Account(QA_Worker):
             self.reload()
 
     def __repr__(self):
-        return '< QA_Account {} market: {}>'.format(
-            self.account_cookie,
-            self.market_type
-        )
+        return f'< QA_Account {self.account_cookie} market: {self.market_type}>'
 
     @property
     def message(self):
@@ -1435,12 +1432,8 @@ class QA_Account(QA_Worker):
         """
 
         print(
-            'QAACCOUNT ==> receive deal  Time {}/ Code:{}/ Price:{}/ TOWARDS:{}/ Amounts:{}'
-            .format(trade_time,
-                    code,
-                    trade_price,
-                    trade_towards,
-                    trade_amount)
+            f'QAACCOUNT ==> receive deal  Time {trade_time}/ Code:{code}/ Price:{trade_price}/ TOWARDS:{trade_towards}/ Amounts:{trade_amount}'
+            
         )
 
         trade_time = str(trade_time)
@@ -1567,9 +1560,7 @@ class QA_Account(QA_Worker):
         # date 字符串 2011-10-11 长度10
         date = str(time)[0:10] if len(str(time)) == 19 else str(time)
         # time 字符串 20011-10-11 09:02:00  长度 19
-        time = str(time) if len(str(time)) == 19 else '{} 09:31:00'.format(
-            str(time)[0:10]
-        )
+        time = str(time) if len(str(time)) == 19 else f'{str(time)[0:10]} 09:31:00'
 
         # 🛠todo 移到Utils类中，  amount_to_money 成交量转金额
         # BY_MONEY :: amount --钱 如10000元  因此 by_money里面 需要指定价格,来计算实际的股票数
@@ -1647,13 +1638,7 @@ class QA_Account(QA_Worker):
                         self.cash_available -= money
                         flag = True
             else:
-                wrong_reason = 'QAACCOUNT: 可用资金不足 cash_available {}  code {} time {} amount {} towards {}'.format(
-                    self.cash_available,
-                    code,
-                    time,
-                    amount,
-                    towards
-                )
+                wrong_reason = f'QAACCOUNT: 可用资金不足 cash_available {self.cash_available}  code {code} time {time} amount {amount} towards {towards}'
         elif int(towards) in [-1, -2, -3]:
             # 是卖出的情况(包括卖出，卖出开仓allow_sellopen如果允许. 卖出平仓)
             # print(self.sell_available[code])
@@ -1716,12 +1701,7 @@ class QA_Account(QA_Worker):
             return _order
         else:
             print(
-                'ERROR : CODE {} TIME {}  AMOUNT {} TOWARDS {}'.format(
-                    code,
-                    time,
-                    amount,
-                    towards
-                )
+                f'ERROR : CODE {code} TIME {time}  AMOUNT {amount} TOWARDS {towards}'
             )
             print(wrong_reason)
             return False
@@ -1782,9 +1762,7 @@ class QA_Account(QA_Worker):
             return order_list
         else:
             raise RuntimeError(
-                'QAACCOUNT with {} environments cannot use this methods'.format(
-                    self.running_environment
-                )
+                f'QAACCOUNT with {self.running_environment} environments cannot use this methods'
             )
 
     def settle(self, settle_data=None):
@@ -1809,9 +1787,7 @@ class QA_Account(QA_Worker):
         if self.running_environment == RUNNING_ENVIRONMENT.TZERO and self.hold_available.sum(
         ) != 0:
             raise RuntimeError(
-                'QAACCOUNT: 该T0账户未当日仓位,请平仓 {}'.format(
-                    self.hold_available.to_dict()
-                )
+                f'QAACCOUNT: 该T0账户未当日仓位,请平仓 {self.hold_available.to_dict()}'
             )
         if self.market_type == MARKET_TYPE.FUTURE_CN:
             # 增加逐日盯市制度
@@ -1845,9 +1821,7 @@ class QA_Account(QA_Worker):
         self.sell_available = self.hold
         self.buy_available = self.hold
         self.cash_available = self.cash[-1]
-        self.datetime = '{} 09:30:00'.format(
-            QA_util_get_next_day(self.date)
-        ) if self.date is not None else None
+        self.datetime = f'{QA_util_get_next_day(self.date)} 09:30:00' if self.date is not None else None
 
     def on_bar(self, event):
         '''
@@ -2417,7 +2391,7 @@ class QA_Account(QA_Worker):
     sell_open = sell
 
 
-class Account_handler():
+class Account_handler:
 
     def __init__(self):
         pass

@@ -7,7 +7,7 @@ import sys
 import random
 
 
-class backtest():
+class backtest:
     """依据回测场景的建模
 
     """
@@ -88,8 +88,7 @@ class backtest():
         print(vars(self))
         self.identity_code = '_'.join([str(x) for x in list(kwargs.values())])
 
-        self.backtest_cookie = 'future_{}_{}'.format(
-            datetime.datetime.now().time().__str__()[:8], self.identity_code)
+        self.backtest_cookie = f'future_{datetime.datetime.now().time().__str__()[:8]}_{self.identity_code}'
         self.account = QA.QA_Account(allow_sellopen=True, allow_t0=True, account_cookie=self.backtest_cookie,
                                      market_type=QA.MARKET_TYPE.FUTURE_CN, frequence=self.frequence, init_cash=self.init_cash)
 

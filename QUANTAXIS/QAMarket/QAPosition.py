@@ -14,7 +14,7 @@ from QUANTAXIS.QASU.save_position import save_position
 from QUANTAXIS.QAUtil.QASetting import DATABASE
 
 
-class QA_Position():
+class QA_Position:
     """一个持仓模型:/兼容股票期货/兼容保证金持仓
 
     兼容快期DIFF协议
@@ -184,11 +184,7 @@ class QA_Position():
         self.allow_exceed = allow_exceed
 
     def __repr__(self):
-        return '< QAPOSITION {} amount {}/{} >'.format(
-            self.code,
-            self.volume_long,
-            self.volume_short
-        )
+        return f'< QAPOSITION {self.code} amount {self.volume_long}/{self.volume_short} >'
 
     def read_diff(self, diff_slice):
         """[summary]
@@ -459,8 +455,7 @@ class QA_Position():
                 self.frozen[order_id] = moneyneed
                 res = True
             else:
-                print('开仓保证金不足 TOWARDS{} Need{} HAVE{}'.format(
-                    towards, moneyneed, self.moneypresetLeft))
+                print(f'开仓保证金不足 TOWARDS{towards} Need{moneyneed} HAVE{self.moneypresetLeft}')
 
         return res
 
@@ -907,7 +902,7 @@ class QA_Position():
         raise NotImplementedError('此接口为内部接口 为CEP专用')
 
 
-class QA_PMS():
+class QA_PMS:
 
     def __init__(self, init_position=None):
         self.pms = {}

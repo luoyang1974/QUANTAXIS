@@ -134,10 +134,8 @@ def QA_SU_save_single_stock_day(code : str, client= DATABASE, ui_log=None):
                 start_date = ref[ref.count() - 1]['date']
 
                 QA_util_log_info(
-                    'UPDATE_STOCK_DAY \n Trying updating {} from {} to {}'
-                    .format(code,
-                            start_date,
-                            end_date),
+                    f'UPDATE_STOCK_DAY \n Trying updating {code} from {start_date} to {end_date}'
+                    ,
                     ui_log
                 )
                 if start_date != end_date:
@@ -156,10 +154,8 @@ def QA_SU_save_single_stock_day(code : str, client= DATABASE, ui_log=None):
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_STOCK_DAY \n Trying updating {} from {} to {}'
-                    .format(code,
-                            start_date,
-                            end_date),
+                    f'UPDATE_STOCK_DAY \n Trying updating {code} from {start_date} to {end_date}'
+                    ,
                     ui_log
                 )
                 if start_date != end_date:
@@ -224,10 +220,8 @@ def QA_SU_save_stock_day(client=DATABASE, ui_log=None, ui_progress=None):
                 start_date = ref[ref.count() - 1]['date']
 
                 QA_util_log_info(
-                    'UPDATE_STOCK_DAY \n Trying updating {} from {} to {}'
-                    .format(code,
-                            start_date,
-                            end_date),
+                    f'UPDATE_STOCK_DAY \n Trying updating {code} from {start_date} to {end_date}'
+                    ,
                     ui_log
                 )
                 if start_date != end_date:
@@ -246,10 +240,8 @@ def QA_SU_save_stock_day(client=DATABASE, ui_log=None, ui_progress=None):
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_STOCK_DAY \n Trying updating {} from {} to {}'
-                    .format(code,
-                            start_date,
-                            end_date),
+                    f'UPDATE_STOCK_DAY \n Trying updating {code} from {start_date} to {end_date}'
+                    ,
                     ui_log
                 )
                 if start_date != end_date:
@@ -333,10 +325,8 @@ def QA_SU_save_stock_week(client=DATABASE, ui_log=None, ui_progress=None):
                 start_date = ref[ref.count() - 1]['date']
 
                 QA_util_log_info(
-                    'UPDATE_STOCK_WEEK \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_STOCK_WEEK \n Trying updating {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -354,10 +344,8 @@ def QA_SU_save_stock_week(client=DATABASE, ui_log=None, ui_progress=None):
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_STOCK_WEEK \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_STOCK_WEEK \n Trying updating {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -377,8 +365,7 @@ def QA_SU_save_stock_week(client=DATABASE, ui_log=None, ui_progress=None):
 
     for item in range(len(stock_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(item,
-                                        len(stock_list)),
+            f'The {item} of Total {len(stock_list)}',
             ui_log=ui_log
         )
         strProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -432,10 +419,8 @@ def QA_SU_save_stock_month(client=DATABASE, ui_log=None, ui_progress=None):
                 start_date = ref[ref.count() - 1]['date']
 
                 QA_util_log_info(
-                    'UPDATE_STOCK_MONTH \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_STOCK_MONTH \n Trying updating {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -453,10 +438,8 @@ def QA_SU_save_stock_month(client=DATABASE, ui_log=None, ui_progress=None):
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_STOCK_MONTH \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_STOCK_MONTH \n Trying updating {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -476,8 +459,7 @@ def QA_SU_save_stock_month(client=DATABASE, ui_log=None, ui_progress=None):
 
     for item in range(len(stock_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(item,
-                                        len(stock_list)),
+            f'The {item} of Total {len(stock_list)}',
             ui_log=ui_log
         )
         strProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -531,10 +513,8 @@ def QA_SU_save_stock_year(client=DATABASE, ui_log=None, ui_progress=None):
                 start_date = ref[ref.count() - 1]['date']
 
                 QA_util_log_info(
-                    'UPDATE_STOCK_YEAR \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_STOCK_YEAR \n Trying updating {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -552,10 +532,8 @@ def QA_SU_save_stock_year(client=DATABASE, ui_log=None, ui_progress=None):
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_STOCK_YEAR \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_STOCK_YEAR \n Trying updating {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -575,8 +553,7 @@ def QA_SU_save_stock_year(client=DATABASE, ui_log=None, ui_progress=None):
 
     for item in range(len(stock_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(item,
-                                        len(stock_list)),
+            f'The {item} of Total {len(stock_list)}',
             ui_log=ui_log
         )
 
@@ -683,8 +660,7 @@ def QA_SU_save_stock_xdxr(client=DATABASE, ui_log=None, ui_progress=None):
 
     for i_ in range(len(stock_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(i_,
-                                        len(stock_list)),
+            f'The {i_} of Total {len(stock_list)}',
             ui_log=ui_log
         )
         strLogInfo = 'DOWNLOAD PROGRESS {} '.format(
@@ -801,8 +777,7 @@ def QA_SU_save_stock_min(client=DATABASE, ui_log=None, ui_progress=None):
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(stock_list)),
+            f'The {count} of Total {len(stock_list)}',
             ui_log=ui_log
         )
 
@@ -925,8 +900,7 @@ def QA_SU_save_single_stock_min(code : str, client=DATABASE, ui_log=None, ui_pro
     count = 1
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(stock_list)),
+            f'The {count} of Total {len(stock_list)}',
             ui_log=ui_log
         )
 
@@ -974,10 +948,8 @@ def QA_SU_save_single_index_day(code : str, client=DATABASE, ui_log=None):
                 start_time = ref_[ref_.count() - 1]['date']
 
                 QA_util_log_info(
-                    '##JOB04 Now Saving INDEX_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB04 Now Saving INDEX_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -995,10 +967,8 @@ def QA_SU_save_single_index_day(code : str, client=DATABASE, ui_log=None):
                 try:
                     start_time = '1990-01-01'
                     QA_util_log_info(
-                        '##JOB04 Now Saving INDEX_DAY==== \n Trying updating {} from {} to {}'
-                            .format(code,
-                                    start_time,
-                                    end_time),
+                        f'##JOB04 Now Saving INDEX_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                            ,
                         ui_log=ui_log
                     )
                     coll.insert_many(
@@ -1013,10 +983,8 @@ def QA_SU_save_single_index_day(code : str, client=DATABASE, ui_log=None):
                 except:
                     start_time = '2009-01-01'
                     QA_util_log_info(
-                        '##JOB04 Now Saving INDEX_DAY==== \n Trying updating {} from {} to {}'
-                            .format(code,
-                                    start_time,
-                                    end_time),
+                        f'##JOB04 Now Saving INDEX_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                            ,
                         ui_log=ui_log
                     )
                     coll.insert_many(
@@ -1067,10 +1035,8 @@ def QA_SU_save_index_day(client=DATABASE, ui_log=None, ui_progress=None):
                 start_time = ref_[ref_.count() - 1]['date']
 
                 QA_util_log_info(
-                    '##JOB04 Now Saving INDEX_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB04 Now Saving INDEX_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -1088,10 +1054,8 @@ def QA_SU_save_index_day(client=DATABASE, ui_log=None, ui_progress=None):
                 try:
                     start_time = '1990-01-01'
                     QA_util_log_info(
-                        '##JOB04 Now Saving INDEX_DAY==== \n Trying updating {} from {} to {}'
-                            .format(code,
-                                    start_time,
-                                    end_time),
+                        f'##JOB04 Now Saving INDEX_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                            ,
                         ui_log=ui_log
                     )
                     coll.insert_many(
@@ -1106,10 +1070,8 @@ def QA_SU_save_index_day(client=DATABASE, ui_log=None, ui_progress=None):
                 except:
                     start_time = '2009-01-01'
                     QA_util_log_info(
-                        '##JOB04 Now Saving INDEX_DAY==== \n Trying updating {} from {} to {}'
-                            .format(code,
-                                    start_time,
-                                    end_time),
+                        f'##JOB04 Now Saving INDEX_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                            ,
                         ui_log=ui_log
                     )
                     coll.insert_many(
@@ -1129,8 +1091,7 @@ def QA_SU_save_index_day(client=DATABASE, ui_log=None, ui_progress=None):
     for i_ in range(len(__index_list)):
         # __saving_work('000001')
         QA_util_log_info(
-            'The {} of Total {}'.format(i_,
-                                        len(__index_list)),
+            f'The {i_} of Total {len(__index_list)}',
             ui_log=ui_log
         )
 
@@ -1260,8 +1221,7 @@ def QA_SU_save_index_min(client=DATABASE, ui_log=None, ui_progress=None):
         )
         intLogProgress = int(float(count / len(__index_list) * 10000.0))
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(__index_list)),
+            f'The {count} of Total {len(__index_list)}',
             ui_log=ui_log
         )
         QA_util_log_info(
@@ -1386,8 +1346,7 @@ def QA_SU_save_single_index_min(code : str, client=DATABASE, ui_log=None, ui_pro
         )
         intLogProgress = int(float(count / len(__index_list) * 10000.0))
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(__index_list)),
+            f'The {count} of Total {len(__index_list)}',
             ui_log=ui_log
         )
         QA_util_log_info(
@@ -1432,10 +1391,8 @@ def QA_SU_save_single_etf_day(code : str, client=DATABASE, ui_log=None):
                 start_time = ref_[ref_.count() - 1]['date']
 
                 QA_util_log_info(
-                    '##JOB06 Now Saving ETF_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB06 Now Saving ETF_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -1452,10 +1409,8 @@ def QA_SU_save_single_etf_day(code : str, client=DATABASE, ui_log=None):
             else:
                 start_time = '1990-01-01'
                 QA_util_log_info(
-                    '##JOB06 Now Saving ETF_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB06 Now Saving ETF_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -1506,10 +1461,8 @@ def QA_SU_save_etf_day(client=DATABASE, ui_log=None, ui_progress=None):
                 start_time = ref_[ref_.count() - 1]['date']
 
                 QA_util_log_info(
-                    '##JOB06 Now Saving ETF_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB06 Now Saving ETF_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -1526,10 +1479,8 @@ def QA_SU_save_etf_day(client=DATABASE, ui_log=None, ui_progress=None):
             else:
                 start_time = '1990-01-01'
                 QA_util_log_info(
-                    '##JOB06 Now Saving ETF_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB06 Now Saving ETF_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -1549,8 +1500,7 @@ def QA_SU_save_etf_day(client=DATABASE, ui_log=None, ui_progress=None):
     for i_ in range(len(__index_list)):
         # __saving_work('000001')
         QA_util_log_info(
-            'The {} of Total {}'.format(i_,
-                                        len(__index_list)),
+            f'The {i_} of Total {len(__index_list)}',
             ui_log=ui_log
         )
 
@@ -1677,8 +1627,7 @@ def QA_SU_save_etf_min(client=DATABASE, ui_log=None, ui_progress=None):
     count = 1
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(__index_list)),
+            f'The {count} of Total {len(__index_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -1804,8 +1753,7 @@ def QA_SU_save_single_etf_min(code : str, client=DATABASE, ui_log=None, ui_progr
     count = 1
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(__index_list)),
+            f'The {count} of Total {len(__index_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -2070,8 +2018,7 @@ def QA_SU_save_stock_transaction(
     for i_ in range(len(stock_list)):
         # __saving_work('000001')
         QA_util_log_info(
-            'The {} of Total {}'.format(i_,
-                                        len(stock_list)),
+            f'The {i_} of Total {len(stock_list)}',
             ui_log=ui_log
         )
 
@@ -2140,8 +2087,7 @@ def QA_SU_save_index_transaction(
     for i_ in range(len(index_list)):
         # __saving_work('000001')
         QA_util_log_info(
-            'The {} of Total {}'.format(i_,
-                                        len(index_list)),
+            f'The {i_} of Total {len(index_list)}',
             ui_log=ui_log
         )
 
@@ -2185,9 +2131,7 @@ def _save_option_commodity_ru_day(
     def __saving_work(code, coll_option_commodity_ru_day):
         try:
             QA_util_log_info(
-                '##JOB12 Now Saving OPTION_DAY_COMMODITY_RU 天然橡胶 ==== {}'.format(
-                    str(code)
-                ),
+                f'##JOB12 Now Saving OPTION_DAY_COMMODITY_RU 天然橡胶 ==== {str(code)}',
                 ui_log=ui_log
             )
 
@@ -2207,10 +2151,8 @@ def _save_option_commodity_ru_day(
                 )
 
                 QA_util_log_info(
-                    'UPDATE_OPTION_RU_DAY \n 从上一次下载数据开始继续 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_OPTION_RU_DAY \n 从上一次下载数据开始继续 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -2226,12 +2168,7 @@ def _save_option_commodity_ru_day(
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 返回了{}条记录 , 准备写入数据库".format(
-                            start_date0,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date0}-结束{end_date} , 合约代码{code} , 返回了{retCount}条记录 , 准备写入数据库",
                         ui_log=ui_log
                     )
                     coll_option_commodity_ru_day.insert_many(
@@ -2246,10 +2183,8 @@ def _save_option_commodity_ru_day(
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_M_OPTION_DAY \n 从新开始下载数据 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_M_OPTION_DAY \n 从新开始下载数据 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -2264,12 +2199,7 @@ def _save_option_commodity_ru_day(
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 获取了{}条记录 , 准备写入数据库^_^ ".format(
-                            start_date,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date}-结束{end_date} , 合约代码{code} , 获取了{retCount}条记录 , 准备写入数据库^_^ ",
                         ui_log=ui_log
                     )
 
@@ -2288,8 +2218,7 @@ def _save_option_commodity_ru_day(
 
     for item in range(len(option_ru_contract_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(item,
-                                        len(option_ru_contract_list)),
+            f'The {item} of Total {len(option_ru_contract_list)}',
             ui_log=ui_log
         )
 
@@ -2339,9 +2268,7 @@ def _save_option_commodity_c_day(
     def __saving_work(code, coll_option_commodity_c_day):
         try:
             QA_util_log_info(
-                '##JOB12 Now Saving OPTION_DAY_COMMODITY_C 玉米 ==== {}'.format(
-                    str(code)
-                ),
+                f'##JOB12 Now Saving OPTION_DAY_COMMODITY_C 玉米 ==== {str(code)}',
                 ui_log=ui_log
             )
 
@@ -2361,10 +2288,8 @@ def _save_option_commodity_c_day(
                 )
 
                 QA_util_log_info(
-                    'UPDATE_OPTION_C_DAY \n 从上一次下载数据开始继续 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_OPTION_C_DAY \n 从上一次下载数据开始继续 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -2380,12 +2305,7 @@ def _save_option_commodity_c_day(
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 返回了{}条记录 , 准备写入数据库".format(
-                            start_date0,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date0}-结束{end_date} , 合约代码{code} , 返回了{retCount}条记录 , 准备写入数据库",
                         ui_log=ui_log
                     )
                     coll_option_commodity_c_day.insert_many(
@@ -2400,10 +2320,8 @@ def _save_option_commodity_c_day(
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_C_OPTION_DAY \n 从新开始下载数据 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_C_OPTION_DAY \n 从新开始下载数据 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -2418,12 +2336,7 @@ def _save_option_commodity_c_day(
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 获取了{}条记录 , 准备写入数据库^_^ ".format(
-                            start_date,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date}-结束{end_date} , 合约代码{code} , 获取了{retCount}条记录 , 准备写入数据库^_^ ",
                         ui_log=ui_log
                     )
 
@@ -2442,8 +2355,7 @@ def _save_option_commodity_c_day(
 
     for item in range(len(option_c_contract_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(item,
-                                        len(option_c_contract_list)),
+            f'The {item} of Total {len(option_c_contract_list)}',
             ui_log=ui_log
         )
 
@@ -2491,9 +2403,7 @@ def _save_option_commodity_cf_day(
     def __saving_work(code, coll_option_commodity_cf_day):
         try:
             QA_util_log_info(
-                '##JOB12 Now Saving OPTION_DAY_COMMODITY_CF 棉花 ==== {}'.format(
-                    str(code)
-                ),
+                f'##JOB12 Now Saving OPTION_DAY_COMMODITY_CF 棉花 ==== {str(code)}',
                 ui_log=ui_log
             )
 
@@ -2513,10 +2423,8 @@ def _save_option_commodity_cf_day(
                 )
 
                 QA_util_log_info(
-                    'UPDATE_OPTION_CF_DAY \n 从上一次下载数据开始继续 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_OPTION_CF_DAY \n 从上一次下载数据开始继续 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -2532,12 +2440,7 @@ def _save_option_commodity_cf_day(
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 返回了{}条记录 , 准备写入数据库".format(
-                            start_date0,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date0}-结束{end_date} , 合约代码{code} , 返回了{retCount}条记录 , 准备写入数据库",
                         ui_log=ui_log
                     )
                     coll_option_commodity_cf_day.insert_many(
@@ -2552,10 +2455,8 @@ def _save_option_commodity_cf_day(
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_M_OPTION_DAY \n 从新开始下载数据 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_M_OPTION_DAY \n 从新开始下载数据 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -2570,12 +2471,7 @@ def _save_option_commodity_cf_day(
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 获取了{}条记录 , 准备写入数据库^_^ ".format(
-                            start_date,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date}-结束{end_date} , 合约代码{code} , 获取了{retCount}条记录 , 准备写入数据库^_^ ",
                         ui_log=ui_log
                     )
 
@@ -2594,8 +2490,7 @@ def _save_option_commodity_cf_day(
 
     for item in range(len(option_cf_contract_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(item,
-                                        len(option_cf_contract_list)),
+            f'The {item} of Total {len(option_cf_contract_list)}',
             ui_log=ui_log
         )
 
@@ -2644,9 +2539,7 @@ def _save_option_commodity_sr_day(
     def __saving_work(code, coll_option_commodity_sr_day):
         try:
             QA_util_log_info(
-                '##JOB12 Now Saving OPTION_DAY_COMMODITY_SR 白糖 ==== {}'.format(
-                    str(code)
-                ),
+                f'##JOB12 Now Saving OPTION_DAY_COMMODITY_SR 白糖 ==== {str(code)}',
                 ui_log=ui_log
             )
 
@@ -2666,10 +2559,8 @@ def _save_option_commodity_sr_day(
                 )
 
                 QA_util_log_info(
-                    'UPDATE_OPTION_M_DAY \n 从上一次下载数据开始继续 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_OPTION_M_DAY \n 从上一次下载数据开始继续 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -2685,12 +2576,7 @@ def _save_option_commodity_sr_day(
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 返回了{}条记录 , 准备写入数据库".format(
-                            start_date0,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date0}-结束{end_date} , 合约代码{code} , 返回了{retCount}条记录 , 准备写入数据库",
                         ui_log=ui_log
                     )
                     coll_option_commodity_sr_day.insert_many(
@@ -2705,10 +2591,8 @@ def _save_option_commodity_sr_day(
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_M_OPTION_DAY \n 从新开始下载数据 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_M_OPTION_DAY \n 从新开始下载数据 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -2723,12 +2607,7 @@ def _save_option_commodity_sr_day(
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 获取了{}条记录 , 准备写入数据库^_^ ".format(
-                            start_date,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date}-结束{end_date} , 合约代码{code} , 获取了{retCount}条记录 , 准备写入数据库^_^ ",
                         ui_log=ui_log
                     )
 
@@ -2747,8 +2626,7 @@ def _save_option_commodity_sr_day(
 
     for item in range(len(option_sr_contract_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(item,
-                                        len(option_sr_contract_list)),
+            f'The {item} of Total {len(option_sr_contract_list)}',
             ui_log=ui_log
         )
 
@@ -2797,9 +2675,7 @@ def _save_option_commodity_m_day(
     def __saving_work(code, coll_option_commodity_m_day):
         try:
             QA_util_log_info(
-                '##JOB12 Now Saving OPTION_DAY_COMMODITY_M 豆粕 ==== {}'.format(
-                    str(code)
-                ),
+                f'##JOB12 Now Saving OPTION_DAY_COMMODITY_M 豆粕 ==== {str(code)}',
                 ui_log=ui_log
             )
 
@@ -2821,10 +2697,8 @@ def _save_option_commodity_m_day(
                 )
 
                 QA_util_log_info(
-                    'UPDATE_OPTION_M_DAY \n 从上一次下载数据开始继续 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_OPTION_M_DAY \n 从上一次下载数据开始继续 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -2840,12 +2714,7 @@ def _save_option_commodity_m_day(
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 返回了{}条记录 , 准备写入数据库".format(
-                            start_date0,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date0}-结束{end_date} , 合约代码{code} , 返回了{retCount}条记录 , 准备写入数据库",
                         ui_log=ui_log
                     )
                     coll_option_commodity_m_day.insert_many(
@@ -2860,10 +2729,8 @@ def _save_option_commodity_m_day(
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_M_OPTION_DAY \n 从新开始下载数据 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_M_OPTION_DAY \n 从新开始下载数据 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -2878,12 +2745,7 @@ def _save_option_commodity_m_day(
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 获取了{}条记录 , 准备写入数据库^_^ ".format(
-                            start_date,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date}-结束{end_date} , 合约代码{code} , 获取了{retCount}条记录 , 准备写入数据库^_^ ",
                         ui_log=ui_log
                     )
 
@@ -2902,8 +2764,7 @@ def _save_option_commodity_m_day(
 
     for item in range(len(option_m_contract_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(item,
-                                        len(option_m_contract_list)),
+            f'The {item} of Total {len(option_m_contract_list)}',
             ui_log=ui_log
         )
 
@@ -2951,9 +2812,7 @@ def _save_option_commodity_al_day(client=DATABASE,ui_log=None,ui_progress=None):
     def __saving_work(code, coll_option_commodity_al_day):
         try:
             QA_util_log_info(
-                '##JOB13 Now Saving OPTION_DAY_COMMODITY_AL 铝 ==== {}'.format(
-                    str(code)
-                ),
+                f'##JOB13 Now Saving OPTION_DAY_COMMODITY_AL 铝 ==== {str(code)}',
                 ui_log=ui_log
             )
 
@@ -2974,10 +2833,8 @@ def _save_option_commodity_al_day(client=DATABASE,ui_log=None,ui_progress=None):
                 )
 
                 QA_util_log_info(
-                    'UPDATE_OPTION_AU_DAY \n 从上一次下载数据开始继续 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_OPTION_AU_DAY \n 从上一次下载数据开始继续 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -2993,12 +2850,7 @@ def _save_option_commodity_al_day(client=DATABASE,ui_log=None,ui_progress=None):
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 返回了{}条记录 , 准备写入数据库".format(
-                            start_date0,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date0}-结束{end_date} , 合约代码{code} , 返回了{retCount}条记录 , 准备写入数据库",
                         ui_log=ui_log
                     )
                     coll_option_commodity_al_day.insert_many(
@@ -3013,10 +2865,8 @@ def _save_option_commodity_al_day(client=DATABASE,ui_log=None,ui_progress=None):
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_AU_OPTION_DAY \n 从新开始下载数据 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_AU_OPTION_DAY \n 从新开始下载数据 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -3031,12 +2881,7 @@ def _save_option_commodity_al_day(client=DATABASE,ui_log=None,ui_progress=None):
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 获取了{}条记录 , 准备写入数据库^_^ ".format(
-                            start_date,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date}-结束{end_date} , 合约代码{code} , 获取了{retCount}条记录 , 准备写入数据库^_^ ",
                         ui_log=ui_log
                     )
 
@@ -3106,9 +2951,7 @@ def _save_option_commodity_cu_day(
     def __saving_work(code, coll_option_commodity_cu_day):
         try:
             QA_util_log_info(
-                '##JOB12 Now Saving OPTION_DAY_COMMODITY_CU 铜 ==== {}'.format(
-                    str(code)
-                ),
+                f'##JOB12 Now Saving OPTION_DAY_COMMODITY_CU 铜 ==== {str(code)}',
                 ui_log=ui_log
             )
 
@@ -3129,10 +2972,8 @@ def _save_option_commodity_cu_day(
                 )
 
                 QA_util_log_info(
-                    'UPDATE_OPTION_CU_DAY \n 从上一次下载数据开始继续 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_OPTION_CU_DAY \n 从上一次下载数据开始继续 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -3148,12 +2989,7 @@ def _save_option_commodity_cu_day(
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 返回了{}条记录 , 准备写入数据库".format(
-                            start_date0,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date0}-结束{end_date} , 合约代码{code} , 返回了{retCount}条记录 , 准备写入数据库",
                         ui_log=ui_log
                     )
                     coll_option_commodity_cu_day.insert_many(
@@ -3168,10 +3004,8 @@ def _save_option_commodity_cu_day(
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_CU_OPTION_DAY \n 从新开始下载数据 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_CU_OPTION_DAY \n 从新开始下载数据 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -3186,12 +3020,7 @@ def _save_option_commodity_cu_day(
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 获取了{}条记录 , 准备写入数据库^_^ ".format(
-                            start_date,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date}-结束{end_date} , 合约代码{code} , 获取了{retCount}条记录 , 准备写入数据库^_^ ",
                         ui_log=ui_log
                     )
 
@@ -3210,8 +3039,7 @@ def _save_option_commodity_cu_day(
 
     for item in range(len(option_cu_contract_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(item,
-                                        len(option_cu_contract_list)),
+            f'The {item} of Total {len(option_cu_contract_list)}',
             ui_log=ui_log
         )
 
@@ -3257,9 +3085,7 @@ def _save_option_commodity_au_day(client=DATABASE,ui_log=None,ui_progress=None):
     def __saving_work(code, coll_option_commodity_au_day):
         try:
             QA_util_log_info(
-                '##JOB13 Now Saving OPTION_DAY_COMMODITY_AU 金 ==== {}'.format(
-                    str(code)
-                ),
+                f'##JOB13 Now Saving OPTION_DAY_COMMODITY_AU 金 ==== {str(code)}',
                 ui_log=ui_log
             )
 
@@ -3280,10 +3106,8 @@ def _save_option_commodity_au_day(client=DATABASE,ui_log=None,ui_progress=None):
                 )
 
                 QA_util_log_info(
-                    'UPDATE_OPTION_AU_DAY \n 从上一次下载数据开始继续 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_OPTION_AU_DAY \n 从上一次下载数据开始继续 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -3299,12 +3123,7 @@ def _save_option_commodity_au_day(client=DATABASE,ui_log=None,ui_progress=None):
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 返回了{}条记录 , 准备写入数据库".format(
-                            start_date0,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date0}-结束{end_date} , 合约代码{code} , 返回了{retCount}条记录 , 准备写入数据库",
                         ui_log=ui_log
                     )
                     coll_option_commodity_au_day.insert_many(
@@ -3319,10 +3138,8 @@ def _save_option_commodity_au_day(client=DATABASE,ui_log=None,ui_progress=None):
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_AU_OPTION_DAY \n 从新开始下载数据 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_AU_OPTION_DAY \n 从新开始下载数据 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -3337,12 +3154,7 @@ def _save_option_commodity_au_day(client=DATABASE,ui_log=None,ui_progress=None):
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 获取了{}条记录 , 准备写入数据库^_^ ".format(
-                            start_date,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date}-结束{end_date} , 合约代码{code} , 获取了{retCount}条记录 , 准备写入数据库^_^ ",
                         ui_log=ui_log
                     )
 
@@ -3361,8 +3173,7 @@ def _save_option_commodity_au_day(client=DATABASE,ui_log=None,ui_progress=None):
 
     for item in range(len(option_au_contract_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(item,
-                                        len(option_au_contract_list)),
+            f'The {item} of Total {len(option_au_contract_list)}',
             ui_log=ui_log
         )
 
@@ -3576,8 +3387,7 @@ def _save_option_commodity_ru_min(
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(option_contract_list)),
+            f'The {count} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -3725,8 +3535,7 @@ def _save_option_commodity_c_min(
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(option_contract_list)),
+            f'The {count} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -3874,8 +3683,7 @@ def _save_option_commodity_cf_min(
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(option_contract_list)),
+            f'The {count} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -4024,8 +3832,7 @@ def _save_option_commodity_ru_min(
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(option_contract_list)),
+            f'The {count} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -4174,8 +3981,7 @@ def _save_option_commodity_cu_min(
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(option_contract_list)),
+            f'The {count} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -4326,8 +4132,7 @@ def _save_option_commodity_au_min(
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(option_contract_list)),
+            f'The {count} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -4476,8 +4281,7 @@ def _save_option_commodity_al_min(
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(option_contract_list)),
+            f'The {count} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -4626,8 +4430,7 @@ def _save_option_commodity_sr_min(
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(option_contract_list)),
+            f'The {count} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -4773,8 +4576,7 @@ def _save_option_commodity_m_min(
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(option_contract_list)),
+            f'The {count} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -4968,8 +4770,7 @@ def QA_SU_save_option_50etf_min(client=DATABASE, ui_log=None, ui_progress=None):
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(option_contract_list)),
+            f'The {count} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -5032,10 +4833,8 @@ def QA_SU_save_option_50etf_day(client=DATABASE, ui_log=None, ui_progress=None):
                 )
 
                 QA_util_log_info(
-                    'UPDATE_OPTION_DAY \n 从上一次下载数据开始继续 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_OPTION_DAY \n 从上一次下载数据开始继续 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -5051,12 +4850,7 @@ def QA_SU_save_option_50etf_day(client=DATABASE, ui_log=None, ui_progress=None):
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 返回了{}条记录 , 准备写入数据库".format(
-                            start_date0,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date0}-结束{end_date} , 合约代码{code} , 返回了{retCount}条记录 , 准备写入数据库",
                         ui_log=ui_log
                     )
                     coll_option_day.insert_many(
@@ -5071,10 +4865,8 @@ def QA_SU_save_option_50etf_day(client=DATABASE, ui_log=None, ui_progress=None):
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_OPTION_DAY \n 从新开始下载数据 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_OPTION_DAY \n 从新开始下载数据 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -5089,12 +4881,7 @@ def QA_SU_save_option_50etf_day(client=DATABASE, ui_log=None, ui_progress=None):
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 获取了{}条记录 , 准备写入数据库^_^ ".format(
-                            start_date,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date}-结束{end_date} , 合约代码{code} , 获取了{retCount}条记录 , 准备写入数据库^_^ ",
                         ui_log=ui_log
                     )
 
@@ -5113,8 +4900,7 @@ def QA_SU_save_option_50etf_day(client=DATABASE, ui_log=None, ui_progress=None):
 
     for item in range(len(option_contract_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(item,
-                                        len(option_contract_list)),
+            f'The {item} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
 
@@ -5253,8 +5039,7 @@ def QA_SU_save_option_300etf_min(client=DATABASE, ui_log=None, ui_progress=None)
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(option_contract_list)),
+            f'The {count} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -5317,10 +5102,8 @@ def QA_SU_save_option_300etf_day(client=DATABASE, ui_log=None, ui_progress=None)
                 )
 
                 QA_util_log_info(
-                    'UPDATE_OPTION_DAY shanghai sse 300 etf \n 从上一次下载数据开始继续 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_OPTION_DAY shanghai sse 300 etf \n 从上一次下载数据开始继续 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -5336,12 +5119,7 @@ def QA_SU_save_option_300etf_day(client=DATABASE, ui_log=None, ui_progress=None)
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 返回了{}条记录 , 准备写入数据库".format(
-                            start_date0,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date0}-结束{end_date} , 合约代码{code} , 返回了{retCount}条记录 , 准备写入数据库",
                         ui_log=ui_log
                     )
                     coll_option_day.insert_many(
@@ -5356,10 +5134,8 @@ def QA_SU_save_option_300etf_day(client=DATABASE, ui_log=None, ui_progress=None)
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_OPTION_DAY shanghai sse 300 etf \n 从新开始下载数据 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_OPTION_DAY shanghai sse 300 etf \n 从新开始下载数据 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -5374,12 +5150,7 @@ def QA_SU_save_option_300etf_day(client=DATABASE, ui_log=None, ui_progress=None)
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 获取了{}条记录 , 准备写入数据库^_^ ".format(
-                            start_date,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date}-结束{end_date} , 合约代码{code} , 获取了{retCount}条记录 , 准备写入数据库^_^ ",
                         ui_log=ui_log
                     )
 
@@ -5398,8 +5169,7 @@ def QA_SU_save_option_300etf_day(client=DATABASE, ui_log=None, ui_progress=None)
 
     for item in range(len(option_contract_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(item,
-                                        len(option_contract_list)),
+            f'The {item} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
 
@@ -5525,10 +5295,8 @@ def QA_SU_save_option_day_all(client=DATABASE,ui_log=None,ui_progress=None):
                 )
 
                 QA_util_log_info(
-                    'UPDATE_OPTION_DAY \n 从上一次下载数据开始继续 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_OPTION_DAY \n 从上一次下载数据开始继续 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -5544,12 +5312,7 @@ def QA_SU_save_option_day_all(client=DATABASE,ui_log=None,ui_progress=None):
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 返回了{}条记录 , 准备写入数据库".format(
-                            start_date0,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date0}-结束{end_date} , 合约代码{code} , 返回了{retCount}条记录 , 准备写入数据库",
                         ui_log=ui_log
                     )
                     coll_option_day.insert_many(
@@ -5564,10 +5327,8 @@ def QA_SU_save_option_day_all(client=DATABASE,ui_log=None,ui_progress=None):
             else:
                 start_date = '1990-01-01'
                 QA_util_log_info(
-                    'UPDATE_OPTION_DAY \n 从新开始下载数据 Trying update {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_OPTION_DAY \n 从新开始下载数据 Trying update {code} from {start_date} to {end_date}'
+                        ,
                     ui_log=ui_log
                 )
                 if start_date != end_date:
@@ -5582,12 +5343,7 @@ def QA_SU_save_option_day_all(client=DATABASE,ui_log=None,ui_progress=None):
                     )
                     retCount = df0.iloc[:, 0].size
                     QA_util_log_info(
-                        "日期从开始{}-结束{} , 合约代码{} , 获取了{}条记录 , 准备写入数据库^_^ ".format(
-                            start_date,
-                            end_date,
-                            code,
-                            retCount
-                        ),
+                        f"日期从开始{start_date}-结束{end_date} , 合约代码{code} , 获取了{retCount}条记录 , 准备写入数据库^_^ ",
                         ui_log=ui_log
                     )
 
@@ -5606,8 +5362,7 @@ def QA_SU_save_option_day_all(client=DATABASE,ui_log=None,ui_progress=None):
 
     for item in range(len(option_contract_list)):
         QA_util_log_info(
-            'The {} of Total {}'.format(item,
-                                        len(option_contract_list)),
+            f'The {item} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
 
@@ -5748,8 +5503,7 @@ def QA_SU_save_option_min_all(client=DATABASE, ui_log=None, ui_progress=None):
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(option_contract_list)),
+            f'The {count} of Total {len(option_contract_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -5837,10 +5591,8 @@ def QA_SU_save_single_future_day(code : str, client=DATABASE, ui_log=None, ui_pr
                 start_date = ref[ref.count() - 1]['date']
 
                 QA_util_log_info(
-                    'UPDATE_Future_DAY \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_Future_DAY \n Trying updating {code} from {start_date} to {end_date}'
+                        ,
                     ui_log
                 )
                 if start_date != end_date:
@@ -5858,10 +5610,8 @@ def QA_SU_save_single_future_day(code : str, client=DATABASE, ui_log=None, ui_pr
             else:
                 start_date = '2001-01-01'
                 QA_util_log_info(
-                    'UPDATE_Future_DAY \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_Future_DAY \n Trying updating {code} from {start_date} to {end_date}'
+                        ,
                     ui_log
                 )
                 if start_date != end_date:
@@ -5930,10 +5680,8 @@ def QA_SU_save_future_day(client=DATABASE, ui_log=None, ui_progress=None):
                 start_date = ref[ref.count() - 1]['date']
 
                 QA_util_log_info(
-                    'UPDATE_Future_DAY \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_Future_DAY \n Trying updating {code} from {start_date} to {end_date}'
+                        ,
                     ui_log
                 )
                 if start_date != end_date:
@@ -5951,10 +5699,8 @@ def QA_SU_save_future_day(client=DATABASE, ui_log=None, ui_progress=None):
             else:
                 start_date = '2001-01-01'
                 QA_util_log_info(
-                    'UPDATE_Future_DAY \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_Future_DAY \n Trying updating {code} from {start_date} to {end_date}'
+                        ,
                     ui_log
                 )
                 if start_date != end_date:
@@ -6034,10 +5780,8 @@ def QA_SU_save_future_day_all(client=DATABASE, ui_log=None, ui_progress=None):
                 start_date = ref[ref.count() - 1]['date']
 
                 QA_util_log_info(
-                    'UPDATE_Future_DAY \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_Future_DAY \n Trying updating {code} from {start_date} to {end_date}'
+                        ,
                     ui_log
                 )
                 if start_date != end_date:
@@ -6055,10 +5799,8 @@ def QA_SU_save_future_day_all(client=DATABASE, ui_log=None, ui_progress=None):
             else:
                 start_date = '2001-01-01'
                 QA_util_log_info(
-                    'UPDATE_Future_DAY \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_date,
-                                end_date),
+                    f'UPDATE_Future_DAY \n Trying updating {code} from {start_date} to {end_date}'
+                        ,
                     ui_log
                 )
                 if start_date != end_date:
@@ -6308,8 +6050,7 @@ def QA_SU_save_future_min(client=DATABASE, ui_log=None, ui_progress=None):
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(future_list)),
+            f'The {count} of Total {len(future_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -6437,8 +6178,7 @@ def QA_SU_save_future_min_all(client=DATABASE, ui_log=None, ui_progress=None):
     count = 0
     for i_ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(future_list)),
+            f'The {count} of Total {len(future_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -6488,10 +6228,8 @@ def QA_SU_save_single_bond_day(code : str, client=DATABASE, ui_log=None):
                 start_time = ref_[ref_.count() - 1]['date']
 
                 QA_util_log_info(
-                    '##JOB06 Now Saving BOND_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB06 Now Saving BOND_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -6508,10 +6246,8 @@ def QA_SU_save_single_bond_day(code : str, client=DATABASE, ui_log=None):
             else:
                 start_time = '1990-01-01'
                 QA_util_log_info(
-                    '##JOB06 Now Saving BOND_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB06 Now Saving BOND_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -6563,10 +6299,8 @@ def QA_SU_save_bond_day(client=DATABASE, ui_log=None, ui_progress=None):
                 start_time = ref_[ref_.count() - 1]['date']
 
                 QA_util_log_info(
-                    '##JOB06 Now Saving BOND_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB06 Now Saving BOND_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -6583,10 +6317,8 @@ def QA_SU_save_bond_day(client=DATABASE, ui_log=None, ui_progress=None):
             else:
                 start_time = '1990-01-01'
                 QA_util_log_info(
-                    '##JOB06 Now Saving BOND_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB06 Now Saving BOND_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -6606,8 +6338,7 @@ def QA_SU_save_bond_day(client=DATABASE, ui_log=None, ui_progress=None):
     for i_ in range(len(__bond_list)):
         # __saving_work('000001')
         QA_util_log_info(
-            'The {} of Total {}'.format(i_,
-                                        len(__bond_list)),
+            f'The {i_} of Total {len(__bond_list)}',
             ui_log=ui_log
         )
 
@@ -6734,8 +6465,7 @@ def QA_SU_save_bond_min(client=DATABASE, ui_log=None, ui_progress=None):
     count = 1
     for _ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(__bond_list)),
+            f'The {count} of Total {len(__bond_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -6862,8 +6592,7 @@ def QA_SU_save_single_bond_min(code : str, client=DATABASE, ui_log=None, ui_prog
     count = 1
     for _ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(__bond_list)),
+            f'The {count} of Total {len(__bond_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -6949,10 +6678,8 @@ def QA_SU_save_single_hkstock_day(code : str, client=DATABASE, ui_log=None):
                 start_time = ref_[ref_.count() - 1]['date']
 
                 QA_util_log_info(
-                    '##JOB06 Now Saving HKSTOCK_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB06 Now Saving HKSTOCK_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -6969,10 +6696,8 @@ def QA_SU_save_single_hkstock_day(code : str, client=DATABASE, ui_log=None):
             else:
                 start_time = '1990-01-01'
                 QA_util_log_info(
-                    '##JOB06 Now Saving HKSTOCK_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB06 Now Saving HKSTOCK_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -7024,10 +6749,8 @@ def QA_SU_save_hkstock_day(client=DATABASE, ui_log=None, ui_progress=None):
                 start_time = ref_[ref_.count() - 1]['date']
 
                 QA_util_log_info(
-                    '##JOB06 Now Saving HKSTOCK_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB06 Now Saving HKSTOCK_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -7044,10 +6767,8 @@ def QA_SU_save_hkstock_day(client=DATABASE, ui_log=None, ui_progress=None):
             else:
                 start_time = '1990-01-01'
                 QA_util_log_info(
-                    '##JOB06 Now Saving HKSTOCK_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB06 Now Saving HKSTOCK_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -7067,8 +6788,7 @@ def QA_SU_save_hkstock_day(client=DATABASE, ui_log=None, ui_progress=None):
     for i_ in range(len(__hkstock_list)):
         # __saving_work('000001')
         QA_util_log_info(
-            'The {} of Total {}'.format(i_,
-                                        len(__hkstock_list)),
+            f'The {i_} of Total {len(__hkstock_list)}',
             ui_log=ui_log
         )
 
@@ -7196,8 +6916,7 @@ def QA_SU_save_hkstock_min(client=DATABASE, ui_log=None, ui_progress=None):
     count = 1
     for _ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(__hkstock_list)),
+            f'The {count} of Total {len(__hkstock_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -7324,8 +7043,7 @@ def QA_SU_save_single_hkstock_min(code : str, client=DATABASE, ui_log=None, ui_p
     count = 1
     for _ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(__hkstock_list)),
+            f'The {count} of Total {len(__hkstock_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -7412,10 +7130,8 @@ def QA_SU_save_single_usstock_day(code : str, client=DATABASE, ui_log=None):
                 start_time = ref_[ref_.count() - 1]['date']
 
                 QA_util_log_info(
-                    '##JOB08 Now Saving USSTOCK_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB08 Now Saving USSTOCK_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -7432,10 +7148,8 @@ def QA_SU_save_single_usstock_day(code : str, client=DATABASE, ui_log=None):
             else:
                 start_time = '1990-01-01'
                 QA_util_log_info(
-                    '##JOB08 Now Saving USSTOCK_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB08 Now Saving USSTOCK_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -7486,10 +7200,8 @@ def QA_SU_save_usstock_day(client=DATABASE, ui_log=None, ui_progress=None):
                 start_time = ref_[ref_.count() - 1]['date']
 
                 QA_util_log_info(
-                    '##JOB08 Now Saving USSTOCK_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB08 Now Saving USSTOCK_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -7506,10 +7218,8 @@ def QA_SU_save_usstock_day(client=DATABASE, ui_log=None, ui_progress=None):
             else:
                 start_time = '1990-01-01'
                 QA_util_log_info(
-                    '##JOB08 Now Saving USSTOCK_DAY==== \n Trying updating {} from {} to {}'
-                        .format(code,
-                                start_time,
-                                end_time),
+                    f'##JOB08 Now Saving USSTOCK_DAY==== \n Trying updating {code} from {start_time} to {end_time}'
+                        ,
                     ui_log=ui_log
                 )
 
@@ -7529,8 +7239,7 @@ def QA_SU_save_usstock_day(client=DATABASE, ui_log=None, ui_progress=None):
     for i_ in range(len(__usstock_list)):
         # __saving_work('000001')
         QA_util_log_info(
-            'The {} of Total {}'.format(i_,
-                                        len(__usstock_list)),
+            f'The {i_} of Total {len(__usstock_list)}',
             ui_log=ui_log
         )
 
@@ -7658,8 +7367,7 @@ def QA_SU_save_usstock_min(client=DATABASE, ui_log=None, ui_progress=None):
     count = 1
     for _ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(__usstock_list)),
+            f'The {count} of Total {len(__usstock_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(
@@ -7786,8 +7494,7 @@ def QA_SU_save_single_usstock_min(code : str, client=DATABASE, ui_log=None, ui_p
     count = 1
     for _ in concurrent.futures.as_completed(res):
         QA_util_log_info(
-            'The {} of Total {}'.format(count,
-                                        len(__usstock_list)),
+            f'The {count} of Total {len(__usstock_list)}',
             ui_log=ui_log
         )
         strLogProgress = 'DOWNLOAD PROGRESS {} '.format(

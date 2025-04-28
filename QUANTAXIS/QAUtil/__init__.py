@@ -149,40 +149,44 @@ from QUANTAXIS.QAUtil.QASingleton import singleton
 
 import platform
 from functools import wraps
-platform_flag = platform.system() == 'Windows'
+from time import perf_counter
+from typing import TypeVar, Any
+from collections.abc import Callable
 
-if not platform_flag:
-    from resource import getrusage as resource_usage, RUSAGE_SELF
-    from time import time as timestamp
+T = TypeVar('T')
 
-    def print_used_time(func):
-        ''' 打印运行时间
+def print_used_time(func: Callable[..., T]) -> Callable[..., T]:
+    """打印函数运行时间。
 
-        :param func: 运行的函数名称
-        :return:
-        '''
+    Args:
+        func (Callable[..., T]): 被装饰的函数。
 
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            start_time, start_resources = timestamp(), resource_usage(RUSAGE_SELF)
-            func(*args, **kwargs)
-            end_resources, end_time = resource_usage(RUSAGE_SELF), timestamp()
-            print({'消耗时间': {'real': end_time - start_time,
-                            'sys': end_resources.ru_stime - start_resources.ru_stime,
-                            'user': end_resources.ru_utime - start_resources.ru_utime}})
-            return True
-        return wrapper
-else:
-    def print_used_time(func):
-        ''' 打印运行时间
+    Returns:
+        Callable[..., T]: 装饰后的函数。
+    """
+    system = platform.system()
 
-        :param func: 运行的函数名称
-        :return:
-        '''
+    @wraps(func)
+    def wrapper(*args: Any, **kwargs: Any) -> T:
+        start_time = perf_counter()
 
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            func(*args, **kwargs)
-            return True
+        if system == 'Windows':
+            result = func(*args, **kwargs)
+            end_time = perf_counter()
+            print({'消耗时间': {'real': end_time - start_time}})
+            return result
+        else:
+            from resource import getrusage, RUSAGE_SELF  # type: ignore[attr-defined]
+            start_resources = getrusage(RUSAGE_SELF)
+            result = func(*args, **kwargs)
+            end_resources = getrusage(RUSAGE_SELF)
+            end_time = perf_counter()
 
-        return wrapper
+            print({'消耗时间': {
+                'real': end_time - start_time,
+                'sys': end_resources.ru_stime - start_resources.ru_stime,
+                'user': end_resources.ru_utime - start_resources.ru_utime
+            }})
+            return result
+
+    return wrapper

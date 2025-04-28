@@ -57,7 +57,7 @@ import pandas as pd
 import datetime
 
 
-class QA_Fetcher():
+class QA_Fetcher:
     def __init__(self, uri='mongodb://127.0.0.1:27017/quantaxis', username='', password=''):
         """
         初始化的时候 会初始化
@@ -415,7 +415,7 @@ def QA_quotation(code, start, end, frequence, market, source=DATASOURCE.TDX, out
         return res.to_list()
 
 
-class AsyncFetcher():
+class AsyncFetcher:
     def __init__(self):
         pass
 

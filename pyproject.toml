@@ -4,18 +4,25 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quantaxis"
-version = "1.10.19"
-authors = [
-    { name = "yutiansut", email = "yutiansut@qq.com" },
-]
 description = "QUANTAXIS:Quantitative Financial Strategy Framework"
+version = "1.10.19"
 readme = "README.md"
-requires-python = ">=3.8"
-license = { text = "MIT" }
+requires-python = ">=3.12"
+
+authors = [
+    { name = "yutiansut" },
+    { email = "yutiansut@qq.com" }
+]
+maintainers = [
+    { name = "luoyang1974" },
+    { email = "luoyang1974@gmail.com" }
+]
+license = { file = "LICENSE" }
+
 keywords = ["quantaxis", "quant", "finance", "Backtest", "Framework"]
 classifiers = [
+    "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
 ]
@@ -39,7 +46,6 @@ dependencies = [
     "attrs",
     "pyconvert",
     "janus",
-    "pyecharts_snapshot",
     "async_timeout",
     "IPython",
     "numba",
@@ -51,7 +57,10 @@ dependencies = [
     "delegator.py",
     "flask",
     "pyecharts",
-    "six"
+    "six",
+    "ta-lib",
+    "jieba>=0.42.1",
+    "jqdatasdk>=1.9.7",
 ]
 
 [project.urls]
@@ -86,12 +95,17 @@ zip-safe = true
 
 [tool.ruff]
 # Ruff 的基础配置
+line-length = 120
 
 # 设置目标 Python 版本为 3.12
 target-version = "py312"
 
-# 忽略特定的错误或警告代码。
-# 在升级过程中，你可能需要暂时忽略一些旧代码中存在的问题，逐步修复
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "F",  # pyflakes
+    "UP",  # pyupgrade
+]
 ignore = [
     "F401",
     "F811",
@@ -101,5 +115,30 @@ ignore = [
     "E731",
     "F405",
     "F403",
-    "E741"
+    "E741",
+    "E501"
+]
+
+[tool.uv.sources]
+ta-lib = { path = "wheels/ta_lib-0.6.3-cp312-cp312-win_amd64.whl" }
+
+[dependency-groups]
+dev = [
+    "build>=1.2.2.post1",
+    "coverage>=7.8.0",
+    "mypy>=1.15.0",
+    "pandas-stubs>=2.2.3.250308",
+    "pre-commit>=4.2.0",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.1.1",
+    "ruff>=0.11.5",
+    "scipy-stubs>=1.15.2.2",
+    "twine>=6.1.0",
+    "types-jieba>=0.0.7",
+    "types-lxml>=2025.3.30",
+    "types-psycopg2>=2.9.21.20250318",
+    "types-python-dateutil>=2.9.0.20241206",
+    "types-requests>=2.32.0.20250328",
+    "types-seaborn>=0.13.2.20250111",
+    "types-six>=1.17.0.20250403",
 ]

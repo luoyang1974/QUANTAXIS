@@ -79,11 +79,11 @@ async def QA_fetch_stock_day(code, start, end, format='numpy', frequence='day', 
         elif format in ['list', 'l', 'L']:
             return numpy.asarray(res).tolist()
         else:
-            print("QA Error QA_fetch_stock_day format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+            print(f"QA Error QA_fetch_stock_day format parameter {format} is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" ")
             return None
     else:
         QA_util_log_info(
-            'QA Error QA_fetch_stock_day data parameter start={} end={} is not right'.format(start, end))
+            f'QA Error QA_fetch_stock_day data parameter start={start} end={end} is not right')
 
 
 async def QA_fetch_stock_min(code, start, end, format='numpy', frequence='1min', collections=DATABASE_ASYNC.stock_min):
@@ -99,7 +99,7 @@ async def QA_fetch_stock_min(code, start, end, format='numpy', frequence='1min',
     elif frequence in ['60min', '60m']:
         frequence = '60min'
     else:
-        print("QA Error QA_fetch_stock_min parameter frequence=%s is none of 1min 1m 5min 5m 15min 15m 30min 30m 60min 60m" % frequence)
+        print(f"QA Error QA_fetch_stock_min parameter frequence={frequence} is none of 1min 1m 5min 5m 15min 15m 30min 30m 60min 60m")
 
     __data = []
     # code checking
@@ -133,7 +133,7 @@ async def QA_fetch_stock_min(code, start, end, format='numpy', frequence='1min',
     elif format in ['list', 'l', 'L']:
         return numpy.asarray(res).tolist()
     else:
-        print("QA Error QA_fetch_stock_min format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" " % format)
+        print(f"QA Error QA_fetch_stock_min format parameter {format} is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" ")
         return None
 
 

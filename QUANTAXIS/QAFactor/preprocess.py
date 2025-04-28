@@ -9,10 +9,10 @@
 6. 行业中性化与市值中性化
 """
 from functools import partial
-from typing import List, Tuple, Union
 
 import numpy as np
 import pandas as pd
+import jqdatasdk
 
 import statsmodels.api as sm
 from QUANTAXIS.QAAnalysis.QAAnalysis_block import QAAnalysis_block
@@ -436,7 +436,7 @@ def QA_fetch_factor_start_date(factor: pd.Series) -> pd.DataFrame:
                                                       ).tolist()
     return merged_data
 
-
+#此函数似乎没有编写完成
 def QA_neutralize_factor(
         factor: pd.Series,
         weight_cls: str = "avg",

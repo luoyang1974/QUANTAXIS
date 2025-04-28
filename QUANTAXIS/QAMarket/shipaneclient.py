@@ -10,7 +10,8 @@ import requests
 import six
 import tushare as ts
 from lxml import etree
-from pandas.compat import StringIO
+#from pandas.compat import StringIO
+from io import StringIO
 from requests import Request
 from requests.auth import HTTPBasicAuth
 
@@ -209,7 +210,7 @@ class Client:
         sarr = [etree.tostring(node).decode('utf-8') for node in res]
         sarr = ''.join(sarr)
         sarr = sarr.replace('<font color="red">*</font>', '')
-        sarr = '<table>%s</table>' % sarr
+        sarr = f'<table>{sarr}</table>'
         df = pd.read_html(StringIO(sarr), skiprows=[0, 1])[0]
         df = df.select(lambda x: x in [0, 1, 2, 3, 7], axis=1)
         df.columns = ['code', 'xcode', 'name', 'ipo_date', 'price']

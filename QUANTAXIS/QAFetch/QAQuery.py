@@ -128,15 +128,12 @@ def QA_fetch_stock_day(
             return numpy.asarray(res).tolist()
         else:
             print(
-                "QA Error QA_fetch_stock_day format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
-                % format
+                f"QA Error QA_fetch_stock_day format parameter {format} is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
             )
             return None
     else:
         QA_util_log_info(
-            'QA Error QA_fetch_stock_day data parameter start=%s end=%s is not right'
-            % (start,
-               end)
+            f'QA Error QA_fetch_stock_day data parameter start={start} end={end} is not right'
         )
 
 
@@ -201,8 +198,7 @@ def QA_fetch_stock_min(
         frequence = '60min'
     else:
         print(
-            "QA Error QA_fetch_stock_min parameter frequence=%s is none of 1min 1m 5min 5m 15min 15m 30min 30m 60min 60m"
-            % frequence
+            f"QA Error QA_fetch_stock_min parameter frequence={frequence} is none of 1min 1m 5min 5m 15min 15m 30min 30m 60min 60m"
         )
 
     _data = []
@@ -249,8 +245,7 @@ def QA_fetch_stock_min(
         return numpy.asarray(res).tolist()
     else:
         print(
-            "QA Error QA_fetch_stock_min format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
-            % format
+            f"QA Error QA_fetch_stock_min format parameter {format} is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
         )
         return None
 
@@ -268,8 +263,7 @@ def QA_fetch_stock_transaction(
         frequence = 'tick'
     else:
         print(
-            "QA Error QA_fetch_stock_transaction parameter frequence=%s is none of tick Tick transaction"
-            % frequence
+            f"QA Error QA_fetch_stock_transaction parameter frequence={frequence} is none of tick Tick transaction"
         )
 
     _data = []
@@ -316,8 +310,7 @@ def QA_fetch_stock_transaction(
         return numpy.asarray(res).tolist()
     else:
         print(
-            "QA Error QA_fetch_stock_transaction format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
-            % format
+            f"QA Error QA_fetch_stock_transaction format parameter {format} is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
         )
         return None
 
@@ -335,8 +328,7 @@ def QA_fetch_index_transaction(
         frequence = 'tick'
     else:
         print(
-            "QA Error QA_fetch_index_transaction parameter frequence=%s is none of tick Tick transaction"
-            % frequence
+            f"QA Error QA_fetch_index_transaction parameter frequence={frequence} is none of tick Tick transaction"
         )
 
     _data = []
@@ -383,8 +375,7 @@ def QA_fetch_index_transaction(
         return numpy.asarray(res).tolist()
     else:
         print(
-            "QA Error QA_fetch_index_transaction format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
-            % format
+            f"QA Error QA_fetch_index_transaction format parameter {format} is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
         )
         return None
 
@@ -538,15 +529,13 @@ def QA_fetch_stock_full(date, format='numpy', collections=DATABASE.stock_day):
             _data = _data.set_index('date', drop=False)
         else:
             print(
-                "QA Error QA_fetch_stock_full format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
-                % format
+                f"QA Error QA_fetch_stock_full format parameter {format} is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
             )
 
         return _data
     else:
         QA_util_log_info(
-            'QA Error QA_fetch_stock_full data parameter date=%s not right' %
-            date
+            f'QA Error QA_fetch_stock_full data parameter date={date} not right'
         )
 
 
@@ -602,15 +591,12 @@ def QA_fetch_index_day(
             return numpy.asarray(res).tolist()
         else:
             print(
-                "QA Error QA_fetch_index_day format parameter %s is none of  \"P, p, pandas, pd , n, N, numpy !\" "
-                % format
+                f"QA Error QA_fetch_index_day format parameter {format} is none of  \"P, p, pandas, pd , n, N, numpy !\" "
             )
             return None
     else:
         QA_util_log_info(
-            'QA Error QA_fetch_index_day data parameter start=%s end=%s is not right'
-            % (start,
-               end)
+            f'QA Error QA_fetch_index_day data parameter start={start} end={end} is not right'
         )
 
 
@@ -678,8 +664,7 @@ def QA_fetch_index_min(
         return numpy.asarray(res).tolist()
     else:
         print(
-            "QA Error QA_fetch_index_min format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
-            % format
+            f"QA Error QA_fetch_index_min format parameter {format} is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
         )
         return None
 
@@ -754,8 +739,7 @@ def QA_fetch_future_day(
             _data = _data.set_index('date', drop=False)
         else:
             print(
-                "QA Error QA_fetch_future_day format parameter %s is none of  \"P, p, pandas, pd , n, N, numpy !\" "
-                % format
+                f"QA Error QA_fetch_future_day format parameter {format} is none of  \"P, p, pandas, pd , n, N, numpy !\" "
             )
         return _data
     else:
@@ -934,7 +918,7 @@ def QA_fetch_ctp_tick(
     p1 = p1.assign(
         datetime=p1.ActionDay.apply(QA_util_date_int2str) + ' ' +
         p1.UpdateTime +
-        (p1.UpdateMillisec / 1000000).apply(lambda x: str('%.6f' % x)[1:]),
+        (p1.UpdateMillisec / 1000000).apply(lambda x: str(f'{x:.6f}')[1:]),
         code=p1.InstrumentID
     )
     p1.datetime = pd.to_datetime(p1.datetime, utc=False)
@@ -1541,15 +1525,12 @@ def QA_fetch_stock_financial_calendar(
             return numpy.asarray(res).tolist()
         else:
             print(
-                "QA Error QA_fetch_stock_financial_calendar format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
-                % format
+                f"QA Error QA_fetch_stock_financial_calendar format parameter {format} is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
             )
             return None
     else:
         QA_util_log_info(
-            'QA Error QA_fetch_stock_financial_calendar data parameter start=%s end=%s is not right'
-            % (start,
-               end)
+            f'QA Error QA_fetch_stock_financial_calendar data parameter start={start} end={end} is not right'
         )
 
 
@@ -1617,15 +1598,12 @@ def QA_fetch_stock_divyield(
             return numpy.asarray(res).tolist()
         else:
             print(
-                "QA Error QA_fetch_stock_divyield format parameter %s is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
-                % format
+                f"QA Error QA_fetch_stock_divyield format parameter {format} is none of  \"P, p, pandas, pd , json, dict , n, N, numpy, list, l, L, !\" "
             )
             return None
     else:
         QA_util_log_info(
-            'QA Error QA_fetch_stock_divyield data parameter start=%s end=%s is not right'
-            % (start,
-               end)
+            f'QA Error QA_fetch_stock_divyield data parameter start={start} end={end} is not right'
         )
 
 
@@ -1766,8 +1744,7 @@ def QA_fetch_cryptocurrency_day(
             _data = _data.set_index('date', drop=False)
         else:
             print(
-                "QA Error QA_fetch_cryptocurrency_day format parameter %s is none of  \"P, p, pandas, pd , n, N, numpy !\" "
-                % format
+                f"QA Error QA_fetch_cryptocurrency_day format parameter {format} is none of  \"P, p, pandas, pd , n, N, numpy !\" "
             )
         return _data
     else:

@@ -26,7 +26,7 @@ from QUANTAXIS.QAEngine.QAThreadEngine import QA_Engine
 # 交易封装
 
 
-class QA_Trade():
+class QA_Trade:
     "多线程+generator模式"
 
     def __init__(self, *args, **kwargs):

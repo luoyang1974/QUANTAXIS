@@ -146,11 +146,7 @@ def QA_fetch_huobi_kline(
     retries = 1
     url = urljoin(
         Huobi_base_url,
-        "/market/history/kline?symbol={:s}&period={:s}&siz={:d}".format(
-            symbol,
-            frequency,
-            1980
-        )
+        f"/market/history/kline?symbol={symbol:s}&period={frequency:s}&siz={1980:d}"
     )
     while (retries != 0):
         try:
