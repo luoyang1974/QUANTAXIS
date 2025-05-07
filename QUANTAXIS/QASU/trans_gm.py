@@ -36,7 +36,7 @@ def QA_SU_trans_stock_min(client=DATABASE, ui_log=None, ui_progress=None,
     ])
     err = []
 
-    def __transform_gm_to_qa(file_path: str = None, end_time: str = None, type_="1min"):
+    def __transform_gm_to_qa(file_path: str | None = None, end_time: str | None = None, type_="1min"):
         """
         导入相应 csv 文件，并处理格式
         1. 这里默认为掘金数据格式:

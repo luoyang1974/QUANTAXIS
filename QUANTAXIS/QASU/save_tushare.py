@@ -293,7 +293,7 @@ def QA_save_lhb(client: MongoClient | Database = DATABASE):
             continue
 
 
-def _saving_work(code, coll_stock_day, ui_log=None, err=[]):
+def _saving_work(code, coll_stock_day, ui_log=None, err: list[str] = []):
     try:
         QA_util_log_info(
             f'##JOB01 Now Saving STOCK_DAY==== {str(code)}',
@@ -374,7 +374,7 @@ def QA_SU_save_stock_day(client: MongoClient | Database = DATABASE, ui_log=None,
           pymongo.ASCENDING)]
     )
 
-    err = []
+    err: list[str] = []
     num_stocks = len(stock_list)
     for index, ts_code in enumerate(stock_list):
         QA_util_log_info(f'The {index} of Total {num_stocks}')
