@@ -24,6 +24,8 @@
 import copy
 import datetime
 import warnings
+import uuid
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -103,7 +105,7 @@ class QA_AccountPRO(QA_Worker):
             'direction',  # 方向,
             'total_frozen'
         ]
-        self.activity = {}
+        self.activity: dict[str, Any] = {}
         ########################################################################
         # 信息类:
 
@@ -164,20 +166,20 @@ class QA_AccountPRO(QA_Worker):
         self.cash_available = self.cash[-1]  # 可用资金
         self.sell_available = copy.deepcopy(self.init_hold)
         self.buy_available = copy.deepcopy(self.init_hold)
-        self.history = []
-        self.time_index_max = []
+        self.history: list[list] = []
+        self.time_index_max: list[str] = []
 
         # 在回测中, 每日结算后更新
         # 真实交易中, 为每日初始化/每次重新登录后的同步信息
-        self.static_balance = {
+        self.static_balance: dict[str, list] = {
             'static_assets': [],
             'cash': [],
             'frozen': [],
             'hold': [],
             'date': []
         }                        # 日结算
-        self.today_trade = {'last': [], 'current': []}
-        self.today_orders = {'last': [], 'current': []}
+        self.today_trade: dict[str, list] = {'last': [], 'current': []}
+        self.today_orders: dict[str, list] = {'last': [], 'current': []}
 
         ########################################################################
         # 规则类
@@ -210,8 +212,8 @@ class QA_AccountPRO(QA_Worker):
 
         """
 
-        self.frozen = {}  # 冻结资金(保证金)
-        self.finishedOrderid = []
+        self.frozen: dict = {}  # 冻结资金(保证金)
+        self.finishedOrderid: list[str] = []
 
         if auto_reload:
             self.reload()
@@ -240,10 +242,7 @@ class QA_AccountPRO(QA_Worker):
             return pos
         else:
             print(f'Current AccountPro {self.account_cookie} is {self.market_type} doesnot support {pos.market_type}')
-
-    @property
-    def hold_available(self):
-        pass
+            return pos
 
     @property
     def message(self):
@@ -972,7 +971,7 @@ class QA_AccountPRO(QA_Worker):
                                                     # self.cash_available -= money
                         flag = True
                     else:
-                        print('sellavailable', _hold)
+                        print('sellavailable', pos.volume_long)
                         print('amount', amount)
                         print('aqureMoney', money)
                         print('cash', self.cash_available)
@@ -1030,7 +1029,7 @@ class QA_AccountPRO(QA_Worker):
 
         self.receive_deal(order["instrument_id"], trade_price=order["limit_price"], trade_time=self.datetime,
                           trade_amount=order["volume_left"], trade_towards=order["towards"],
-                          order_id=order['order_id'], trade_id=str(uuid.uuid4()))
+                          order_id=order['order_id'], trade_id=str(uuid.uuid4()), realorder_id=order.get('realorder_id', order['order_id']))
 
     def receive_deal(self,
                      code,

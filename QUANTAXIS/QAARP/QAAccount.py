@@ -376,20 +376,20 @@ class QA_Account(QA_Worker):
         self.cash_available = self.cash[-1] # 可用资金
         self.sell_available = copy.deepcopy(self.init_hold)
         self.buy_available = copy.deepcopy(self.init_hold)
-        self.history = []
-        self.time_index_max = []
+        self.history: list = []
+        self.time_index_max: list = []
 
         # 在回测中, 每日结算后更新
         # 真实交易中, 为每日初始化/每次重新登录后的同步信息
-        self.static_balance = {
+        self.static_balance: dict = {
             'static_assets': [],
             'cash': [],
             'frozen': [],
             'hold': [],
             'date': []
         }                          # 日结算
-        self.today_trade = {'last': [], 'current': []}
-        self.today_orders = {'last': [], 'current': []}
+        self.today_trade: dict = {'last': [], 'current': []}
+        self.today_orders: dict = {'last': [], 'current': []}
 
         ########################################################################
         # 规则类
@@ -422,8 +422,8 @@ class QA_Account(QA_Worker):
 
         """
 
-        self.frozen = {} # 冻结资金(保证金)
-        self.finishedOrderid = []
+        self.frozen: dict = {} # 冻结资金(保证金)
+        self.finishedOrderid: list = []
 
         if auto_reload:
             self.reload()
@@ -2401,5 +2401,5 @@ class Account_handler:
 
 
 if __name__ == '__main__':
-    account = QA_Account()
+    account = QA_Account(user_cookie='test', portfolio_cookie='test')
     # 创建一个account账户
