@@ -827,19 +827,20 @@ class QA_Position:
         trade_id 不一定存在
         """
 
-        if order['order_id'] not in self.frozen.keys():
+        if order.order_id not in self.frozen.keys():
             print('OUTSIDE ORDER')
-            # self.frozen[order['order_id']] = order[]
+            # self.frozen[order.order_id] = order[]
             # 回放订单/注册进订单系统
-            order = self.send_order(
-                order.get('amount', order.get('volume')),
-                order['price'],
+            new_order = self.send_order(
+                order.amount,
+                order.price,
                 eval('ORDER_DIRECTION.{}_{}'.format(
-                    order.get('direction'),
-                    order.get('offset')
+                    order.direction,
+                    order.offset
                 ))
             )
-            self.orders[order]['status'] = ORDER_STATUS.QUEUED
+            if new_order:
+                self.orders[new_order['order_id']]['status'] = ORDER_STATUS.QUEUED
 
     def on_transaction(self, transaction: dict):
         towards = transaction.get(
@@ -864,7 +865,13 @@ class QA_Position:
             self.moneypresetLeft += self.frozen.get(transaction['order_id'], 0)
             # 当出现外部交易的时候, 直接在frozen中注册订单
             self.frozen[transaction['order_id']] = 0
-            self.orders[transaction['order_id']] = ORDER_STATUS.SUCCESS_ALL
+            if transaction['order_id'] in self.orders:
+                self.orders[transaction['order_id']]['status'] = ORDER_STATUS.SUCCESS_ALL
+            else:
+                self.orders[transaction['order_id']] = {
+                    'order_id': transaction['order_id'],
+                    'status': ORDER_STATUS.SUCCESS_ALL
+                }
             self.trades.append(transaction)
         except Exception as e:
             raise e

@@ -738,7 +738,7 @@ class QA_OrderQueue:  # also the order tree ？？ what's the tree means?
         else:
             if self.order_list[order.order_id
                                ].trade_amount != order.trade_amount:
-                slef.order_list[order.order_id] = order
+                self.order_list[order.order_id] = order
                 return True
             else:
                 return False

@@ -34,22 +34,22 @@ class TTSConfig(configparser.ConfigParser):
     __config_path = '{}{}{}'.format(setting_path, os.sep, 'config.ini')
     __config_section = 'TTSConfig'
 
-    values = {
-        'trade_server_ip': '127.0.0.1',
-        'trade_server_port': '19820',
-        'tdx_server_ip': '60.12.142.37',
-        'tdx_server_port': '7708',
-        'tdx_version': '6.44',
-        'transport_enc_key': '',
-        'transport_enc_iv': '',
-        'user_yyb': 1,
-        'user_name': '',
-        'user_pass': '',
-        'user_tx_pass': ''
-    }
-
     def __init__(self):
         super().__init__()
+        self.values = {
+            'trade_server_ip': '127.0.0.1',
+            'trade_server_port': '19820',
+            'tdx_server_ip': '60.12.142.37',
+            'tdx_server_port': '7708',
+            'tdx_version': '6.44',
+            'transport_enc_key': '',
+            'transport_enc_iv': '',
+            'user_yyb': 1,
+            'user_name': '',
+            'user_pass': '',
+            'user_tx_pass': ''
+        }
+        
         if not os.path.exists(self.__config_path):
             self.__generate_default()
         else:
@@ -492,7 +492,7 @@ class QA_TTSBroker(QA_Broker):
                 if hasattr(result, 'amount'):
                     data['hold_available'] = result.amount
             return data
-        except:
+        except Exception as e:
             print(e)
             return data
 
