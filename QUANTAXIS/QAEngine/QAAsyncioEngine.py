@@ -46,7 +46,8 @@ def callback(result):
     r = result
     print(r.result())
     print(type(r))
-    print(datetime.datetime.now()-time)
+#    print(datetime.datetime.now()-start_time)
+    print(datetime.datetime.now())
     return r
 
 
@@ -58,10 +59,10 @@ run_until_complete
 
 
 if __name__ == '__main__':
-    time = datetime.datetime.now()
+    start_time = datetime.datetime.now()
     QAE = QAAsync()
 
-    print(datetime.datetime.now()-time)
+    print(datetime.datetime.now()-start_time)
     QAE.run(QA_fetch_stock_day, callback,
             '000001', '1990-01-01', '2018-01-31')
     QAE.run(QA_fetch_stock_day, callback,
@@ -72,4 +73,4 @@ if __name__ == '__main__':
             '000004', '1990-01-01', '2018-01-31')
     QAE.run(QA_fetch_stock_day, callback,
             '000005', '1990-01-01', '2018-01-31')
-    print(datetime.datetime.now()-time)
+    print(datetime.datetime.now()-start_time)

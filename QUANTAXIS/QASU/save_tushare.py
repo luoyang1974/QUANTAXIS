@@ -127,8 +127,14 @@ def QA_SU_save_stock_terminated(client: MongoClient | Database = DATABASE):
     df = QATs.get_terminated()
     #df = QATs.get_suspended()
     print(f" Get stock terminated from tushare,stock count is {len(df)}  (终止上市股票列表)")
-    coll = client.stock_terminated
-    client.drop_collection(coll)
+    
+    # 根据client类型获取正确的数据库对象
+    db = client if isinstance(client, Database) else client['quantaxis']
+    # 确保删除旧集合
+    db.drop_collection("stock_terminated")
+    # 获取集合对象
+    coll = db.stock_terminated
+    
     json_data = json.loads(df.reset_index().to_json(orient='records'))
     coll.insert(json_data)
     print(" 保存终止上市股票列表 到 stock_terminated collection， OK")
@@ -170,8 +176,14 @@ def QA_SU_save_stock_info_tushare(client: MongoClient | Database = DATABASE):
     '''
     df = QATs.get_stock_basics()
     print(f" Get stock info from tushare,stock count is {len(df)}")
-    coll = client.stock_info_tushare
-    client.drop_collection(coll)
+    
+    # 根据client类型获取正确的数据库对象
+    db = client if isinstance(client, Database) else client['quantaxis']
+    # 确保删除旧集合
+    db.drop_collection("stock_info_tushare")
+    # 获取集合对象
+    coll = db.stock_info_tushare
+    
     json_data = json.loads(df.reset_index().to_json(orient='records'))
     coll.insert(json_data)
     print(" Save data to stock_info_tushare collection， OK")
@@ -185,8 +197,14 @@ def QA_SU_save_trade_date_all(client: MongoClient | Database = DATABASE):
 
 def QA_SU_save_stock_info(client: MongoClient | Database = DATABASE):
     data = QA_fetch_get_stock_info('')
-    client.drop_collection('stock_info')
-    coll = client.stock_info
+    
+    # 根据client类型获取正确的数据库对象
+    db = client if isinstance(client, Database) else client['quantaxis']
+    # 确保删除旧集合
+    db.drop_collection("stock_info")
+    # 获取集合对象
+    coll = db.stock_info
+    
     coll.create_index('code')
     coll.insert_many(QA_util_to_json_from_pandas(data.reset_index()))
 
@@ -426,6 +444,6 @@ def QA_SU_save_stock_block(client: MongoClient | Database = DATABASE, ui_log=Non
 
 if __name__ == '__main__':
     from pymongo import MongoClient
-    client = MongoClient('localhost', 27017)
+    client: MongoClient = MongoClient('localhost', 27017)
     db = client['quantaxis']
     QA_SU_save_stock_day(client=db)
