@@ -458,7 +458,6 @@ class QA_Portfolio(QA_Account):
 
     def send_order(
         self,
-        account_cookie: str,
         code=None,
         amount=None,
         time=None,
@@ -467,6 +466,9 @@ class QA_Portfolio(QA_Account):
         money=None,
         order_model=None,
         amount_model=None,
+        order_id=None,
+        position_id=None,
+        account_cookie=None,
         *args,
         **kwargs
     ):
@@ -489,6 +491,9 @@ class QA_Portfolio(QA_Account):
             [type] -- [description]
         """
 
+        if account_cookie is None:
+            raise ValueError('请提供account_cookie参数')
+            
         return self.get_account_by_cookie(account_cookie).send_order(
             code=code,
             amount=amount,
@@ -497,7 +502,11 @@ class QA_Portfolio(QA_Account):
             price=price,
             money=money,
             order_model=order_model,
-            amount_model=amount_model
+            amount_model=amount_model,
+            order_id=order_id,
+            position_id=position_id,
+            *args,
+            **kwargs
         )
 
     def receive_deal(self):

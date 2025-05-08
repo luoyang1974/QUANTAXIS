@@ -1496,6 +1496,7 @@ class QA_Account(QA_Worker):
         amount_model=None,
         order_id=None,
         position_id=None,
+        account_cookie=None,
         *args,
         **kwargs
     ):
@@ -1538,6 +1539,7 @@ class QA_Account(QA_Worker):
         :param money: 买卖 价格
         :param order_model: 类型 QA.ORDER_MODE
         :param amount_model:类型 QA.AMOUNT_MODEL
+        :param account_cookie: 账户cookie，当实例为QA_Portfolio时，需要指定执行的account_cookie
         :return:  QA_Order | False
 
         @2018/12/23
