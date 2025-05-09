@@ -1,5 +1,4 @@
 import re
-from typing import Union, Optional
 
 import numpy as np
 import pandas as pd
@@ -16,9 +15,9 @@ def get_clean_factor_and_forward_returns(
         stock_start_date: dict | pd.Series | pd.DataFrame,
         weights: dict | pd.Series | pd.DataFrame,
         binning_by_group: bool = False,
-        quantiles: int | tuple[float] | list[float] = 5,
-        bins: int | tuple[float] | list[float] | None = None,
-        periods: int | tuple[int] | list[int] = (1, 5, 15),
+        quantiles: int | tuple[float, ...] | list[float] = 5,
+        bins: int | tuple[float, ...] | list[float] | None = None,
+        periods: int | tuple[int, ...] | list[int] = (1, 5, 15),
         max_loss: float = 0.25,
         zero_aware: bool = False,
         frequence: str = "1D",
@@ -64,20 +63,41 @@ def get_clean_factor_and_forward_returns(
     """
     # 1. 统一格式
     factor = preprocess.QA_fmt_factor(factor)
-    factor = factor.unstack(level="code")
+    
+    # 确保factor是DataFrame
+    if isinstance(factor, pd.Series):
+        factor = factor.unstack(level="code")
+    elif isinstance(factor, pd.DataFrame):
+        # 如果已经是DataFrame格式，检查是否需要unstack
+        if "code" in factor.index.names:
+            factor = factor.unstack(level="code")
 
+    # 确保prices是DataFrame
     if isinstance(prices, pd.Series):
         prices = prices.unstack(level="code")
+    elif isinstance(prices, pd.DataFrame):
+        # 如果已经是DataFrame格式，检查是否需要unstack
+        if "code" in prices.index.names:
+            prices = prices.unstack(level="code")
 
     if isinstance(periods, int):
         periods = (periods, )
 
     # 2. 获取因子远期收益
-    forward_returns = get_forward_returns(factor, prices, periods, frequence)
+    # 确保传递给get_forward_returns的参数类型正确
+    factor_df = factor.copy() if isinstance(factor, pd.DataFrame) else None
+    if factor_df is None:
+        raise TypeError("处理后的factor必须是DataFrame类型")
+        
+    prices_df = prices.copy() if isinstance(prices, pd.DataFrame) else None
+    if prices_df is None:
+        raise TypeError("处理后的prices必须是DataFrame类型")
+        
+    forward_returns = get_forward_returns(factor_df, prices_df, periods, frequence)
 
     # 3. 格式化因子数据
     factor_data = get_clean_factor(
-        factor=factor,
+        factor=factor_df,
         forward_returns=forward_returns,
         groupby=groupby,
         stock_start_date=stock_start_date,
@@ -95,7 +115,7 @@ def get_clean_factor_and_forward_returns(
 def get_forward_returns(
         factor: pd.DataFrame,
         prices: pd.DataFrame,
-        periods: int | tuple[int] | list[int] = (1, 5, 10),
+        periods: int | tuple[int, ...] | list[int] = (1, 5, 10),
         frequence: str = "1D",
 ) -> pd.DataFrame:
     """
@@ -159,8 +179,8 @@ def get_clean_factor(
         stock_start_date: dict | pd.Series | pd.DataFrame,
         weights: dict | pd.Series | pd.DataFrame,
         binning_by_group: bool = False,
-        quantiles: int | tuple[float] | list[float] = 5,
-        bins: int | tuple[float] | list[float] | None = None,
+        quantiles: int | tuple[float, ...] | list[float] = 5,
+        bins: int | tuple[float, ...] | list[float] | None = None,
         max_loss: float = 0.25,
         zero_aware: bool = False,
 ) -> pd.DataFrame:
@@ -185,6 +205,10 @@ def get_clean_factor(
     :return merged_data: 索引为 ['日期' '资产'] 的 MultiIndex, 列索引包括
         因子值，因子远期收益，因子分位数，因子分组 (可选), 因子权重 (可选)
     """
+    # 确保factor是DataFrame类型
+    if isinstance(factor, pd.Series):
+        factor = factor.to_frame('factor')
+    
     factor_copy = factor.stack(level=-1)
     factor_copy.index = factor_copy.index.rename(["datetime", "code"])
 
@@ -208,11 +232,36 @@ def get_clean_factor(
         elif isinstance(groupby, pd.DataFrame):
             # 假设传入的如果是 dataframe, 格式为透视表, 列为股票代码，索引为日期
             groupby = groupby.stack(level=-1)
-        groupby_tmp = groupby.reindex(merged_data.index).unstack().bfill().stack().dropna()
-        if groupby_tmp.empty:
-            groupby_tmp = pd.Series(index=merged_data.index.append(groupby.index), data=groupby).unstack().ffill().bfill().stack().reindex(merged_data.index)
-        groupby = groupby_tmp.reindex(merged_data.index).unstack().bfill().stack()
-        merged_data["group"] = groupby
+        
+        # 确保groupby已经是Series或DataFrame类型
+        if isinstance(groupby, (pd.Series, pd.DataFrame)):
+            groupby_tmp = groupby.reindex(merged_data.index).unstack().bfill().stack().dropna()
+            if groupby_tmp.empty:
+                # 创建临时Series
+                if isinstance(groupby, pd.Series):
+                    groupby_tmp = pd.Series(
+                        index=merged_data.index.append(groupby.index))
+                    # 通过重新索引来填充值，而不是直接在构造函数传入data参数
+                    for idx in groupby_tmp.index:
+                        if idx in groupby.index:
+                            groupby_tmp[idx] = groupby[idx]
+                    
+                    groupby_tmp = groupby_tmp.unstack().ffill().bfill().stack().reindex(merged_data.index)
+                else:  # DataFrame
+                    # 将DataFrame转换为Series后处理
+                    groupby_series = groupby.stack()
+                    groupby_tmp = pd.Series(
+                        index=merged_data.index.append(groupby_series.index))
+                    # 通过重新索引来填充值  
+                    for idx in groupby_tmp.index:
+                        if idx in groupby_series.index:
+                            groupby_tmp[idx] = groupby_series[idx]
+                    
+                    groupby_tmp = groupby_tmp.unstack().ffill().bfill().stack().reindex(merged_data.index)
+            groupby = groupby_tmp.reindex(merged_data.index).unstack().bfill().stack()
+            merged_data["group"] = groupby
+        else:
+            raise TypeError("分组信息必须是dict、Series或DataFrame类型")
 
     if stock_start_date is not None:
         if isinstance(stock_start_date, dict):
@@ -229,12 +278,36 @@ def get_clean_factor(
         elif isinstance(stock_start_date, pd.DataFrame):
             # 假设传入的如果是 dataframe, 格式为透视表, 列为股票代码，索引为日期
             stock_start_date = stock_start_date.stack(level=-1)
-        stock_start_date_tmp = stock_start_date.reindex(merged_data.index).unstack().bfill().stack().dropna()
-        if stock_start_date_tmp.empty:
-            stock_start_date_tmp = pd.Series(index=merged_data.index.append(stock_start_date.index),
-                                    data=groupby).unstack().ffill().bfill().stack().reindex(merged_data.index)
-        stock_start_date = stock_start_date_tmp.reindex(merged_data.index).unstack().bfill().stack()
-        merged_data["start_date"] = stock_start_date
+        
+        # 确保stock_start_date已经是Series或DataFrame类型
+        if isinstance(stock_start_date, (pd.Series, pd.DataFrame)):
+            stock_start_date_tmp = stock_start_date.reindex(merged_data.index).unstack().bfill().stack().dropna()
+            if stock_start_date_tmp.empty:
+                # 创建临时Series
+                if isinstance(stock_start_date, pd.Series):
+                    stock_start_date_tmp = pd.Series(
+                        index=merged_data.index.append(stock_start_date.index))
+                    # 通过重新索引来填充值，而不是直接在构造函数传入data参数  
+                    for idx in stock_start_date_tmp.index:
+                        if idx in stock_start_date.index:
+                            stock_start_date_tmp[idx] = stock_start_date[idx]
+                    
+                    stock_start_date_tmp = stock_start_date_tmp.unstack().ffill().bfill().stack().reindex(merged_data.index)
+                else:  # DataFrame
+                    # 将DataFrame转换为Series后处理
+                    stock_start_date_series = stock_start_date.stack()
+                    stock_start_date_tmp = pd.Series(
+                        index=merged_data.index.append(stock_start_date_series.index))
+                    # 通过重新索引来填充值
+                    for idx in stock_start_date_tmp.index:
+                        if idx in stock_start_date_series.index:
+                            stock_start_date_tmp[idx] = stock_start_date_series[idx]
+                    
+                    stock_start_date_tmp = stock_start_date_tmp.unstack().ffill().bfill().stack().reindex(merged_data.index)
+            stock_start_date = stock_start_date_tmp.reindex(merged_data.index).unstack().bfill().stack()
+            merged_data["start_date"] = stock_start_date
+        else:
+            raise TypeError("上市日期信息必须是dict、Series或DataFrame类型")
 
     if weights is not None:
         if isinstance(weights, dict):
@@ -249,12 +322,36 @@ def get_clean_factor(
             )
         elif isinstance(weights, pd.DataFrame):
             weights = weights.stack(level=-1)
-        weights_tmp = weights.reindex(merged_data.index).unstack().bfill().stack().dropna()
-        if weights_tmp.empty:
-            weights_tmp = pd.Series(index=merged_data.index.append(weights.index),
-                                    data=weights).unstack().ffill().bfill().stack().reindex(merged_data.index)
-        weights = weights_tmp.reindex(merged_data.index).unstack().bfill().stack()
-        merged_data["weights"] = weights
+        
+        # 确保weights已经是Series或DataFrame类型
+        if isinstance(weights, (pd.Series, pd.DataFrame)):
+            weights_tmp = weights.reindex(merged_data.index).unstack().bfill().stack().dropna()
+            if weights_tmp.empty:
+                # 创建临时Series
+                if isinstance(weights, pd.Series):
+                    weights_tmp = pd.Series(
+                        index=merged_data.index.append(weights.index))
+                    # 通过重新索引来填充值，而不是直接在构造函数传入data参数
+                    for idx in weights_tmp.index:
+                        if idx in weights.index:
+                            weights_tmp[idx] = weights[idx]
+                    
+                    weights_tmp = weights_tmp.unstack().ffill().bfill().stack().reindex(merged_data.index)
+                else:  # DataFrame
+                    # 将DataFrame转换为Series后处理
+                    weights_series = weights.stack()  
+                    weights_tmp = pd.Series(
+                        index=merged_data.index.append(weights_series.index))
+                    # 通过重新索引来填充值
+                    for idx in weights_tmp.index:
+                        if idx in weights_series.index:
+                            weights_tmp[idx] = weights_series[idx]
+                    
+                    weights_tmp = weights_tmp.unstack().ffill().bfill().stack().reindex(merged_data.index)
+            weights = weights_tmp.reindex(merged_data.index).unstack().bfill().stack()
+            merged_data["weights"] = weights
+        else:
+            raise TypeError("权重信息必须是dict、Series或DataFrame类型")
 
     merged_data = merged_data.dropna()
 
@@ -291,8 +388,8 @@ def get_clean_factor(
 
 def quantize_data(
         factor_data: pd.DataFrame,
-        quantiles: int | tuple[float] | list[float] | None = 5,
-        bins: int | tuple[float] | list[float] | None = None,
+        quantiles: int | tuple[float, ...] | list[float] | None = 5,
+        bins: int | tuple[float, ...] | list[float] | None = None,
         binning_by_group: bool = False,
         zero_aware: bool = False,
         no_raise: bool = False,
@@ -308,6 +405,7 @@ def quantize_data(
     :param bins: 分位数据
     :param binning_by_group: 是否按分组分别进行分位处理
     :param zero_aware: 是否对因子正负值分别进行分位处理
+    :param no_raise: 是否在出现异常时不抛出异常
 
     返回值
     ---
@@ -344,7 +442,8 @@ def quantize_data(
                 return pd.Series(index=x.index)
             raise e
 
-    grouper = ["datetime"]
+    # 使用明确的类型 - 字符串列表
+    grouper: list[str] = ["datetime"]
     if binning_by_group:
         if "group" not in factor_data.columns:
             raise ValueError("只有存在分组信息时才能进行分组进行分位处理")
@@ -357,7 +456,7 @@ def quantize_data(
 
 
 def demean_forward_returns(factor_data: pd.DataFrame,
-                           grouper: list = None) -> pd.DataFrame:
+                           grouper: list[str] | None = None) -> pd.DataFrame:
     """
     按照分组对因子远期收益进行去均值
 
@@ -373,7 +472,7 @@ def demean_forward_returns(factor_data: pd.DataFrame,
     """
     factor_data = factor_data.copy()
 
-    if not grouper:
+    if grouper is None:
         grouper = ["datetime"]
 
     cols = get_forward_returns_columns(factor_data.columns)
