@@ -71,7 +71,7 @@ ILOVECHINA = "同学！！你知道什么叫做科学上网么？ 如果你不�
 Huobi_base_url = 'https://api.huobi.pro/'
 
 
-FIRST_PRIORITY = [
+FIRST_PRIORITY: list[str] = [
     'atomusdt',
     'algousdt',
     'adausdt',
@@ -139,7 +139,7 @@ def QA_fetch_huobi_kline(
     callback_func
 ):
     """
-    Get the latest symbol‘s candlestick data  
+    Get the latest symbol's candlestick data  
     当前 REST API 不支持自定义时间区间，如需要历史固定时间范围的数据，请参考 Websocket API 中的 K 线接口。
     """
     datas = list()
@@ -199,7 +199,7 @@ def QA_fetch_huobi_kline_subscription(
     callback_func
 ):
     """
-    Get the symbol‘s candlestick data by subscription
+    Get the symbol's candlestick data by subscription
     """
     reqParams = {}
     reqParams['from'] = int(end_time - FREQUENCY_SHIFTING[frequency])
@@ -215,7 +215,7 @@ def QA_fetch_huobi_kline_subscription(
     while (reqParams['to'] > start_time):
         if (reqParams['from'] > QA_util_datetime_to_Unix_timestamp()) or \
             (reqParams['from'] > reqParams['to']):
-            # 出现“未来”时间，一般是默认时区设置，或者时间窗口滚动前移错误造成的
+            # 出现"未来"时间，一般是默认时区设置，或者时间窗口滚动前移错误造成的
             QA_util_log_info(
                 'A unexpected \'Future\' timestamp got, Please check self.missing_data_list_func param \'tzlocalize\' set. More info: {:s}@{:s} at {:s} but current time is {}'
                 .format(
