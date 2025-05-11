@@ -20,64 +20,69 @@ from QUANTAXIS.QAFactor.process import get_clean_factor_and_forward_returns
 class FactorAnalyzer:
     """
     单因子分析器
+
+    :param factor: 单因子数据，通常是预处理后的因子值。
+                   可为 Pandas 的 Series 或 DataFrame。
+    :type factor: pd.Series or pd.DataFrame
+
+    :param prices: 股票价格数据，支持静态数据或计算函数。
+    :type prices: pd.Series or pd.DataFrame or Callable
+
+    :param groupby: 分组依据，如行业分类数据，或根据某些条件动态生成的分组函数。
+    :type groupby: pd.Series or pd.DataFrame or Callable
+
+    :param stock_start_date: 股票的上市日期数据，也可以为动态计算函数。
+    :type stock_start_date: pd.Series or pd.DataFrame or Callable
+
+    :param weights: 加权方式，默认为 1.0。可以是 float、Series、DataFrame 或返回权重的函数。
+    :type weights: float or pd.Series or pd.DataFrame or Callable
+
+    :param frequence: 因子频率，如 'DAY'、'1d'、'1q' 等，影响未来收益计算。
+    :type frequence: str
+
+    :param quantiles: 分位数处理方式，可以为：
+                      - int：等宽分组数（如 5 表示五分位）
+                      - tuple/list[float]：自定义边界（如 [0.2, 0.4, 0.6, 0.8]）
+    :type quantiles: int or tuple of float or list of float
+
+    :param bins: 自定义分箱边界，不能和 quantiles 同时使用。
+    :type bins: int or tuple of float or list of float or None
+
+    :param periods: 用于计算未来收益的期数，可以为单个 int，也可以为多个期数组成的列表或元组。
+    :type periods: int or tuple of int or list of int
+
+    :param binning_by_group: 是否在每个行业或分组内分别做分箱处理。
+    :type binning_by_group: bool
+
+    :param max_loss: 在因子清洗中可接受的最大数据缺失比例（如 0.25 表示最多允许丢失 25% 的数据）。
+    :type max_loss: float
+
+    :param zero_aware: 是否根据因子的正负值分别做分组处理，适用于有显著正负异质性的因子。
+    :type zero_aware: bool
+
+    :raises ValueError: 如果 quantiles 和 bins 同时指定，将抛出错误。
+
+    .. note::
+
+        - ``quantiles`` 和 ``bins`` 只能同时指定一个。
+        - 如果传入 ``periods`` 为单个整数，则会自动转换为元组形式。
     """
 
     def __init__(
-            self,
-            factor: (pd.Series |
-                          pd.DataFrame),
-            prices: (pd.Series |
-                          pd.DataFrame |
-                          Callable),
-            groupby: (pd.Series |
-                           pd.DataFrame |
-                           Callable),
-            stock_start_date: (pd.Series |
-                                    pd.DataFrame |
-                                    Callable),
-            weights: (float |
-                           pd.Series |
-                           pd.DataFrame |
-                           Callable) = 1.0,
-            frequence: str = "DAY",
-            quantiles: (int |
-                             tuple[float] |
-                             list[float]) = 5,
-            bins: (int |
-                        tuple[float] |
-                        list[float]) = None,
-            periods: (int |
-                           tuple[int] |
-                           list[int]) = (1,
-                                         5,
-                                         10),
-            binning_by_group: bool = False,
-            max_loss: float = 0.25,
-            zero_aware: bool = False,
+        self,
+        factor: pd.Series | pd.DataFrame,
+        prices: pd.Series | pd.DataFrame | Callable,
+        groupby: pd.Series | pd.DataFrame | Callable,
+        stock_start_date: pd.Series | pd.DataFrame | Callable,
+        weights: float | pd.Series | pd.DataFrame | Callable = 1.0,
+        frequence: str = "DAY",
+        quantiles: int | tuple[float, ...] | list[float] = 5,
+        bins: int | tuple[float, ...] | list[float] | None = None,
+        periods: int | tuple[int, ...] | list[int] = (1, 5, 10),
+        binning_by_group: bool = False,
+        max_loss: float = 0.25,
+        zero_aware: bool = False,
     ):
-        """
-        初始化输入
-
-        参数
-        ---
-        :param factor: 即经过我们处理过的单因子数据
-        :param prices: 价格数据
-        :param groupby: 行业数据
-        :param stock_start_date: 上市时间
-        :param weights: 因子加权数据
-        :param frequence: 因子频率，如果是季线，相应的为 `1q`, 日线，则为 `1d` 等
-        :param quantiles: 分位处理，既可以是 int 值，将因子等分，也可以是 0 到 1 之间的非等分区间
-        :param bins: 分位处理，与 `quantiles` 只能有一个为非空
-        :param periods: 用于计算因子远期收益的期数
-        :param binning_by_group: 是否按照行业分别进行分位处理
-        :param max_loss: 在单因子处理时，能够忍受的最大的因子损失 (丢弃的 NaN 值比例)
-        :param zero_aware: 是否按照因子正负值分别进行分位处理
-
-
-        说明：
-            - quantiles 与 bins 只能有一个为非空
-        """
-
         self.factor = preprocess.QA_fmt_factor(factor)
         self.prices = prices
         self.groupby = groupby
@@ -94,7 +99,6 @@ class FactorAnalyzer:
         self.max_loss = max_loss
         self.zero_aware = zero_aware
 
-        # 因子加工与添加因子远期收益
         self.__gen_clean_factor_and_forward_returns()
 
     def __gen_clean_factor_and_forward_returns(self):
@@ -109,12 +113,13 @@ class FactorAnalyzer:
         )
 
         # 因子日期
-        factor_time_range = list(factor_data.index.levels[0].drop_duplicates())
+        # 使用get_level_values代替levels属性访问
+        factor_time_range = list(factor_data.index.get_level_values(0).drop_duplicates())
         start_time = min(factor_time_range)
         end_time = max(factor_time_range)
 
         # 附加数据
-        if hasattr(self.prices, "__call__"):
+        if callable(self.prices):
             prices = self.prices(
                 code_list=code_list,
                 start_time=start_time,
@@ -127,7 +132,7 @@ class FactorAnalyzer:
 
         self.prices = prices
 
-        if hasattr(self.groupby, "__call__"):
+        if callable(self.groupby):
             groupby = self.groupby(
                 code_list=code_list,
                 factor_time_range=factor_time_range
@@ -136,7 +141,7 @@ class FactorAnalyzer:
             groupby = self.groupby
         self.groupby = groupby
 
-        if hasattr(self.stock_start_date, "__call__"):
+        if callable(self.stock_start_date):
             stock_start_date = self.stock_start_date(
                 code_list=code_list,
                 factor_time_range=factor_time_range
@@ -145,7 +150,7 @@ class FactorAnalyzer:
             stock_start_date = self.stock_start_date
         self.stock_start_date = stock_start_date
 
-        if hasattr(self.weights, "__call__"):
+        if callable(self.weights):
             weights = self.weights(
                 code_list=code_list,
                 factor_time_range=factor_time_range,
@@ -228,8 +233,8 @@ class FactorAnalyzer:
 
     def calc_mean_returns_spread(
             self,
-            upper_quant: int = None,
-            lower_quant: int = None,
+            upper_quant: int | None = None,
+            lower_quant: int | None = None,
             by_datetime: bool = True,
             by_group: bool = False,
             demeaned: bool = False,
@@ -246,15 +251,20 @@ class FactorAnalyzer:
         :param demeaned: 使用超额收益
         :param group_adjust: 使用行业中性
         """
+        # 获取分位数值，简化类型处理
         upper_quant = upper_quant if upper_quant is not None else self._factor_quantile
         lower_quant = lower_quant if lower_quant is not None else 1
+        
+        # 运行时检查
+        if (isinstance(upper_quant, int) and isinstance(self._factor_quantile, int) and
+            isinstance(lower_quant, int)):
+            if (upper_quant < 1 or upper_quant > self._factor_quantile or
+                lower_quant < 1 or lower_quant > self._factor_quantile):
+                raise ValueError(
+                    f"upper quant 和 low quant 取值范围是 1 ~ {self._factor_quantile} 的整数"
+                )
 
-        if (not 1 <= upper_quant <= self._factor_quantile) or (
-                not 1 <= lower_quant <= self._factor_quantile):
-            raise ValueError(
-                f"upper quant 和 low quant 取值范围是 1 ~ {self._factor_quantile} 的整数"
-            )
-
+        # 计算分位收益
         mean, std = self.calc_mean_return_by_quantile(
             by_datetime=by_datetime,
             by_group=by_group,
@@ -283,7 +293,7 @@ class FactorAnalyzer:
     @lru_cache(4)
     def calc_factor_alpha_beta(
             self,
-            returns: pd.DataFrame = None,
+            returns: pd.DataFrame | None = None,
             demeaned: bool = True,
             group_adjust: bool = False,
             equal_weight: bool = False,
@@ -382,15 +392,14 @@ class FactorAnalyzer:
 
         # Turnover Analysis
         # FIXME: 股票是 T+1，意味着频率只能是 Day 及以上频率
-        quantile_factor = self._clean_factor_data["factor_quantile"]
+        quantile_factor = self._clean_factor_data[["factor_quantile"]]  # 转换为DataFrame
         quantile_turnover = {
             p: pd.concat(
                 [
                     perf.quantile_turnover(quantile_factor,
-                                           q,
-                                           p)
-                    for q in range(1,
-                                   int(quantile_factor.max()) + 1)
+                                         q,
+                                         p)
+                    for q in range(1, int(quantile_factor["factor_quantile"].max()) + 1)
                 ],
                 axis=1,
             )

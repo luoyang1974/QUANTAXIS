@@ -2,8 +2,6 @@ import re
 
 import numpy as np
 import pandas as pd
-
-from QUANTAXIS.QAFactor import utils
 from QUANTAXIS.QAFactor import preprocess
 from QUANTAXIS.QAFactor.utils import get_forward_returns_columns
 
@@ -234,7 +232,7 @@ def get_clean_factor(
             groupby = groupby.stack(level=-1)
         
         # 确保groupby已经是Series或DataFrame类型
-        if isinstance(groupby, (pd.Series, pd.DataFrame)):
+        if isinstance(groupby, pd.Series | pd.DataFrame):
             groupby_tmp = groupby.reindex(merged_data.index).unstack().bfill().stack().dropna()
             if groupby_tmp.empty:
                 # 创建临时Series
@@ -280,7 +278,7 @@ def get_clean_factor(
             stock_start_date = stock_start_date.stack(level=-1)
         
         # 确保stock_start_date已经是Series或DataFrame类型
-        if isinstance(stock_start_date, (pd.Series, pd.DataFrame)):
+        if isinstance(stock_start_date, pd.Series | pd.DataFrame):
             stock_start_date_tmp = stock_start_date.reindex(merged_data.index).unstack().bfill().stack().dropna()
             if stock_start_date_tmp.empty:
                 # 创建临时Series
@@ -324,7 +322,7 @@ def get_clean_factor(
             weights = weights.stack(level=-1)
         
         # 确保weights已经是Series或DataFrame类型
-        if isinstance(weights, (pd.Series, pd.DataFrame)):
+        if isinstance(weights, pd.Series | pd.DataFrame):
             weights_tmp = weights.reindex(merged_data.index).unstack().bfill().stack().dropna()
             if weights_tmp.empty:
                 # 创建临时Series
