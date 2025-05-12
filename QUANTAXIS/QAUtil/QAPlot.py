@@ -23,10 +23,7 @@
 import os
 import webbrowser
 
-try:
-    from pyecharts import Kline
-except:
-    from pyecharts.charts import Kline
+from pyecharts.charts import Kline
 
 from QUANTAXIS.QAUtil.QALogs import QA_util_log_info
 
@@ -46,8 +43,19 @@ def plot_datastruct(_quotation_base, code=None):
     if code is None:
         path_name = '.' + os.sep + 'QA_' + _quotation_base.type + \
             '_codepackage_' + _quotation_base.if_fq + '.html'
-        kline = Kline('CodePackage_' + _quotation_base.if_fq + '_' + _quotation_base.type,
-                      width=1360, height=700, page_title='QUANTAXIS')
+        
+        from pyecharts import options as opts
+        
+        kline = Kline(
+            init_opts=opts.InitOpts(
+                width="1360px",
+                height="700px",
+                page_title='QUANTAXIS'
+            )
+        )
+        kline.set_global_opts(
+            title_opts=opts.TitleOpts(title='CodePackage_' + _quotation_base.if_fq + '_' + _quotation_base.type)
+        )
 
         data_splits = _quotation_base.splits()
 
@@ -60,8 +68,20 @@ def plot_datastruct(_quotation_base, code=None):
                 axis.append(dates[0])
                 data.append(datas)
 
-            kline.add(_quotation_base.code[i_], axis, data, mark_point=[
-                      "max", "min"], is_datazoom_show=True, datazoom_orient='horizontal')
+            kline.add_xaxis(xaxis_data=axis)
+            kline.add_yaxis(
+                series_name=_quotation_base.code[i_],
+                y_axis=data,
+                markpoint_opts=opts.MarkPointOpts(
+                    data=[
+                        opts.MarkPointItem(type_="max", name="最大值"),
+                        opts.MarkPointItem(type_="min", name="最小值")
+                    ]
+                )
+            )
+            kline.set_global_opts(
+                datazoom_opts=[opts.DataZoomOpts(type_="inside", orient="horizontal")]
+            )
         kline.render(path_name)
         webbrowser.open(path_name)
         QA_util_log_info(f'The Pic has been saved to your path: {path_name}')
@@ -76,10 +96,33 @@ def plot_datastruct(_quotation_base, code=None):
 
         path_name = '.' + os.sep + 'QA_' + _quotation_base.type + \
             '_' + code + '_' + _quotation_base.if_fq + '.html'
-        kline = Kline(code + '__' + _quotation_base.if_fq + '__' + _quotation_base.type,
-                      width=1360, height=700, page_title='QUANTAXIS')
-        kline.add(code, axis, data, mark_point=[
-                  "max", "min"], is_datazoom_show=True, datazoom_orient='horizontal')
+        
+        from pyecharts import options as opts
+        
+        kline = Kline(
+            init_opts=opts.InitOpts(
+                width="1360px",
+                height="700px",
+                page_title='QUANTAXIS'
+            )
+        )
+        kline.set_global_opts(
+            title_opts=opts.TitleOpts(title=f'{code}__{_quotation_base.if_fq}__{_quotation_base.type}'),
+            datazoom_opts=[opts.DataZoomOpts(type_="inside", orient="horizontal")]
+        )
+        
+        kline.add_xaxis(xaxis_data=axis)
+        kline.add_yaxis(
+            series_name=code,
+            y_axis=data,
+            markpoint_opts=opts.MarkPointOpts(
+                data=[
+                    opts.MarkPointItem(type_="max", name="最大值"),
+                    opts.MarkPointItem(type_="min", name="最小值")
+                ]
+            )
+        )
+        
         kline.render(path_name)
         webbrowser.open(path_name)
         QA_util_log_info(f'The Pic has been saved to your path: {path_name}')

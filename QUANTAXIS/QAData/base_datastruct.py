@@ -33,10 +33,8 @@ from functools import lru_cache
 import numpy as np
 import pandas as pd
 
-try:
-    from pyecharts import Kline, Bar, Grid
-except:
-    from pyecharts.charts import Kline, Bar, Grid
+from pyecharts.charts import Kline, Bar, Grid
+from pyecharts import options as opts
 
 from QUANTAXIS.QAUtil import (
     QA_util_log_info,
@@ -111,7 +109,7 @@ class _quotation_base:
         如果需要暴露 DataFrame 内部数据对象，就用() 来转换出 data （DataFrame）
         Emulating callable objects
         object.__call__(self[, args…])
-        Called when the instance is “called” as a function;
+        Called when the instance is "called" as a function;
         if this method is defined, x(arg1, arg2, ...) is a shorthand for x.__call__(arg1, arg2, ...).
         比如
         obj =  _quotation_base() 调用 __init__
@@ -698,10 +696,14 @@ class _quotation_base:
             path_name = '.' + os.sep + 'QA_' + self.type + \
                 '_codepackage_' + self.if_fq + '.html'
             kline = Kline(
-                'CodePackage_' + self.if_fq + '_' + self.type,
-                width=1360,
-                height=700,
-                page_title='QUANTAXIS'
+                init_opts=opts.InitOpts(
+                    width="1360px",
+                    height="700px",
+                    page_title='QUANTAXIS'
+                )
+            )
+            kline.set_global_opts(
+                title_opts=opts.TitleOpts(title='CodePackage_' + self.if_fq + '_' + self.type)
             )
 
             bar = Bar()
@@ -722,14 +724,25 @@ class _quotation_base:
                                  'high']]
                 )
 
-                kline.add(
-                    ds.code[0],
-                    datetime,
-                    ohlc,
-                    mark_point=["max",
-                                "min"],
-                    is_datazoom_show=True,
-                    datazoom_orient='horizontal'
+                kline.add_xaxis(xaxis_data=datetime.tolist())
+                kline.add_yaxis(
+                    series_name=ds.code[0],
+                    y_axis=ohlc.tolist(),
+                    itemstyle_opts=opts.ItemStyleOpts(
+                        color="#ec0000",
+                        color0="#00da3c",
+                        border_color="#8A0000",
+                        border_color0="#008F28",
+                    ),
+                    markpoint_opts=opts.MarkPointOpts(
+                        data=[
+                            opts.MarkPointItem(type_="max", name="最大值"),
+                            opts.MarkPointItem(type_="min", name="最小值")
+                        ]
+                    ),
+                )
+                kline.set_global_opts(
+                    datazoom_opts=[opts.DataZoomOpts(type_="inside",orient="horizontal")],
                 )
             return kline
 
@@ -747,34 +760,63 @@ class _quotation_base:
             ohlc = np.array(ds.data.loc[:, ['open', 'close', 'low', 'high']])
             vol = np.array(ds.volume)
             kline = Kline(
-                f'{code}__{self.if_fq}__{self.type}',
-                width=1360,
-                height=700,
-                page_title='QUANTAXIS'
+                init_opts=opts.InitOpts(
+                    width="1360px",
+                    height="700px",
+                    page_title='QUANTAXIS'
+                )
             )
+            kline.set_global_opts(
+                title_opts=opts.TitleOpts(title=f'{code}__{self.if_fq}__{self.type}'),
+                tooltip_opts=opts.TooltipOpts(trigger="axis", axis_pointer_type="cross"),
+                xaxis_opts=opts.AxisOpts(is_scale=True, axislabel_opts=opts.LabelOpts(is_show=False)),
+                datazoom_opts=[opts.DataZoomOpts(type_="inside", orient="horizontal")],
+            )
+            
+            kline.add_xaxis(xaxis_data=datetime.tolist())
+            kline.add_yaxis(
+                series_name=code,
+                y_axis=ohlc.tolist(),
+                itemstyle_opts=opts.ItemStyleOpts(
+                    color="#ec0000",
+                    color0="#00da3c",
+                    border_color="#8A0000",
+                    border_color0="#008F28",
+                ),
+                markpoint_opts=opts.MarkPointOpts(
+                    data=[
+                        opts.MarkPointItem(type_="max", name="最大值"),
+                        opts.MarkPointItem(type_="min", name="最小值")
+                    ]
+                ),
+            )
+
             bar = Bar()
-            kline.add(self.code, datetime, ohlc,
-                      mark_point=["max", "min"],
-                      # is_label_show=True,
-                      is_datazoom_show=True,
-                      is_xaxis_show=False,
-                      # is_toolbox_show=True,
-                      tooltip_formatter='{b}:{c}',  # kline_formater,
-                      # is_more_utils=True,
-                      datazoom_orient='horizontal')
-
-            bar.add(
-                self.code,
-                datetime,
-                vol,
-                is_datazoom_show=True,
-                datazoom_xaxis_index=[0,
-                                      1]
+            bar.add_xaxis(xaxis_data=datetime.tolist())
+            bar.add_yaxis(
+                series_name=code,
+                y_axis=vol.tolist(),
+                label_opts=opts.LabelOpts(is_show=False),
+            )
+            bar.set_global_opts(
+                datazoom_opts=[opts.DataZoomOpts(xaxis_index=[0, 1])]
             )
 
-            grid = Grid(width=1360, height=700, page_title='QUANTAXIS')
-            grid.add(bar, grid_top="80%")
-            grid.add(kline, grid_bottom="30%")
+            grid = Grid(
+                init_opts=opts.InitOpts(
+                    width="1360px",
+                    height="700px",
+                    page_title='QUANTAXIS'
+                )
+            )
+            grid.add(
+                chart=bar,
+                grid_opts=opts.GridOpts(pos_top="80%")
+            )
+            grid.add(
+                chart=kline,
+                grid_opts=opts.GridOpts(pos_bottom="30%")
+            )
             return grid
 
     def plot(self, code=None):
