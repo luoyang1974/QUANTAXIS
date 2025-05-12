@@ -993,7 +993,7 @@ class MARKET_PRESET:
             [type] -- [description]
         """
 
-        return list(self.pdtable.loc['exchange'].unique())
+        return list(self.pdtable.T['exchange'].unique())
 
     def get_exchangecode(self, exchange):
         return self.pdtable.T.query(f'exchange=="{exchange}"'
@@ -1039,15 +1039,15 @@ class MARKET_PRESET:
         当前无法区分是百分比还是按手数收费,不过可以拿到以后自行判断
         """
         return max(
-            self.get_code(code).get('commission_coeff_peramount'),
-            self.get_code(code).get('commission_coeff_pervol')
+            self.get_code(code).get('commission_coeff_peramount', 0),
+            self.get_code(code).get('commission_coeff_pervol', 0)
         )
 
     # 平今手续费率
     def get_commission_today_coeff(self, code):
         return max(
-            self.get_code(code).get('commission_coeff_today_peramount'),
-            self.get_code(code).get('commission_coeff_today_pervol')
+            self.get_code(code).get('commission_coeff_today_peramount', 0),
+            self.get_code(code).get('commission_coeff_today_pervol', 0)
         )
 
     # 印花税系数

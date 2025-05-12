@@ -104,7 +104,9 @@ class QA_Thread(threading.Thread):
         self.thread_stop = True # 设置为False
 
     def __start(self):
-        self.queue.start()
+        # Queue没有start方法，此方法可能是遗留代码
+        pass
+        # self.queue.start()
 
     def put(self, task):
         self.queue.put(task)
@@ -239,7 +241,7 @@ class QA_Engine(QA_Thread):
 
         return res
 
-    def join(self):
+    def join(self, timeout=None):
         print(self.kernels_dict)
         
         for item in self.kernels_dict.values():
@@ -247,6 +249,8 @@ class QA_Engine(QA_Thread):
             print(item.queue.qsize())
             item.queue.join()
         self.queue.join()
+        # 调用父类的join方法
+        super().join(timeout=timeout)
 
     def join_single(self, kernel):
         self.kernels_dict[kernel].queue.join()

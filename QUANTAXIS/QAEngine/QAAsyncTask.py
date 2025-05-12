@@ -44,9 +44,11 @@ class QA_AsyncTask:
         return self._closed
 
     async def _do_wait(self, timeout):
-        with async_timeout.timeout(timeout=timeout, loop=self._loop):
+        async with async_timeout.timeout(timeout):
             await self._started
-            return await self._task
+            if self._task is not None:
+                return await self._task
+            return None
 
     async def wait(self, *, timeout=None):
         if self._closed:
@@ -54,12 +56,14 @@ class QA_AsyncTask:
         self._explicit = True
         scheduler = self._scheduler
         try:
-            return await asyncio.shield(self._do_wait(timeout),
-                                        loop=self._loop)
+            return await asyncio.shield(self._do_wait(timeout))
         except asyncio.CancelledError:
             raise
         except Exception:
-            await self._close(scheduler.close_timeout)
+            if scheduler is not None and hasattr(scheduler, "close_timeout"):
+                await self._close(scheduler.close_timeout)
+            else:
+                await self._close(1.0)  # 默认超时时间
             raise
 
     async def close(self, *, timeout=None):
@@ -67,7 +71,10 @@ class QA_AsyncTask:
             return
         self._explicit = True
         if timeout is None:
-            timeout = self._scheduler.close_timeout
+            if self._scheduler is not None and hasattr(self._scheduler, "close_timeout"):
+                timeout = self._scheduler.close_timeout
+            else:
+                timeout = 1.0  # 默认超时时间
         await self._close(timeout)
 
     async def _close(self, timeout):
@@ -77,13 +84,13 @@ class QA_AsyncTask:
             # it prevents a warning like
             # RuntimeWarning: coroutine 'coro' was never awaited
             self._start()
-        if not self._task.done():
+        if self._task is not None and not self._task.done():
             self._task.cancel()
         scheduler = self._scheduler
         try:
-            with async_timeout.timeout(timeout=timeout,
-                                       loop=self._loop):
-                await self._task
+            async with async_timeout.timeout(timeout):
+                if self._task is not None:
+                    await self._task
         except asyncio.CancelledError:
             pass
         except TimeoutError as exc:
@@ -94,7 +101,8 @@ class QA_AsyncTask:
                        'exception': exc}
             if self._source_traceback is not None:
                 context['source_traceback'] = self._source_traceback
-            scheduler.call_exception_handler(context)
+            if scheduler is not None and hasattr(scheduler, "call_exception_handler"):
+                scheduler.call_exception_handler(context)
         except Exception as exc:
             if self._explicit:
                 raise
@@ -108,15 +116,17 @@ class QA_AsyncTask:
 
     def _done_callback(self, task):
         scheduler = self._scheduler
-        scheduler._done(self)
-        try:
-            exc = task.exception()
-        except asyncio.CancelledError:
-            pass
-        else:
-            if exc is not None and not self._explicit:
-                self._report_exception(exc)
-                scheduler._failed_tasks.put_nowait(task)
+        if scheduler is not None and hasattr(scheduler, "_done"):
+            scheduler._done(self)
+            try:
+                exc = task.exception()
+            except asyncio.CancelledError:
+                pass
+            else:
+                if exc is not None and not self._explicit:
+                    self._report_exception(exc)
+                    if hasattr(scheduler, "_failed_tasks"):
+                        scheduler._failed_tasks.put_nowait(task)
         self._scheduler = None  # drop backref
         self._closed = True
 
@@ -126,4 +136,5 @@ class QA_AsyncTask:
                    'exception': exc}
         if self._source_traceback is not None:
             context['source_traceback'] = self._source_traceback
-        self._scheduler.call_exception_handler(context)
+        if self._scheduler is not None and hasattr(self._scheduler, "call_exception_handler"):
+            self._scheduler.call_exception_handler(context)

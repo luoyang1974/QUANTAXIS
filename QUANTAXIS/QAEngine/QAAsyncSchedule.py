@@ -9,15 +9,15 @@ from QUANTAXIS.QAEngine.QAAsyncTask import QA_AsyncTask
 #class QA_AsyncScheduler(*bases):
 class QA_AsyncScheduler(Collection):
     def __init__(self, *, close_timeout, limit, pending_limit,
-                 exception_handler, loop):
-        self._loop = loop
+                 exception_handler, loop=None):
+        self._loop = loop or asyncio.get_event_loop()
         self._jobs = set()
         self._close_timeout = close_timeout
         self._limit = limit
         self._exception_handler = exception_handler
-        self._failed_tasks = asyncio.Queue(loop=loop)
-        self._failed_task = loop.create_task(self._wait_failed())
-        self._pending = asyncio.Queue(maxsize=pending_limit, loop=loop)
+        self._failed_tasks = asyncio.Queue()
+        self._failed_task = self._loop.create_task(self._wait_failed())
+        self._pending = asyncio.Queue(maxsize=pending_limit)
         self._closed = False
 
     def __iter__(self):
@@ -87,7 +87,7 @@ class QA_AsyncScheduler(Collection):
                 self._pending.get_nowait()
             await asyncio.gather(
                 *[job._close(self._close_timeout) for job in jobs],
-                loop=self._loop, return_exceptions=True)
+                return_exceptions=True)
             self._jobs.clear()
         self._failed_tasks.put_nowait(None)
         await self._failed_task
@@ -139,6 +139,6 @@ async def create_QAAsyncScheduler(*, close_timeout=0.1, limit=100,
         raise TypeError('A callable object or None is expected, '
                         f'got {exception_handler!r}')
     loop = asyncio.get_event_loop()
-    return QA_AsyncScheduler(loop=loop, close_timeout=close_timeout,
+    return QA_AsyncScheduler(close_timeout=close_timeout,
                      limit=limit, pending_limit=pending_limit,
-                     exception_handler=exception_handler)
+                     exception_handler=exception_handler, loop=loop)
