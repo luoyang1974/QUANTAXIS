@@ -15,10 +15,13 @@ def run_backtest(shell_cmd):
         stderr=subprocess.STDOUT
     )
     while p.poll() is None:
+        if p.stdout is None:
+            continue
         line = p.stdout.readline()
-        line = line.strip()
+        if not line:
+            continue
+        line = line.strip().decode('utf-8')
         if line:
-
             QA_util_log_info(line)
             #print('QUANTAXIS: [{}]'.format(line))
     if p.returncode == 0:

@@ -365,8 +365,8 @@ class CLI(cmd.Cmd):
             if len(arg) == 1 and arg[0] == "all":
                 if (
                     QA_Setting()
-                    .client.quantaxis.user_list.find({"username": "admin"})
-                    .count()
+                    .client.quantaxis.user_list
+                    .count_documents({"username": "admin"})
                     == 0
                 ):
                     QA_Setting().client.quantaxis.user_list.insert(
@@ -392,8 +392,8 @@ class CLI(cmd.Cmd):
             elif len(arg) == 1 and arg[0] == "day":
                 if (
                     QA_Setting()
-                    .client.quantaxis.user_list.find({"username": "admin"})
-                    .count()
+                    .client.quantaxis.user_list
+                    .count_documents({"username": "admin"})
                     == 0
                 ):
                     QA_Setting().client.quantaxis.user_list.insert(
@@ -416,8 +416,8 @@ class CLI(cmd.Cmd):
             elif len(arg) == 1 and arg[0] == "min":
                 if (
                     QA_Setting()
-                    .client.quantaxis.user_list.find({"username": "admin"})
-                    .count()
+                    .client.quantaxis.user_list
+                    .count_documents({"username": "admin"})
                     == 0
                 ):
                     QA_Setting().client.quantaxis.user_list.insert(
@@ -437,8 +437,8 @@ class CLI(cmd.Cmd):
             elif len(arg) == 1 and arg[0] == "transaction":
                 if (
                     QA_Setting()
-                    .client.quantaxis.user_list.find({"username": "admin"})
-                    .count()
+                    .client.quantaxis.user_list
+                    .count_documents({"username": "admin"})
                     == 0
                 ):
                     QA_Setting().client.quantaxis.user_list.insert(
@@ -461,8 +461,8 @@ class CLI(cmd.Cmd):
             elif len(arg) == 1 and arg[0] in ["X", "x"]:
                 if (
                     QA_Setting()
-                    .client.quantaxis.user_list.find({"username": "admin"})
-                    .count()
+                    .client.quantaxis.user_list
+                    .count_documents({"username": "admin"})
                     == 0
                 ):
                     QA_Setting().client.quantaxis.user_list.insert(
@@ -484,8 +484,8 @@ class CLI(cmd.Cmd):
             elif len(arg) == 1 and arg[0] == "ts_all":
                 if (
                     QA_Setting()
-                    .client.quantaxis.user_list.find({"username": "admin"})
-                    .count()
+                    .client.quantaxis.user_list
+                    .count_documents({"username": "admin"})
                     == 0
                 ):
                     QA_Setting().client.quantaxis.user_list.insert(
@@ -499,8 +499,8 @@ class CLI(cmd.Cmd):
             elif len(arg) == 1 and arg[0] == "ts_financial":
                 if (
                     QA_Setting()
-                    .client.quantaxis.user_list.find({"username": "admin"})
-                    .count()
+                    .client.quantaxis.user_list
+                    .count_documents({"username": "admin"})
                     == 0
                 ):
                     QA_Setting().client.quantaxis.user_list.insert(
@@ -510,8 +510,8 @@ class CLI(cmd.Cmd):
             elif len(arg) == 1 and arg[0] == "ts_daily":
                 if (
                     QA_Setting()
-                    .client.quantaxis.user_list.find({"username": "admin"})
-                    .count()
+                    .client.quantaxis.user_list
+                    .count_documents({"username": "admin"})
                     == 0
                 ):
                     QA_Setting().client.quantaxis.user_list.insert(
@@ -660,8 +660,8 @@ class CLI(cmd.Cmd):
                     if i == "insert_user":
                         if (
                             QA_Setting()
-                            .client.quantaxis.user_list.find({"username": "admin"})
-                            .count()
+                            .client.quantaxis.user_list
+                            .count_documents({"username": "admin"})
                             == 0
                         ):
                             QA_Setting().client.quantaxis.user_list.insert(
