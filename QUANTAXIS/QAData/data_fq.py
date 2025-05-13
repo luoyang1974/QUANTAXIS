@@ -24,6 +24,7 @@
 import datetime
 
 import pandas as pd
+from pandas import MultiIndex
 
 from QUANTAXIS.QAUtil import DATABASE, QA_util_log_info
 
@@ -114,7 +115,7 @@ def _QA_data_stock_to_fq(bfq_data, xdxr_data, fqtype):
         )
 
         data['if_trade'].fillna(value=0, inplace=True)
-        data = data.fillna(method='ffill')
+        data = data.fillna(value=data.ffill())
 
         data = pd.concat(
             [
@@ -186,10 +187,13 @@ def QA_data_stock_to_fq(__data, type_='01'):
     ):
         '获取股票除权信息/数据库'
         try:
-            data = pd.DataFrame(
-                [item for item in collections.find({'code': code})]
-            ).drop(['_id'],
-                   axis=1)
+            cursor = collections.find({'code': code})
+            if cursor is None:
+                return pd.DataFrame()
+            data = pd.DataFrame([item for item in cursor])
+            if len(data) == 0:
+                return pd.DataFrame()
+            data = data.drop(['_id'], axis=1)
             data['date'] = pd.to_datetime(data['date'], utc=False)
             return data.set_index(['date', 'code'], drop=False)
         except:
@@ -219,7 +223,7 @@ def QA_data_stock_to_fq(__data, type_='01'):
 
     code = __data.index.remove_unused_levels().levels[1][0] if isinstance(
         __data.index,
-        pd.core.indexes.multi.MultiIndex
+        MultiIndex
     ) else __data['code'][0]
 
     return _QA_data_stock_to_fq(

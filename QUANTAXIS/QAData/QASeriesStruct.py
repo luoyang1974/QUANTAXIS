@@ -24,13 +24,14 @@ from copy import deepcopy
 
 import numpy as np
 import pandas as pd
+from pandas import MultiIndex, DatetimeIndex
 
 
 class QA_DataStruct_Series:
     def __init__(self, series):
         self.series = series.sort_index()
 
-        if isinstance(series.index, pd.core.indexes.multi.MultiIndex):
+        if isinstance(series.index, MultiIndex):
             self.if_multiindex=True
             self.index = series.index.remove_unused_levels()
         else:
@@ -54,7 +55,7 @@ class QA_DataStruct_Series:
     def datetime(self):
         if self.if_multiindex:
             return self.index.levels[0].tolist()
-        elif isinstance(self.index,pd.core.indexes.datetimes.DatetimeIndex):
+        elif isinstance(self.index, DatetimeIndex):
             return self.index
         else:
             return None
@@ -63,7 +64,7 @@ class QA_DataStruct_Series:
     def date(self):
         if self.if_multiindex:
             return np.unique(self.index.levels[0].date).tolist()
-        elif isinstance(self.index,pd.core.indexes.datetimes.DatetimeIndex):
+        elif isinstance(self.index, DatetimeIndex):
             return np.unique(self.index.date).tolist()
         else:
             return None

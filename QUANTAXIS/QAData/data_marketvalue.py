@@ -51,9 +51,12 @@ def QA_data_marketvalue(data):
     ):
         '获取股票除权信息/数据库'
         try:
-            data = pd.DataFrame(
-                [item for item in collections.find({'code': {"$in": code_list}
-                                                   },{"_id": 0})])
+            cursor = collections.find({'code': {"$in": code_list}}, {"_id": 0})
+            if cursor is None:
+                return pd.DataFrame()
+            data = pd.DataFrame([item for item in cursor])
+            if len(data) == 0:
+                return pd.DataFrame()
             data['date'] = pd.to_datetime(data['date'], utc=False)
 
             return data.drop_duplicates(

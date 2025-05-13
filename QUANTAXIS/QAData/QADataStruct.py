@@ -40,10 +40,7 @@ from functools import lru_cache, partial, reduce
 
 import numpy as np
 import pandas as pd
-try:
-    from pyecharts import Kline
-except:
-    from pyecharts.charts import Kline
+from pyecharts.charts import Kline
 
 from QUANTAXIS.QAData.base_datastruct import _quotation_base
 from QUANTAXIS.QAData.data_fq import QA_data_stock_to_fq
@@ -150,12 +147,16 @@ class QA_DataStruct_Stock_day(_quotation_base):
             else:
                 try:
                     date = self.date
+                    if date is None:
+                        raise ValueError("date cannot be None")
                     adj = _QA_fetch_stock_adj(
                         list(self.code),
                         str(date[0])[0:10],
                         str(date[-1])[0:10]
-                    ).set_index(['date',
-                                 'code'])
+                    )
+                    if adj is None:
+                        raise ValueError("Failed to fetch stock adjustments")
+                    adj = adj.set_index(['date', 'code'])
                     data = self.data.join(adj)
                     for col in ['open', 'high', 'low', 'close']:
                         data[col] = data[col] * data['adj']
@@ -349,12 +350,16 @@ class QA_DataStruct_Stock_min(_quotation_base):
             else:
                 try:
                     date = self.date
+                    if date is None:
+                        raise ValueError("date cannot be None")
                     adj = _QA_fetch_stock_adj(
                         self.code.to_list(),
                         str(date[0])[0:10],
                         str(date[-1])[0:10]
-                    ).set_index(['date',
-                                 'code'])
+                    )
+                    if adj is None:
+                        raise ValueError("Failed to fetch stock adjustments")
+                    adj = adj.set_index(['date', 'code'])
                     u = self.data.reset_index()
                     u = u.assign(date=u.datetime.apply(lambda x: x.date()))
                     u = u.set_index(['date', 'code'], drop=False)
@@ -451,7 +456,7 @@ class QA_DataStruct_Stock_min(_quotation_base):
 class QA_DataStruct_Index_min(_quotation_base):
     '自定义的分钟线数据结构'
 
-    def __init__(self, DataFrame, dtype='index_min', if_fq=''):
+    def __init__(self, DataFrame, dtype='index_min', if_fq='bfq'):
         super().__init__(DataFrame, dtype, if_fq)
 
         try:
@@ -525,7 +530,7 @@ class QA_DataStruct_Index_min(_quotation_base):
 
 class QA_DataStruct_Future_day(_quotation_base):
 
-    def __init__(self, DataFrame, dtype='future_day', if_fq=''):
+    def __init__(self, DataFrame, dtype='future_day', if_fq='bfq'):
         super().__init__(DataFrame, dtype, if_fq)
         self.type = 'future_day'
         self.data = self.data.loc[:,
@@ -615,7 +620,7 @@ class QA_DataStruct_Future_min(_quotation_base):
     struct for future
     """
 
-    def __init__(self, DataFrame, dtype='future_min', if_fq=''):
+    def __init__(self, DataFrame, dtype='future_min', if_fq='bfq'):
         # 🛠todo  期货分钟数据线的维护， 暂时用日线代替分钟线
         super().__init__(DataFrame, dtype, if_fq)
         self.type = dtype
@@ -702,7 +707,7 @@ class QA_DataStruct_Future_min(_quotation_base):
 class QA_DataStruct_Index_day(_quotation_base):
     '自定义的日线数据结构'
 
-    def __init__(self, DataFrame, dtype='index_day', if_fq=''):
+    def __init__(self, DataFrame, dtype='index_day', if_fq='bfq'):
         super().__init__(DataFrame, dtype, if_fq)
         # self.data = DataFrame
         self.type = dtype
@@ -1579,7 +1584,7 @@ class QA_DataStruct_Future_tick:
 
 class QA_DataStruct_CryptoCurrency_day(_quotation_base):
 
-    def __init__(self, DataFrame, dtype='crypto_currency_day', if_fq=False):
+    def __init__(self, DataFrame, dtype='crypto_currency_day', if_fq='bfq'):
         super().__init__(DataFrame, dtype, if_fq)
         self.type = 'CryptoCurrency_day'
         self.data = self.data.sort_index()
@@ -1655,7 +1660,7 @@ class QA_DataStruct_CryptoCurrency_min(_quotation_base):
     struct for crypto asset_
     """
 
-    def __init__(self, DataFrame, dtype='crypto_currency_min', if_fq=False):
+    def __init__(self, DataFrame, dtype='crypto_currency_min', if_fq='bfq'):
         super().__init__(DataFrame, dtype, if_fq)
         self.type = dtype
         self.data = self.data.sort_index()

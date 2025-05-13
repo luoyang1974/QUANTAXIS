@@ -713,9 +713,9 @@ class _quotation_base:
                 data = []
                 axis = []
                 if ds.type[-3:] == 'day':
-                    datetime = np.array(ds.date.map(str))
+                    datetime = np.array(pd.Series(ds.date).map(str))
                 else:
-                    datetime = np.array(ds.datetime.map(str))
+                    datetime = np.array(pd.Series(ds.datetime).map(str))
                 ohlc = np.array(
                     ds.data.loc[:,
                                 ['open',
@@ -753,9 +753,9 @@ class _quotation_base:
             data = []
             #axis = []
             if self.type[-3:] == 'day':
-                datetime = np.array(ds.date.map(str))
+                datetime = np.array(pd.Series(ds.date).map(str))
             else:
-                datetime = np.array(ds.datetime.map(str))
+                datetime = np.array(pd.Series(ds.datetime).map(str))
 
             ohlc = np.array(ds.data.loc[:, ['open', 'close', 'low', 'high']])
             vol = np.array(ds.volume)
@@ -841,7 +841,7 @@ class _quotation_base:
         try:
             return self.data.query(context)
 
-        except pd.core.computation.ops.UndefinedVariableError:
+        except pd.errors.UndefinedVariableError:
             print(f'QA CANNOT QUERY THIS {context}')
             pass
 
@@ -1137,6 +1137,9 @@ class _quotation_base:
         """
 
         res = self.select_columns(columns)
+        if res is None:
+            return None
+            
         if type == 'ndarray':
             if with_index:
                 return res.reset_index().values

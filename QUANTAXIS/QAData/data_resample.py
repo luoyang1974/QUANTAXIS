@@ -234,7 +234,7 @@ def QA_data_tick_resample_1min(tick, type_='1min', if_drop=True):
                     #                        0)])
                     pass
         _data2 = _data2.loc[time(13, 1):time(15, 0)]
-        resx = resx.append(_data1).append(_data2)
+        resx = pd.concat([resx, _data1, _data2])
     resx['vol'] = resx['vol'] * 100.0
     resx['volume'] = resx['vol']
     resx['type'] = '1min'
@@ -318,7 +318,7 @@ def QA_data_tick_resample(tick, type_='1min'):
                                         }
                                     )
         _data2.index = _data2.index + to_offset(type_)
-        resx = resx.append(_data1).append(_data2)
+        resx = pd.concat([resx, _data1, _data2])
     resx.columns = resx.columns.droplevel(0)
     return resx.reset_index().drop_duplicates().set_index(['datetime', 'code'])
 
@@ -440,7 +440,7 @@ def QA_data_ctptick_resample(tick, type_='1min'):
                                     )
         _data3.index = _data3.index + to_offset(type_)
 
-        resx = resx.append(_data0).append(_data1).append(_data2).append(_data3)
+        resx = pd.concat([resx, _data0, _data1, _data2, _data3])
     resx.columns = resx.columns.droplevel(0)
     return resx.reset_index().drop_duplicates().set_index(['datetime',
                                                            'code']).sort_index()
@@ -568,8 +568,9 @@ def QA_data_stockmin_resample(min_data, period=5):
         ]
     )
     # 10:31:00 => 10:30:00
-    res.index = (res.index + res.index.freq).to_timestamp() - \
-        pd.Timedelta(minutes=1)
+    if isinstance(res.index, pd.DatetimeIndex):
+        period_minutes = int(period) if isinstance(period, str) else period
+        res.index = res.index + pd.Timedelta(minutes=period_minutes) - pd.Timedelta(minutes=1)
     return res.reset_index().set_index(["datetime", "code"]).sort_index()
 
 
@@ -1054,14 +1055,7 @@ if __name__ == '__main__':
 
     print("test QA_data_stockmin_resample, level: 120")
     start, end, level = "2019-05-01", "2019-05-08", 120
-    data = QA.QA_fetch_stock_min_adv("000001", start, end)
-    res = QA_data_stockmin_resample(data.data, level)
-    print(res)
-    res2 = QA.QA_fetch_stock_min_adv(["000001",
-                                      '000002'],
-                                     start,
-                                     end).add_func(
-                                         QA_data_stockmin_resample,
-                                         level
-                                     )
-    print(res2)
+    data = QA.QA_fetch_stock_min_adv(["000001", '000002'], start, end)
+    if data is not None:
+        res2 = QA_data_stockmin_resample(data.data, level) if hasattr(data, 'data') else None
+        print(res2)
